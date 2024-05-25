@@ -1,4 +1,4 @@
-# 1.2.1 GridCellSpatialRelationEncoder Class
+# 1.2.1 GridCellSpatialRelationEncoder
 ## Purpose
 The `GridCellSpatialRelationEncoder` is designed to encode spatial relationships between grid cells using a sinusoidal encoding scheme. It is particularly useful in scenarios where precise spatial relations need to be captured, such as navigation systems, robotic mapping, and geographical information systems.
 
