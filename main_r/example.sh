@@ -12,7 +12,7 @@ META=ebird_meta
 # META=orig_meta
 EVALDATA=test
 
-DEVICE=cuda:1
+DEVICE=cuda:0
 
 LR=0.005
 LAYER=1
@@ -20,7 +20,7 @@ HIDDIM=512
 FREQ=64
 MINR=0.001
 MAXR=1
-EPOCH=30
+EPOCH=2
 
 ACT=relu
 RATIO=1.0

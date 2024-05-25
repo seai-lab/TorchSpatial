@@ -24,6 +24,12 @@ from eval_helper import *
 def make_args_parser():
     parser = ArgumentParser()
     parser.add_argument(
+        "--save_results",
+        type=str,
+        default="F",
+        help="""whether you need to save the lon, lat, rr, acc1, acc3 into a csv file for the final evaluation""",
+    )
+    parser.add_argument(
         "--unsuper_dataset",
         type=str,
         default="birdsnap",
@@ -105,10 +111,10 @@ def make_args_parser():
     """,
     )
 
-    parser.add_argument("--device", type=str, default="cuda:3")
+    parser.add_argument("--device", type=str, default="cuda:0")
 
     parser.add_argument("--model_dir", type=str, default="../models/")
-    parser.add_argument("--num_epochs", type=int, default=30)
+    parser.add_argument("--num_epochs", type=int, default=2)
 
     parser.add_argument(
         "--num_epochs_unsuper",
@@ -421,6 +427,7 @@ def update_params(params):
         params["meta_type"] = ""  # orig_meta, ebird_meta
 
     for var in [
+        "save_results",
         "load_val_op",
         "use_layn",
         "skip_connection",
@@ -1176,7 +1183,7 @@ class Trainer:
 
         if model_file_name is not None:
             if os.path.exists(model_file_name):
-                self.logger.info("\n{}".format(self.params["spa_enc_type"]))
+                self.logger.info("\nOnly {}".format(self.params["spa_enc_type"]))
                 self.logger.info(" Model :\t" + os.path.basename(model_file_name))
 
                 net_params = torch.load(
@@ -1327,29 +1334,6 @@ class Trainer:
             #  2. the previous val_op does not load val cnn_features while we have 'tang_et_al' in spa_enc_type_list
             self.load_val_dataset(self.params, spa_enc_type_list)
         op = self.val_op
-
-        # # load data and features
-        # if 'tang_et_al' in spa_enc_type_list:
-        #     op = dt.load_dataset(self.params, eval_split,
-        #                         train_remove_invalid = True,
-        #                         eval_remove_invalid = False,  # do not remove invalid in val/test
-        #                         load_cnn_predictions=True,
-        #                         load_cnn_features=True,
-        #                         load_cnn_features_train=False)
-        # else:
-        #     op = dt.load_dataset(self.params, eval_split,
-        #                         train_remove_invalid = True,
-        #                         eval_remove_invalid = False,  # do not remove invalid in val/test
-        #                         load_cnn_predictions=True,
-        #                         load_cnn_features=False,
-        #                         load_cnn_features_train=False)
-
-        # # val_locs = op['val_locs']
-        # # val_classes = op['val_classes']
-        # # val_users = op['val_users']
-        # # val_dates = op['val_dates']
-        # # val_preds = op['val_preds']
-        # # val_split = op['val_split']
 
         if hyper_params is None:
             self.hyper_params = self.load_baseline_hyperparameter()
@@ -1554,10 +1538,10 @@ class Trainer:
             )
 
         if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
+            print("With", self.params["spa_enc_type"])
             val_preds_final = self.run_eval_spa_enc_final(
                 op, eval_flag_str=eval_flag_str
             )
-
             # print the evualtion metric when we only use spa_enc
             # val_preds = self.run_eval_spa_enc_only()
         if save_eval:
