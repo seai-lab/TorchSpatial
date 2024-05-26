@@ -32,9 +32,9 @@ The `NERFSpatialRelationLocationEncoder` is designed to compute spatial embeddin
 > ## NERFSpatialRelationPositionEncoder <a name="NERFSpatialRelationPositionEncoder"></a>
 
 ### Features
-    <p align="center">
-      <img src="../figs/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="80%" />
-    </p>
+<p align="center">
+    <img src="../figs/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="60%" />
+</p>
 
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
