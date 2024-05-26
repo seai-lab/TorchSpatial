@@ -32,7 +32,9 @@ The `NERFSpatialRelationLocationEncoder` is designed to compute spatial embeddin
 > ## NERFSpatialRelationPositionEncoder <a name="NERFSpatialRelationPositionEncoder"></a>
 
 ### Features
-- **Sinusoidal Encoding**: Utilizes sinusoidal functions to encode spatial differences, allowing for the representation of these differences in a form that neural networks can more effectively learn from.
+    <p align="center">
+      <img src="../figs/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="80%" />
+    </p>
 
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
