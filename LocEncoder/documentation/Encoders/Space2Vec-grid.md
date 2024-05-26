@@ -4,7 +4,7 @@
 The `GridCellSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations. This encoder integrates a position encoding strategy, leveraging a `GridCellSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.
 
 ## Features
-- **Position Encoding (`self.position_encoder`)**: Utilizes the [`GridCellSpatialRelationPositionEncoder`](#PositionEncoder) to encode spatial differences (deltaX, deltaY) based on sinusoidal functions.
+- **Position Encoding (`self.position_encoder`)**: Utilizes the [`GridCellSpatialRelationPositionEncoder`](#GridCellSpatialRelationPositionEncoder) to encode spatial differences (deltaX, deltaY) based on sinusoidal functions.
 - **Feed-Forward Neural Network (`self.ffn`)**: Transforms the position-encoded data through a series of feed-forward layers to produce high-dimensional spatial embeddings.
 
 ## Configuration Parameters
@@ -31,7 +31,7 @@ The `GridCellSpatialRelationLocationEncoder` is designed for encoding spatial re
 - **Returns**:
   - `sprenc` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
-> ## GridCellSpatialRelationPositionEncoder <a name="PositionEncoder"></a>
+> ## GridCellSpatialRelationPositionEncoder <a name="GridCellSpatialRelationPositionEncoder"></a>
 
 ### Features
 - **Sinusoidal Encoding**: Utilizes sinusoidal functions to encode spatial differences, allowing for the representation of these differences in a form that neural networks can more effectively learn from.
