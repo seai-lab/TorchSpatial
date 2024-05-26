@@ -47,7 +47,7 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
   - Convert latitude `lat` and longitude `lon` coordinates into radians.
   - Calculate `x, y, z` coordinates using the following equations:
     <p align="center">
-      <img src="./figs/xyz.png" alt="xyz-transformation" title="xyz-transformation" width="80%" />
+      <img src="../figs/xyz.png" alt="xyz-transformation" title="xyz-transformation" width="80%" />
     </p>
   - Concatenate `x, y, z` coordinates to form the high-dimensional vector representation.
 
