@@ -1,4 +1,4 @@
-# 1.2.1 RBFSpatialRelationEncoder
+# 1.2.2 RBFSpatialRelationEncoder
 ## Purpose
 `RBFSpatialRelationEncoder` is designed for encoding spatial relations between points using Radial Basis Function (RBF) kernels. It is capable of computing spatial embeddings either in global position contexts or relative to other spatial positions, making it suitable for tasks such as global position encoding and spatial context position encoding.
 
