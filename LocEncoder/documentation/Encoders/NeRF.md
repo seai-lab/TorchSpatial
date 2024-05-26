@@ -85,7 +85,7 @@ encoder = NERFSpatialRelationLocationEncoder(
 )
 
 # Sample coordinates
-coords = np.array([[34.0522, -118.2437], [40.7128, -74.0060]])  # Example: [latitude, longitude]
+coords = np.array([[34.0522, -118.2437],..., [40.7128, -74.0060]])  # Example: [latitude, longitude]
 
 # Generate spatial embeddings
 embeddings = encoder.forward(coords)
