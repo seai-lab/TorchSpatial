@@ -44,7 +44,7 @@ The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial rela
 - The Cartesian coordinates are scaled using a set of predefined frequencies.
 - Sinusoidal functions (sine and cosine) are applied to these scaled coordinates to produce the final embeddings.
     <p align="center">
-      <img src="../figs/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="80%" />
+      <img src="../figs/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="60%" />
     </p>
 
 ### Configuration Parameters
