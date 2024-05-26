@@ -8,8 +8,8 @@ DATA=birdsnap
 # DATA=inat_2017
 # DATA=inat_2018
 # DATA=nabirds
-META=ebird_meta
-# META=orig_meta
+#META=ebird_meta
+META=orig_meta
 EVALDATA=test
 
 DEVICE=cuda:0
@@ -20,7 +20,7 @@ HIDDIM=512
 FREQ=64
 MINR=0.001
 MAXR=1
-EPOCH=2
+EPOCH=30
 
 ACT=relu
 RATIO=1.0

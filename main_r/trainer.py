@@ -26,7 +26,7 @@ def make_args_parser():
     parser.add_argument(
         "--save_results",
         type=str,
-        default="F",
+        default="T",
         help="""whether you need to save the lon, lat, rr, acc1, acc3 into a csv file for the final evaluation""",
     )
     parser.add_argument(

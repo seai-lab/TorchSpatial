@@ -239,9 +239,11 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
         top_k_acc[kk] = np.zeros(len(val_classes))
     max_class = np.max(list(top_k_acc.keys()))
     pred_classes = [] # the list of joint predicted image category
+    
+    predict_results = []  # List to store predictions results for DataFrame
+    total_classes = val_preds.shape[1] 
 
     for ind in range(len(val_classes)):
-
         # select the type of prior to be used
         if prior_type == 'no_prior':
             pred = val_preds[ind, :]
@@ -292,7 +294,31 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
                     pred = prior(val_feats['val_locs'][ind, :].unsqueeze(0),
                                       val_feats['val_feats'][ind, :].unsqueeze(0))
                     pred = pred.cpu().data.numpy()[0, :].astype(np.float64)
+        
+        true_class_logit = pred[val_classes[ind]].item()
+        
+        pred_classes.append(np.argmax(pred))
+        top_N = np.argsort(pred)[-total_classes:]  # top N prediction
 
+        true_class_rank = np.where(top_N == val_classes[ind])[0][0] + 1  # rank of true class (1-based index)
+        sorted_pred_indices = np.argsort(pred)[::-1]  
+        true_class_index = np.where(sorted_pred_indices == val_classes[ind])[0][0]
+        true_class_rank = true_class_index + 1  # Convert 0-based index to 1-based
+        reciprocal_rank = 1 / true_class_rank  # Calculate reciprocal rank
+
+        row_result = {
+            'lon': val_feats[ind, 0].item(),  # Convert tensor to float
+            'lat': val_feats[ind, 1].item(),  
+            'true_class_logit': true_class_logit,
+            'reciprocal_rank': reciprocal_rank, 
+        }
+        predict_results.append(row_result)
+
+        for kk in top_k_acc.keys():
+            if val_classes[ind] in top_N[-kk:]:
+                top_k_acc[kk][ind] = 1
+            if kk in [1, 3]:  # save Top 1 and Top 3 to result table
+                row_result[f'acc{kk}'] = top_k_acc[kk][ind]
 
         # store accuracy of prediction
         pred_classes.append(np.argmax(pred))
@@ -300,6 +326,11 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
         for kk in top_k_acc.keys():
             if val_classes[ind] in top_N[-kk:]:
                 top_k_acc[kk][ind] = 1
+    
+    # Convert results list to DataFrame and save as CSV
+    results_df = pd.DataFrame(predict_results)
+
+    results_df.to_csv('eva_wrap_bird_meta.csv', index=False)
 
     # print final accuracy
     # some datasets have mutiple splits. These are represented by integers for each example in val_split
@@ -361,7 +392,7 @@ def compute_acc_and_rank(val_preds, val_classes, val_split, val_feats=None, trai
 
         elif prior_type == 'kde':
             geo_prior = bl.kde_prior(train_classes, train_feats, val_preds.shape[1],
-                           val_locs[ind, :], prior, hyper_params)
+                           val_feats[ind, :], prior, hyper_params)
             pred = val_preds[ind, :]*geo_prior
 
         elif prior_type == 'grid':
