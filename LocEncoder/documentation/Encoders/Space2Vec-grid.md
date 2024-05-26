@@ -35,7 +35,6 @@ The `GridCellSpatialRelationLocationEncoder` is designed for encoding spatial re
 
 ### Features
 - **Sinusoidal Encoding**: Utilizes sinusoidal functions to encode spatial differences, allowing for the representation of these differences in a form that neural networks can more effectively learn from.
-- **Configurable Parameters**: Allows customization of encoding parameters such as the dimensionality of space, number of frequencies used, and the maximum and minimum radius for encoding scales.
 
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
