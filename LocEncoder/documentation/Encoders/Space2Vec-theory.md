@@ -24,29 +24,58 @@ The `TheoryGridCellSpatialRelationLocationEncoder` extends the `LocationEncoder`
 - `ffn_context_str`: A string identifier used for context-specific logging or debugging.
 
 > ## TheoryGridCellSpatialRelationPositionEncoder <a name="TheoryGridCellSpatialRelationPositionEncoder"></a>
-### Configuration Parameters
-- `coord_dim`: Dimensionality of the space being encoded (e.g., 2D, 3D).
-- `frequency_num`: Number of different sinusoidal frequencies used to encode spatial differences.
-- `max_radius`: Maximum spatial context radius, defining the upper scale of encoding.
-- `min_radius`: Minimum spatial context radius, defining the lower scale of encoding.
-- `freq_init`: Method for initializing the frequency list, with options such as 'random', 'geometric', or 'nerf'.
-- `device`: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
+### Key Features and Enhancements:
 
-### Methods
+- **Multi-Angular Encoding:** Utilizes three unit vectors positioned at 0, 120, and 240 degrees to capture directional nuances in spatial relationships.
+- **Expanded Frequency Matrix:** Extends the frequency matrix to accommodate the encoding across these three directions, effectively tripling the dimensionality involved in the encoding process.
+- **Sinusoidal Encoding Across Angles:** Applies sinusoidal functions to the dot products of spatial differences and unit vectors, scaled by the frequencies to produce embeddings that capture both magnitude and directional information.
+
+### Function Descriptions
+
+#### `__init__(...)`
+
+Initializes the encoder with configurable parameters for spatial dimensions, frequency of encoding, and operational devices.
+
+##### Parameters:
+
+- `coord_dim`: Dimensionality of the space being encoded (e.g., 2D, 3D).
+- `frequency_num`: Number of different sinusoidal frequencies used.
+- `max_radius`: Largest context radius the model can handle.
+- `min_radius`: Smallest context radius, defining the lower scale of encoding.
+- `freq_init`: Method for initializing the frequency list (e.g., 'geometric').
+- `device`: Computational device (e.g., 'cuda').
 
 #### `cal_freq_mat()`
-- **Description**: Updates the frequency matrix to accommodate multi-dimensional encoding.
-- **Modifies**: Extends the frequency matrix to match the dimensions required for advanced vectorized operations across multiple unit vectors.
+
+Adjusts the frequency matrix to match the expanded encoding scheme, allowing for a six-dimensional representation per frequency due to the triple angular approach.
 
 #### `cal_pos_enc_output_dim()`
-- **Description**: Calculates the output dimension of the position-encoded spatial relation embedding, taking into account the additional dimensions introduced by multiple unit vectors.
-- **Returns**: The dimension of the encoded spatial relation embedding.
+
+Calculates the output dimension of the position-encoded spatial relation embedding, considering the expanded dimensionality due to multiple angles.
 
 #### `make_output_embeds(coords)`
-- **Description**: Processes a batch of coordinates and converts them into spatial relation embeddings using advanced trigonometric transformations.
-- **Parameters**:
-  - `coords`: Batch of spatial differences (e.g., deltaX, deltaY).
-- **Returns**: Batch of spatial relation embeddings in high-dimensional space.
+
+Processes a batch of coordinates, computes the dot products with unit vectors, applies sinusoidal encoding, and integrates these across specified frequencies.
+
+##### Parameters:
+
+- `coords`: Batch of spatial differences (deltaX, deltaY).
+
+##### Returns:
+
+Spatial relation embeddings in a high-dimensional space.
+
+#### `forward(coords)`
+
+Feeds the processed coordinates through the encoder to produce final spatial embeddings suitable for further processing or model input.
+
+##### Parameters:
+
+- `coords`: Coordinates to process.
+
+##### Returns:
+
+Tensor of spatial relation embeddings.
 
 
 ## Usage Example
