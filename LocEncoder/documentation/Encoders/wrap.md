@@ -39,20 +39,17 @@ The `FCNet` class is a fully connected neural network designed for classificatio
 
 ### Fully Connected Layers
 For each input feature vector $\mathbf{x}$, the fully connected layer transformation is:
-
 $\mathbf{h} = \text{ReLU}(\mathbf{W} \mathbf{x} + \mathbf{b})$
 
 where $\mathbf{W}$ and $\mathbf{b}$ are the weight matrix and bias vector, respectively.
 
 ### Residual Layers
 Residual layers add the input to the output of the fully connected layers:
-
-$\mathbf{h} _{\text{res}} = \mathbf{h} _{input}+\mathbf{h}$
-
+$\mathbf{h} _{\text{res}} = \mathbf{h} _{\text{input}} + \mathbf{h}$
 where $\mathbf{h} _{\text{input}}$ is the input to the residual layer, and $\mathbf{h}$ is the output of the fully connected transformation.
 
 ### Class Embedding
-The class embedding layer maps the hidden features to class scores:
+The class embedding layer maps the hidden features to class scores: 
 $\mathbf{y} _{class} = \mathbf{W} _{\text{class} \mathbf{h}$
 where $\mathbf{W} _{\text{class}}$ is the class weight matrix.
 
