@@ -1,4 +1,4 @@
-# AodhaFFNSpatialRelationLocationEncoder Documentation
+# AodhaFFNSpatialRelationLocationEncoder
 
 ## Overview
 The `AodhaFFNSpatialRelationLocationEncoder` is designed to process spatial relations between locations using Fourier Feature Transform (FFT) adapted for spatial encoding. It utilizes the `AodhaFFTSpatialRelationPositionEncoder` to transform spatial coordinates into a high-dimensional space, enhancing the model's ability to capture and interpret spatial relationships across various scales.
