@@ -35,9 +35,48 @@ Processes input coordinates through the location encoder to generate final spati
 
 ### Overview
 Transforms spatial coordinates into high-dimensional encoded formats using sinusoidal functions scaled across multiple frequencies, enhancing the model's capability to discern spatial nuances.
-    <p align="center">
-      <img src="../figs/sphereM.png" alt="sphereM-transformation" title="sphereM-transformation" width="80%" />
-    </p>
+
+### Assumptions for Grid-Structured Data
+
+#### Spatial Regularity
+Grid data often comes in regular, evenly spaced intervals, such as pixels in images or cells in raster GIS data.
+
+#### Two-Dimensional Structure
+Most grid data is two-dimensional, requiring simultaneous encoding of both dimensions to capture spatial relationships effectively.
+
+### Formula Development
+
+#### Base Sinusoidal Encoding
+For each coordinate component $x$ and $y$, apply sinusoidal functions across multiple scales:
+
+$E(x, y) = \bigoplus{}^{L-1}_{i=0} \left\[ \sin(\omega_i x), \cos(\omega_i x), \sin(\omega_i y), \cos(\omega_i y) \right\]$
+
+Where:
+- $\bigoplus$ denotes vector concatenation.
+- $L$ is the number of different frequencies used.
+- $\omega_i$ are the scaled frequencies.
+
+#### Frequency Scaling
+Given the grid structure, frequency scaling might be adapted based on typical distances or resolutions encountered in grid data:
+
+$\omega_i = \pi \cdot \left(\frac{2^i}{\text{cell size}}\right)$
+
+This scaling method aligns the frequency increments with the spatial resolution of grid cells, allowing the encoder to capture variations within and between cells.
+
+#### Enhanced Spatial Encoding
+To account for the two-dimensional nature of grid data and potentially the interactions between grid cells, the encoding can be expanded to include mixed terms that combine $x$ and $y$ coordinates:
+
+$E_{\text{enhanced}}(x, y) = E(x, y) \oplus \left\[\sin(\omega_i x) \cdot \cos(\omega_i y), \cos(\omega_i x) \cdot \sin(\omega_i y)\right\]$
+
+These mixed terms help to model cross-dimensional spatial interactions, which are critical in grid-like structures where horizontal and vertical relationships might influence the spatial analysis.
+
+#### Output Dimensionality
+The output dimensionality, considering the enhanced encoding, becomes:
+
+$\text{Output Dim} = 4L + 2L = 6L$
+
+Where $4L$ comes from the original sinusoidal terms for $x$ and $y$, and $2L$ from the mixed terms added for cross-dimensional interactions.
+
 ### Features
 - **Geometric Frequency Scaling**: Employs a geometric progression of frequencies for sinusoidal encoding, capturing a broad range of spatial details.
 - **Configurable Parameters**: Supports adjustments in encoding dimensions, frequency range, and computational resources.
