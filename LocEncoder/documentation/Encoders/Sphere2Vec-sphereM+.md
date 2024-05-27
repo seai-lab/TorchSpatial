@@ -35,10 +35,16 @@ Processes input coordinates through the location encoder to produce detailed spa
 
 ### Overview
 This position encoder transforms spatial coordinates using a sophisticated sinusoidal encoding method, featuring multiple scales to capture a wide range of spatial details.
+    <p align="center">
+      <img src="../figs/sphereM+.png" alt="sphereM-plus-transformation" title="sphereM-plus-transformation" width="60%" />
+    </p>
 
 ### Features
 - **Multi-Scale Sinusoidal Encoding**: Applies sinusoidal functions at multiple scales to encode spatial differences, capturing a wide range of spatial details.
 - **Geometric Frequency Scaling**: Frequencies increase geometrically, enhancing the encoder's ability to model spatial phenomena at various scales.
+### Assumptions
+- **Spatial Regularity**: Grid data often comes in regular, evenly spaced intervals, such as pixels in images or cells in raster GIS data.
+- **Two-Dimensional Structure**: Most grid data is two-dimensional, requiring simultaneous encoding of both dimensions to capture spatial relationships effectively.
 
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded.
