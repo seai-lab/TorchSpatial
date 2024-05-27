@@ -39,7 +39,9 @@ Transforms spatial coordinates into high-dimensional encoded formats using sinus
 ### Features
 - **Geometric Frequency Scaling**: Employs a geometric progression of frequencies for sinusoidal encoding, capturing a broad range of spatial details.
 - **Configurable Parameters**: Supports adjustments in encoding dimensions, frequency range, and computational resources.
-
+    <p align="center">
+      <img src="../figs/sphereM.png" alt="sphereM-transformation" title="sphereM-transformation" width="80%" />
+    </p>
 ### Configuration Parameters
 - **coord_dim**: The dimensionality of the space being encoded.
 - **frequency_num**: The number of frequencies used for encoding.
