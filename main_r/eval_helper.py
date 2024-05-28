@@ -255,6 +255,71 @@ def get_label_rank(loc_pred, loc_class):
     return rank_list
 
 
+def compute_prior(preds, prior_type, prior, train_classes, val_feats, val_preds, hyper_params):
+    if prior_type == "no_prior":
+        return preds
+
+    elif prior_type == "train_freq":
+        return preds * prior
+
+    elif prior_type == "nn_dist":
+        geo_prior = bl.compute_neighbor_prior(
+            train_classes,
+            val_preds.shape[1],
+            val_feats,
+            prior,
+            hyper_params,
+            ptype="distance",
+        )
+        return preds * geo_prior
+
+    elif prior_type == "nn_knn":
+        geo_prior = bl.compute_neighbor_prior(
+            train_classes,
+            val_preds.shape[1],
+            val_feats,
+            prior,
+            hyper_params,
+            ptype="knn",
+        )
+        return preds * geo_prior
+
+    elif prior_type == "kde":
+        geo_prior = bl.kde_prior(
+            train_classes,
+            train_feats,
+            val_preds.shape[1],
+            val_feats,
+            prior,
+            hyper_params,
+        )
+        return preds * geo_prior
+
+    elif prior_type == "grid":
+        geo_prior = prior.eval(val_feats)
+        return preds * geo_prior
+
+    elif prior_type in ["wrap"] + ut.get_spa_enc_list():
+        pred = preds
+        with torch.no_grad():
+            if torch.isnan(val_feats[0]).item() == 0:
+                net_prior = prior(val_feats.unsqueeze(0))
+                net_prior = net_prior.cpu().data.numpy()[0, :].astype(np.float64)
+                pred = pred * net_prior
+        return pred
+
+    elif prior_type == "tang_et_al":
+        pred = preds
+        with torch.no_grad():
+            if torch.isnan(val_feats["val_locs"][0]).item() == 0:
+                pred = prior(
+                    val_feats["val_locs"].unsqueeze(0),
+                    val_feats["val_feats"].unsqueeze(0),
+                )
+                pred = pred.cpu().data.numpy()[0, :].astype(np.float64)
+        return pred
+
+
 def compute_acc(
     val_preds,
     val_classes,
@@ -268,109 +333,28 @@ def compute_acc(
     logger=None,
     eval_flag_str="",
 ):
-    """
-    Computes accuracy on held out set with a specified prior. Not very efficient
-    as it loops though each example one at a time.
-    Args:
-        val_preds: CNN pretrained model's image prediction of class
-        val_classes: [batch_size, 1], the list of image category id
-        val_split: for bridsnap, np.ones() (batch_size)
-        val_feats: the inpit location features, shape [batch_size, x]
-        train_classes:
-        train_feats:
-        prior_type: 'geo_net'
-        prior: the model itself
-    Return:
-        pred_classes: (batch_size), the list of joint predicted image category
-    """
-
     top_k_acc = {}
     for kk in [1, 3, 5, 10]:
         top_k_acc[kk] = np.zeros(len(val_classes))
     max_class = np.max(list(top_k_acc.keys()))
-    pred_classes = []  # the list of joint predicted image category
+    pred_classes = []
 
     for ind in range(len(val_classes)):
-        # select the type of prior to be used
-        if prior_type == "no_prior":
-            pred = val_preds[ind, :]
-
-        elif prior_type == "train_freq":
-            pred = val_preds[ind, :] * prior
-
-        elif prior_type == "nn_dist":
-            geo_prior = bl.compute_neighbor_prior(
-                train_classes,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-                ptype="distance",
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "nn_knn":
-            geo_prior = bl.compute_neighbor_prior(
-                train_classes,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-                ptype="knn",
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "kde":
-            # geo_prior = bl.kde_prior(train_classes, train_feats, val_preds.shape[1],
-            #                val_locs[ind, :], prior, hyper_params)
-            geo_prior = bl.kde_prior(
-                train_classes,
-                train_feats,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "grid":
-            geo_prior = prior.eval(val_feats[ind, :])
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type in ["wrap"] + ut.get_spa_enc_list():
-            # if there is no location info won't use prior
-            # pred: the pretrained CNN image class prediction distribution
-            pred = val_preds[ind, :]
-            with torch.no_grad():
-                # if all image have location infor
-                if torch.isnan(val_feats[ind, 0]).item() == 0:
-                    # net_prior: (1, num_classes), the spa_enc model image class prediction distribution
-                    net_prior = prior(val_feats[ind, :].unsqueeze(0))
-                    net_prior = net_prior.cpu().data.numpy()[0, :].astype(np.float64)
-                    # net_prior /= net_prior.sum()  # does not matter for argmax
-                    pred = pred * net_prior
-
-        elif prior_type == "tang_et_al":
-            # if there is no location info won't use prior
-            pred = val_preds[ind, :]
-            with torch.no_grad():
-                if torch.isnan(val_feats["val_locs"][ind, 0]).item() == 0:
-                    # takes location and network features as input
-                    pred = prior(
-                        val_feats["val_locs"][ind, :].unsqueeze(0),
-                        val_feats["val_feats"][ind, :].unsqueeze(0),
-                    )
-                    pred = pred.cpu().data.numpy()[0, :].astype(np.float64)
-
-        # store accuracy of prediction
+        pred = compute_prior(
+            val_preds[ind, :],
+            prior_type,
+            prior,
+            train_classes,
+            val_feats[ind, :],
+            val_preds,
+            hyper_params,
+        )
         pred_classes.append(np.argmax(pred))
         top_N = np.argsort(pred)[-max_class:]
         for kk in top_k_acc.keys():
             if val_classes[ind] in top_N[-kk:]:
                 top_k_acc[kk][ind] = 1
 
-    # print final accuracy
-    # some datasets have mutiple splits. These are represented by integers for each example in val_split
     for ii, split in enumerate(np.unique(val_split)):
         logger.info(" Split ID: {}".format(ii))
         inds = np.where(val_split == split)[0]
@@ -384,7 +368,8 @@ def compute_acc(
     return pred_classes
 
 
-def compute_predict_result(
+def compute_acc_predict_result(
+    params,
     val_preds,
     val_classes,
     val_split,
@@ -397,116 +382,36 @@ def compute_predict_result(
     logger=None,
     eval_flag_str="",
 ):
-    """
-    Computes the prediction results including lon, lat, acc1, acc3, true_class_logit and reciprocal rank on held out set with a specified prior. Not very efficient
-    as it loops though each example one at a time.
-    Args:
-        val_preds: CNN pretrained model's image prediction of class
-        val_classes: [batch_size, 1], the list of image category id
-        val_split: for bridsnap, np.ones() (batch_size)
-        val_feats: the inpit location features, shape [batch_size, x]
-        train_classes:
-        train_feats:
-        prior_type: 'geo_net'
-        prior: the model itself
-    Return:
-        pred_classes: (batch_size), the list of joint predicted image category
-    """
-
     top_k_acc = {}
     for kk in [1, 3, 5, 10]:
         top_k_acc[kk] = np.zeros(len(val_classes))
     max_class = np.max(list(top_k_acc.keys()))
-    pred_classes = []  # the list of joint predicted image category
-
-    predict_results = []  # List to store predictions results for DataFrame
+    pred_classes = []
+    predict_results = []
     total_classes = val_preds.shape[1]
 
     for ind in range(len(val_classes)):
-        # select the type of prior to be used
-        if prior_type == "no_prior":
-            pred = val_preds[ind, :]
-
-        elif prior_type == "train_freq":
-            pred = val_preds[ind, :] * prior
-
-        elif prior_type == "nn_dist":
-            geo_prior = bl.compute_neighbor_prior(
-                train_classes,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-                ptype="distance",
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "nn_knn":
-            geo_prior = bl.compute_neighbor_prior(
-                train_classes,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-                ptype="knn",
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "kde":
-            geo_prior = bl.kde_prior(
-                train_classes,
-                train_feats,
-                val_preds.shape[1],
-                val_feats[ind, :],
-                prior,
-                hyper_params,
-            )
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type == "grid":
-            geo_prior = prior.eval(val_feats[ind, :])
-            pred = val_preds[ind, :] * geo_prior
-
-        elif prior_type in ["wrap"] + ut.get_spa_enc_list():
-            # if there is no location info won't use prior
-            # pred: the pretrained CNN image class prediction distribution
-            pred = val_preds[ind, :]
-            with torch.no_grad():
-                # if all image have location infor
-                if torch.isnan(val_feats[ind, 0]).item() == 0:
-                    # net_prior: (1, num_classes), the spa_enc model image class prediction distribution
-                    net_prior = prior(val_feats[ind, :].unsqueeze(0))
-                    net_prior = net_prior.cpu().data.numpy()[0, :].astype(np.float64)
-                    # net_prior /= net_prior.sum()  # does not matter for argmax
-                    pred = pred * net_prior
-
-        elif prior_type == "tang_et_al":
-            # if there is no location info won't use prior
-            pred = val_preds[ind, :]
-            with torch.no_grad():
-                if torch.isnan(val_feats["val_locs"][ind, 0]).item() == 0:
-                    # takes location and network features as input
-                    pred = prior(
-                        val_feats["val_locs"][ind, :].unsqueeze(0),
-                        val_feats["val_feats"][ind, :].unsqueeze(0),
-                    )
-                    pred = pred.cpu().data.numpy()[0, :].astype(np.float64)
-
+        pred = compute_prior(
+            val_preds[ind, :],
+            prior_type,
+            prior,
+            train_classes,
+            val_feats[ind, :],
+            val_preds,
+            hyper_params,
+        )
         true_class_logit = pred[val_classes[ind]].item()
 
         pred_classes.append(np.argmax(pred))
-        top_N = np.argsort(pred)[-total_classes:]  # top N prediction
-
-        true_class_rank = (
-            np.where(top_N == val_classes[ind])[0][0] + 1
-        )  # rank of true class (1-based index)
+        top_N = np.argsort(pred)[-total_classes:]
+        true_class_rank = np.where(top_N == val_classes[ind])[0][0] + 1
         sorted_pred_indices = np.argsort(pred)[::-1]
         true_class_index = np.where(sorted_pred_indices == val_classes[ind])[0][0]
-        true_class_rank = true_class_index + 1  # Convert 0-based index to 1-based
-        reciprocal_rank = 1 / true_class_rank  # Calculate reciprocal rank
+        true_class_rank = true_class_index + 1
+        reciprocal_rank = 1 / true_class_rank
 
         row_result = {
-            "lon": val_feats[ind, 0].item(),  # Convert tensor to float
+            "lon": val_feats[ind, 0].item(),
             "lat": val_feats[ind, 1].item(),
             "true_class_logit": true_class_logit,
             "reciprocal_rank": reciprocal_rank,
@@ -516,10 +421,9 @@ def compute_predict_result(
         for kk in top_k_acc.keys():
             if val_classes[ind] in top_N[-kk:]:
                 top_k_acc[kk][ind] = 1
-            if kk in [1, 3]:  # save Top 1 and Top 3 to result table
+            if kk in [1, 3]:
                 row_result[f"acc{kk}"] = top_k_acc[kk][ind]
 
-        # store accuracy of prediction
         pred_classes.append(np.argmax(pred))
         top_N = np.argsort(pred)[-max_class:]
         for kk in top_k_acc.keys():
@@ -527,10 +431,9 @@ def compute_predict_result(
                 top_k_acc[kk][ind] = 1
 
     results_df = pd.DataFrame(predict_results)
-    results_df.to_csv("eva_wrap_bird_meta.csv", index=False)
+    print("Save results to eval_{params['dataset']}_{params['eval_split']}_{params['spa_enc_type']}.csv")
+    results_df.to_csv(f"../eval_results/eval_{params['dataset']}_{params['eval_split']}_{params['spa_enc_type']}.csv", index=True)
 
-    # print final accuracy
-    # some datasets have mutiple splits. These are represented by integers for each example in val_split
     for ii, split in enumerate(np.unique(val_split)):
         logger.info(" Split ID: {}".format(ii))
         inds = np.where(val_split == split)[0]

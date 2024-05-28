@@ -48,7 +48,7 @@ def make_args_parser():
         "--dataset",
         type=str,
         default="nabirds",
-        help="""e.g., inat_2021, inat_2018, inat_2017, birdsnap, nabirds, yfcc, fmow""",
+        help="""e.g., inat_2021, inat_2018, inat_2017, birdsnap, nabirds, yfcc, fmow, dhs_under5_mort, dhs_water_index""",
     )
     parser.add_argument(
         "--meta_type",
@@ -114,7 +114,7 @@ def make_args_parser():
     parser.add_argument("--device", type=str, default="cuda:0")
 
     parser.add_argument("--model_dir", type=str, default="../models/")
-    parser.add_argument("--num_epochs", type=int, default=2)
+    parser.add_argument("--num_epochs", type=int, default=1)
 
     parser.add_argument(
         "--num_epochs_unsuper",
@@ -200,15 +200,9 @@ def make_args_parser():
         "--map_range",
         nargs="+",
         type=float,
-        default=[-180, 180, -90, 90],
+        default=[-162, -59, 20, 56], #[-180, 180, -90, 90],
         help="the maximum map extent, (xmin, xmax, ymin, ymax)",
     )
-    # parser.add_argument('--use_layn', default=True, action='store_true',
-    #     help="use layer normalization or not in feedforward NN in the (global) space encoder")
-    # parser.add_argument('--skip_connection', default=True, action='store_true',
-    #     help="skip connection or not in feedforward NN in the (global) space encoder")
-    # parser.add_argument('--spa_enc_use_postmat', default=True, action='store_true',
-    #     help="whether to use post matrix in spa_enc")
     parser.add_argument(
         "--use_layn",
         type=str,
@@ -227,10 +221,6 @@ def make_args_parser():
         default="T",
         help="whether to use post matrix in spa_enc",
     )
-
-    # date encoder (not change)
-    # parser.add_argument('--use_date_feats', default=False, action='store_true',
-    #     help="if False date feature is not used")
     parser.add_argument(
         "--use_date_feats",
         type=str,
@@ -389,7 +379,7 @@ def make_args_parser():
     parser.add_argument(
         "--eval_frequency",
         type=int,
-        default=10,
+        default=100,
         help="The frequency to Eval the location encoder model classification accuracy",
     )
     parser.add_argument(
@@ -1373,15 +1363,27 @@ class Trainer:
             train_prior = np.ones(self.params["num_classes"])
             train_prior[cls_id] += cls_cnt
             train_prior /= train_prior.sum()
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                prior_type="train_freq",
-                prior=train_prior,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    prior_type="train_freq",
+                    prior=train_prior,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    prior_type="train_freq",
+                    prior=train_prior,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
 
         #
         # Tang et al ICCV 2015, Improving Image Classification with Location Context
@@ -1416,16 +1418,29 @@ class Trainer:
             )
             model.load_state_dict(net_params["state_dict"])
             model.eval()
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=val_feats_tang,
-                prior_type="tang_et_al",
-                prior=model,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    prior_type="train_freq",
+                    prior=train_prior,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_feats_tang,
+                    prior_type="tang_et_al",
+                    prior=model,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
             del val_feats_tang  # save memory
 
         #
@@ -1439,17 +1454,31 @@ class Trainer:
                 self.params["num_classes"],
                 self.hyper_params,
             )
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=op["val_locs"],
-                prior_type="grid",
-                prior=gp,
-                hyper_params=self.hyper_params,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=op["val_locs"],
+                    prior_type="grid",
+                    prior=gp,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=op["val_locs"],
+                    prior_type="grid",
+                    prior=gp,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
 
         #
         # setup look up tree for NN lookup based methods
@@ -1469,36 +1498,66 @@ class Trainer:
         #
         if "nn_knn" in spa_enc_type_list:
             self.logger.info("\nNearest neighbor KNN prior")
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=val_locs_n,
-                train_classes=self.op["train_classes"],
-                prior_type="nn_knn",
-                prior=nn_tree,
-                hyper_params=self.hyper_params,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_n,
+                    train_classes=self.op["train_classes"],
+                    prior_type="nn_knn",
+                    prior=nn_tree,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_n,
+                    train_classes=self.op["train_classes"],
+                    prior_type="nn_knn",
+                    prior=nn_tree,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
 
         #
         # nearest neighbor prior - based on distance
         #
         if "nn_dist" in spa_enc_type_list:
             self.logger.info("\nNearest neighbor distance prior")
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=val_locs_n,
-                train_classes=self.op["train_classes"],
-                prior_type="nn_dist",
-                prior=nn_tree,
-                hyper_params=self.hyper_params,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_n,
+                    train_classes=self.op["train_classes"],
+                    prior_type="nn_dist",
+                    prior=nn_tree,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_n,
+                    train_classes=self.op["train_classes"],
+                    prior_type="nn_dist",
+                    prior=nn_tree,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
 
         #
         # kernel density estimate e.g. BirdSnap CVPR 2014
@@ -1523,19 +1582,35 @@ class Trainer:
                     train_locs_kde[:, ::-1], metric="euclidean"
                 )
 
-            compute_acc(
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=val_locs_kde,
-                train_classes=train_classes_kde,
-                train_feats=train_locs_kde,
-                prior_type="kde",
-                prior=kde_params,
-                hyper_params=self.hyper_params,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
+            if self.params["save_results"]:
+                compute_acc_predict_result(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_kde,
+                    train_classes=train_classes_kde,
+                    train_feats=train_locs_kde,
+                    prior_type="kde",
+                    prior=kde_params,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+            else:
+                compute_acc(
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=val_locs_kde,
+                    train_classes=train_classes_kde,
+                    train_feats=train_locs_kde,
+                    prior_type="kde",
+                    prior=kde_params,
+                    hyper_params=self.hyper_params,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
 
         if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
             print("With", self.params["spa_enc_type"])
@@ -1567,16 +1642,29 @@ class Trainer:
         )
 
         self.model.eval()
-        val_preds_final = compute_acc(
-            val_preds=op["val_preds"],
-            val_classes=op["val_classes"],
-            val_split=op["val_split"],
-            val_feats=val_loc_feats,
-            prior_type=spa_enc_type,
-            prior=self.model,
-            logger=self.logger,
-            eval_flag_str=eval_flag_str,
-        )
+        if self.params["save_results"]:
+            val_preds_final = compute_acc_predict_result(
+                params=self.params,
+                val_preds=op["val_preds"],
+                val_classes=op["val_classes"],
+                val_split=op["val_split"],
+                val_feats=val_loc_feats,
+                prior_type=spa_enc_type,
+                prior=self.model,
+                logger=self.logger,
+                eval_flag_str=eval_flag_str,
+            )
+        else:
+            val_preds_final = compute_acc(
+                val_preds=op["val_preds"],
+                val_classes=op["val_classes"],
+                val_split=op["val_split"],
+                val_feats=val_loc_feats,
+                prior_type=spa_enc_type,
+                prior=self.model,
+                logger=self.logger,
+                eval_flag_str=eval_flag_str,
+            )
 
         return val_preds_final
 
