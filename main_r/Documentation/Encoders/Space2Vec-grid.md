@@ -1,10 +1,10 @@
-# SphereSpatialRelationLocationEncoder
+# Space2Vec-grid (GridCellSpatialRelationLocationEncoder)
 
 ## Overview
-The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations using a spherical coordinate system. This encoder integrates a position encoding strategy, leveraging a [`SphereSpatialRelationPositionEncoder`](#SphereSpatialRelationPositionEncoder), and further processes the encoded positions through a customizable multi-layer feed-forward neural network.
+The `GridCellSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations. This encoder integrates a position encoding strategy, leveraging a `GridCellSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.
 
 ## Features
-- **Position Encoding (`self.position_encoder`)**: Utilizes the [`SphereSpatialRelationPositionEncoder`](#SphereSpatialRelationPositionEncoder) to encode spatial differences (deltaX, deltaY) using sinusoidal functions.
+- **Position Encoding (`self.position_encoder`)**: Utilizes the [`GridCellSpatialRelationPositionEncoder`](#GridCellSpatialRelationPositionEncoder) to encode spatial differences (deltaX, deltaY) based on sinusoidal functions.
 - **Feed-Forward Neural Network (`self.ffn`)**: Transforms the position-encoded data through a series of feed-forward layers to produce high-dimensional spatial embeddings.
 
 ## Configuration Parameters
@@ -31,21 +31,10 @@ The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial rela
 - **Returns**:
   - `sprenc` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
-> ## SphereSpatialRelationPositionEncoder <a name="SphereSpatialRelationPositionEncoder"></a>
+> ## GridCellSpatialRelationPositionEncoder <a name="GridCellSpatialRelationPositionEncoder"></a>
 
-### Overview
-  <p align="center">
-      <img src="../figs/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="60%" />
-  </p>
-#### Spherical Coordinate Transformation
-
-- The encoder first transforms geographical coordinates (longitude and latitude) from degrees to radians.
-- These coordinates are then converted to Cartesian coordinates (x, y, z) on a unit sphere.
-
-#### Sinusoidal Encoding
-
-- The Cartesian coordinates are scaled using a set of predefined frequencies.
-- Sinusoidal functions (sine and cosine) are applied to these scaled coordinates to produce the final embeddings.
+### Features
+- **Sinusoidal Encoding**: Utilizes sinusoidal functions to encode spatial differences, allowing for the representation of these differences in a form that neural networks can more effectively learn from.
 
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
@@ -93,11 +82,10 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
   - `coords`: Batch of spatial differences.
 - **Returns**:
   - Batch of spatial relation embeddings in high-dimensional space.
-
+> 
 ## Usage Example
 ```python
-# Initialize the encoder
-encoder = SphereSpatialRelationLocationEncoder(
+encoder = GridCellSpatialRelationLocationEncoder(
     spa_embed_dim=64,
     coord_dim=2,
     frequency_num=16,
@@ -111,11 +99,8 @@ encoder = SphereSpatialRelationLocationEncoder(
     ffn_hidden_dim=256,
     ffn_use_layernormalize=True,
     ffn_skip_connection=True,
-    ffn_context_str="SphereSpatialRelationEncoder"
+    ffn_context_str="GridCellSpatialRelationEncoder"
 )
 
-# Sample coordinates
-coords = np.array([[34.0522, -118.2437], [40.7128, -74.0060]])  # Example: [latitude, longitude]
-
-# Generate spatial embeddings
+coords = np.array([...])  # your coordinate data
 embeddings = encoder.forward(coords)
