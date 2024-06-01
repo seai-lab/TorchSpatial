@@ -200,11 +200,15 @@ def setup_console():
 
 def setup_logging(log_file, console=True, filemode="w"):
     # logging.getLogger('').handlers = []
+    if not os.path.exists(log_file):
+        os.makedirs(os.path.dirname(log_file), exist_ok=True)
+        open(log_file, "w+")
+
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s - %(levelname)s - %(message)s",
         filename=log_file,
-        filemode=filemode,
+        filemode=filemode
     )
     if console:
         # logging.getLogger('').handlers = []
@@ -516,7 +520,8 @@ def get_spa_enc_list():
         "wrap_ffn",
         "xyz",
         "NeRF",
-        "tile_ffn"
+        "tile_ffn",
+        "spherical_harmonics"
     ]
 
 
@@ -905,6 +910,20 @@ def get_spa_encoder(
             ffn_use_layernormalize=params["use_layn"],
             ffn_skip_connection=params["skip_connection"],
             ffn_context_str="AodhaFFTSpatialRelationEncoder",
+        )
+    elif spa_enc_type == "spherical_harmonics":
+        spa_enc = SphericalHarmonicsSpatialRelationLocationEncoder(
+            spa_embed_dim=spa_embed_dim,
+            legendre_poly_num=params["legendre_poly_num"],
+            coord_dim=2,
+            device=device,
+            ffn_act=f_act,
+            ffn_num_hidden_layers=params["num_hidden_layer"],
+            ffn_dropout_rate=params["dropout"],
+            ffn_hidden_dim=params["hidden_dim"],
+            ffn_use_layernormalize=params["use_layn"],
+            ffn_skip_connection=params["skip_connection"],
+            ffn_context_str="SphericalHarmonicsSpatialRelationEncoder",
         )
     else:
         raise Exception("Space encoder function no support!")

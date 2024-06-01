@@ -6,6 +6,7 @@ import math
 import pandas as pd
 import os
 from sklearn.neighbors import BallTree, DistanceMetric
+# from sklearn.metrics import DistanceMetric
 from argparse import ArgumentParser
 
 from paths import get_paths
@@ -15,7 +16,9 @@ import baselines as bl
 import models
 
 
+
 def compute_acc_batch(
+    params,
     val_preds,
     val_classes,
     val_split,
@@ -198,6 +201,43 @@ def compute_acc_batch(
     top_k_acc = {}
     for kk in [1, 3, 5, 10]:
         top_k_acc[kk] = (ranks <= kk).astype(int)
+
+    if params['save_results'] & (prior_type == "no_prior"):
+        pred_classes = []
+        predict_results = []
+        total_classes = preds.shape[1]
+
+        for ind in range(len(val_classes)):
+            pred = preds[ind, :]
+            true_class_prob = pred[val_classes[ind]].item()
+
+            pred_classes.append(np.argmax(pred))
+            top_N = np.argsort(pred)[-total_classes:]
+            true_class_rank = np.where(top_N == val_classes[ind])[0][0] + 1
+            sorted_pred_indices = np.argsort(pred)[::-1]
+            true_class_index = np.where(sorted_pred_indices == val_classes[ind])[0][0]
+            true_class_rank = true_class_index + 1
+            reciprocal_rank = 1 / true_class_rank
+
+            hit_at_1 = 1 if true_class_index < 1 else 0
+            hit_at_3 = 1 if true_class_index < 3 else 0
+
+            row_result = {
+                "true_class_prob": true_class_prob,
+                "reciprocal_rank": reciprocal_rank,
+                "hit@1": hit_at_1,
+                "hit@3": hit_at_3
+            }
+            predict_results.append(row_result)
+
+        results_df = pd.DataFrame(predict_results)
+
+        # Save the results to a CSV file
+        results_csv_path = f"../eval_results/eval_{params['dataset']}_{params['meta_type']}_{params['eval_split']}_no_prior.csv"
+        results_df.to_csv(results_csv_path, index=True)
+
+        # Logging the information
+        logger.info(f"Save results to {results_csv_path}")
 
     # print final accuracy
     # some datasets have mutiple splits. These are represented by integers for each example in val_split
@@ -400,7 +440,7 @@ def compute_acc_predict_result(
             val_preds,
             hyper_params,
         )
-        true_class_logit = pred[val_classes[ind]].item()
+        true_class_prob = pred[val_classes[ind]].item()
 
         pred_classes.append(np.argmax(pred))
         top_N = np.argsort(pred)[-total_classes:]
@@ -413,7 +453,7 @@ def compute_acc_predict_result(
         row_result = {
             "lon": val_feats[ind, 0].item(),
             "lat": val_feats[ind, 1].item(),
-            "true_class_logit": true_class_logit,
+            "true_class_prob": true_class_prob,
             "reciprocal_rank": reciprocal_rank,
         }
         predict_results.append(row_result)
@@ -422,7 +462,7 @@ def compute_acc_predict_result(
             if val_classes[ind] in top_N[-kk:]:
                 top_k_acc[kk][ind] = 1
             if kk in [1, 3]:
-                row_result[f"acc{kk}"] = top_k_acc[kk][ind]
+                row_result[f"hit@{kk}"] = top_k_acc[kk][ind]
 
         pred_classes.append(np.argmax(pred))
         top_N = np.argsort(pred)[-max_class:]
@@ -431,15 +471,15 @@ def compute_acc_predict_result(
                 top_k_acc[kk][ind] = 1
 
     results_df = pd.DataFrame(predict_results)
-    print("Save results to eval_{params['dataset']}_{params['eval_split']}_{params['spa_enc_type']}.csv")
-    results_df.to_csv(f"../eval_results/eval_{params['dataset']}_{params['eval_split']}_{params['spa_enc_type']}.csv", index=True)
+    print(f"Save results to eval_{params['dataset']}_{params['meta_type']}_{params['eval_split']}_{params['spa_enc_type']}.csv")
+    results_df.to_csv(f"../eval_results/eval_{params['dataset']}_{params['meta_type']}_{params['eval_split']}_{params['spa_enc_type']}.csv", index=True)
 
     for ii, split in enumerate(np.unique(val_split)):
         logger.info(" Split ID: {}".format(ii))
         inds = np.where(val_split == split)[0]
         for kk in np.sort(list(top_k_acc.keys())):
             logger.info(
-                " Top {}\t{}acc (%):   {}".format(
+                " Top {}\t{}hit (%):   {}".format(
                     kk, eval_flag_str, round(top_k_acc[kk][inds].mean() * 100, 2)
                 )
             )

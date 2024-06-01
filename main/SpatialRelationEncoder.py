@@ -9,6 +9,8 @@ import math
 from module import *
 from data_utils import *
 
+from spherical_harmonics_ylm_numpy import get_positional_encoding
+
 """
 A Set of position encoder
 """
@@ -2770,9 +2772,9 @@ class GridLookupSpatialRelationPositionEncoder(PositionEncoder):
         col = np.floor((x - self.extent[0]) / self.interval)
         row = np.floor((y - self.extent[2]) / self.interval)
 
-        # make sure each row/col index in within range
-        assert (col >= 0).all() and (col <= self.num_col - 1).all()
-        assert (row >= 0).all() and (row <= self.num_row - 1).all()
+        # make sure each row/col index is within range
+        col = np.clip(col, 0, self.num_col - 1)
+        row = np.clip(row, 0, self.num_row - 1)
 
         # index_mat: shape (batch_size, num_context_pt)
         index_mat = (row * self.num_col + col).astype(int)
@@ -2980,6 +2982,116 @@ class AodhaFFNSpatialRelationLocationEncoder(LocationEncoder):
             do_pos_enc=do_pos_enc,
             do_global_pos_enc=do_global_pos_enc,
             device=device,
+        )
+        self.ffn = MultiLayerFeedForwardNN(
+            input_dim=self.position_encoder.pos_enc_output_dim,
+            output_dim=self.spa_embed_dim,
+            num_hidden_layers=self.ffn_num_hidden_layers,
+            dropout_rate=ffn_dropout_rate,
+            hidden_dim=self.ffn_hidden_dim,
+            activation=self.ffn_act,
+            use_layernormalize=self.ffn_use_layernormalize,
+            skip_connection=ffn_skip_connection,
+            context_str=ffn_context_str,
+        )
+
+    def forward(self, coords):
+        spr_embeds = self.position_encoder(coords)
+        sprenc = self.ffn(spr_embeds)
+
+        return sprenc
+
+class SphericalHarmonicsSpatialRelationPositionEncoder(PositionEncoder):
+    """
+    Given a list of (lon,lat), convert them to (x,y,z), and then encode them using the MLP
+
+    """
+
+    def __init__(self, coord_dim=2, legendre_poly_num=8, device="cuda"):
+        """
+        Args:
+            spa_embed_dim: the output spatial relation embedding dimention
+            coord_dim: the dimention of space, 2D, 3D, or other
+            extent: (x_min, x_max, y_min, y_max)
+        """
+        super().__init__(coord_dim=coord_dim, device=device)
+
+        self.legendre_poly_num = legendre_poly_num
+        self.pos_enc_output_dim = legendre_poly_num**2
+
+    def make_output_embeds(self, coords):
+        if type(coords) == np.ndarray:
+            assert self.coord_dim == np.shape(coords)[2]
+            coords = list(coords)
+        elif type(coords) == list:
+            assert self.coord_dim == len(coords[0][0])
+        else:
+            raise Exception(
+                "Unknown coords data type for SphericalHarmonicsSpatialRelationEncoder"
+            )
+
+        # (batch_size, num_context_pt, coord_dim)
+        coords_mat = np.asarray(coords).astype(float)
+        batch_size = coords_mat.shape[0]
+        num_context_pt = coords_mat.shape[1]
+
+        # lon: (batch_size, num_context_pt, 1), convert from degree to radius
+        lon = np.deg2rad(coords_mat[:, :, :1])
+        # lat: (batch_size, num_context_pt, 1), convert from degree to radius
+        lat = np.deg2rad(coords_mat[:, :, 1:])
+
+        # spr_embeds: (batch_size, num_context_pt, legendre_poly_num**2)
+        spr_embeds = get_positional_encoding(lon, lat, self.legendre_poly_num)
+        return spr_embeds.reshape((-1, self.pos_enc_output_dim))
+
+    def forward(self, coords):
+        """
+        Given a list of coords (deltaX, deltaY), give their spatial relation embedding
+        Args:
+            coords: a python list with shape (batch_size, num_context_pt, coord_dim)
+        Return:
+            sprenc: Tensor shape (batch_size, num_context_pt, spa_embed_dim)
+        """
+        # (batch_size, num_context_pt, coord_dim)
+        coords_mat = np.asarray(coords).astype(float)
+        batch_size = coords_mat.shape[0]
+        num_context_pt = coords_mat.shape[1]
+
+        # spr_embeds: (batch_size, num_context_pt, 3)
+        spr_embeds = self.make_output_embeds(coords)
+
+        # spr_embeds: shape (batch_size, num_context_pt, pos_enc_output_dim = 3)
+        spr_embeds = torch.FloatTensor(spr_embeds).to(self.device)
+
+        return spr_embeds
+
+
+class SphericalHarmonicsSpatialRelationLocationEncoder(LocationEncoder):
+    def __init__(
+        self,
+        spa_embed_dim,
+        coord_dim=2,
+        legendre_poly_num=8,
+        device="cuda",
+        ffn_act="relu",
+        ffn_num_hidden_layers=1,
+        ffn_dropout_rate=0.5,
+        ffn_hidden_dim=256,
+        ffn_use_layernormalize=True,
+        ffn_skip_connection=True,
+        ffn_context_str="SphericalHarmonicsSpatialRelationEncoder",
+    ):
+        super().__init__(spa_embed_dim, coord_dim, device)
+        self.ffn_act = ffn_act
+        self.ffn_num_hidden_layers = ffn_num_hidden_layers
+        self.ffn_dropout_rate = ffn_dropout_rate
+        self.ffn_hidden_dim = ffn_hidden_dim
+        self.ffn_use_layernormalize = ffn_use_layernormalize
+        self.ffn_skip_connection = ffn_skip_connection
+        self.ffn_context_str = ffn_context_str
+
+        self.position_encoder = SphericalHarmonicsSpatialRelationPositionEncoder(
+            coord_dim=coord_dim, legendre_poly_num=legendre_poly_num, device=device
         )
         self.ffn = MultiLayerFeedForwardNN(
             input_dim=self.position_encoder.pos_enc_output_dim,

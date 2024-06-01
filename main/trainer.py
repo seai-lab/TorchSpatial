@@ -511,47 +511,14 @@ class Trainer:
             load_cnn_features_train=params["load_cnn_features_train"],
         )
 
-        # # train_locs: np.arrary, [num_train, 2], location data
-        # self.train_locs = op['train_locs']
-        # # train_classes: np.arrary, [num_train], the list of image category id
-        # self.train_classes = op['train_classes']
-        # # train_users: np.arrary, [num_train], the list of user id
-        # self.train_users = op['train_users']
-        # # train_dates: np.arrary, [num_train], the list of date
-        # self.train_dates = op['train_dates']
-        # self.val_locs = op['val_locs']
-        # self.val_classes = op['val_classes']
-        # self.val_users = op['val_users']
-        # self.val_dates = op['val_dates']
-        # self.class_of_interest = op['class_of_interest']
-        # self.classes = op['classes']
-        # # num_classes = op['num_classes']
-
-        # val_split: a list of 1, shape (num_val,)
-        # self.val_split = op['val_split']
-
         if not params["load_cnn_features_train"]:
             op["train_feats"] = None
-        # if params["load_cnn_features_train"]:
-        #     # train_feats: torch.tensor, shape (num_train, 2048), features from trained image classifier
-        #     self.train_feats = torch.from_numpy(op["train_feats"]).to(params['device'])
-        # else:
-        #     self.train_feats = None
 
         if not params["load_cnn_features"]:
             op["val_feats"] = None
-        # if params["load_cnn_features"]:
-        #     # val_feats: torch.tensor, shape (num_val, 2048), features from trained image classifier
-        #     self.val_feats = torch.from_numpy(op["val_feats"]).to(params['device'])
-        # else:
-        #     self.val_feats = None
 
         if not params["load_cnn_predictions"]:
             op["val_preds"] = None
-        # if params['load_cnn_predictions']:
-        #     self.val_preds = op['val_preds']
-        # else:
-        #     self.val_preds = None
 
         return op
 
@@ -914,59 +881,6 @@ class Trainer:
                 self.val_users,
                 self.val_feats,
             ) = None, None, None, None, None, None
-
-    # def create_data_loader(self, params):
-    #     # data loaders
-    #     # train_labels: torch.tensor, shape [num_train, ]
-    #     self.train_labels = torch.from_numpy(self.op['train_classes']).to(params['device'])
-    #     # train_loc_feats: torch.tensor, shape [num_train, 2] or [num_train, 3]
-    #     self.train_loc_feats = ut.generate_model_input_feats(
-    #                 spa_enc_type = params['spa_enc_type'],
-    #                 locs = self.op['train_locs'],
-    #                 dates = self.op['train_dates'],
-    #                 params = params,
-    #                 device = params['device'])
-    #     # training dataset
-    #     self.train_dataset = LocationDataLoader(loc_feats = self.train_loc_feats,
-    #                                         labels = self.train_labels,
-    #                                         users = self.train_users,
-    #                                         num_classes = params['num_classes'],
-    #                                         is_train = True,
-    #                                         cnn_features =  self.train_feats)
-    #     if params['balanced_train_loader']:
-    #         self.train_loader = torch.utils.data.DataLoader(self.train_dataset,
-    #                                         num_workers=0,
-    #                                         batch_size=params['batch_size'],
-    #                                         sampler=ut.BalancedSampler(self.op['train_classes'].tolist(),
-    #                                                     params['max_num_exs_per_class'],
-    #                                                     use_replace=False,
-    #                                                     multi_label=False),
-    #                                         shuffle=False)
-    #     else:
-    #         self.train_loader = torch.utils.data.DataLoader(self.train_dataset,
-    #                                         num_workers=0,
-    #                                         batch_size=params['batch_size'],
-    #                                         shuffle=True)
-
-    #     # val_labels: torch.tensor, shape [num_val, ]
-    #     self.val_labels = torch.from_numpy(self.op['val_classes']).to(params['device'])
-    #     # val_loc_feats: torch.tensor, shape [num_val, 2] or [num_val, 3]
-    #     self.val_loc_feats = ut.generate_model_input_feats(
-    #                 spa_enc_type = params['spa_enc_type'],
-    #                 locs = self.op['val_locs'],
-    #                 dates = self.op['val_dates'],
-    #                 params = params,
-    #                 device = params['device'])
-    #     self.val_dataset = LocationDataLoader(loc_feats = self.val_loc_feats,
-    #                                         labels = self.val_labels,
-    #                                         users = self.op['val_users'],
-    #                                         num_classes = params['num_classes'],
-    #                                         is_train = False,
-    #                                         cnn_features =  self.val_feats)
-    #     self.val_loader = torch.utils.data.DataLoader(self.val_dataset,
-    #                                         num_workers=0,
-    #                                         batch_size=params['batch_size'],
-    #                                         shuffle=False)
 
     def create_model(self):
         if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
@@ -1336,9 +1250,8 @@ class Trainer:
         #
         if "no_prior" in spa_enc_type_list:
             self.logger.info("\nNo prior")
-            # pred_no_prior = compute_acc(val_preds, val_classes, val_split, prior_type='no_prior')
-
             pred_no_prior = compute_acc_batch(
+                params=self.params,
                 val_preds=op["val_preds"],
                 val_classes=op["val_classes"],
                 val_split=op["val_split"],
@@ -1725,6 +1638,7 @@ class Trainer:
         self.model.eval()
 
         val_preds = compute_acc_batch(
+            params=self.params,
             val_preds=None,
             val_classes=op["val_classes"],
             val_split=op["val_split"],
