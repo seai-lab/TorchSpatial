@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to TorchSpatial's documentation!
-======================================
+========================================
 .. image:: /images/hi.jpg
 
 Here is the **v1.0**
