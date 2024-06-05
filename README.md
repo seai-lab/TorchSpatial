@@ -1,4 +1,4 @@
-# TorchSpatial
+# TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning
 
 inat2021
 python -u extract_inat_feats.py --local-rank=0
