@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'LocEncoder'
+project = 'TorchSpatial'
 copyright = '2024, SEAI'
 author = 'SEAI'
 
