@@ -1,7 +1,7 @@
 import torch
 import utils as ut
 import math
-
+import torch.nn as nn
 
 def bce_loss(pred):
     return -torch.log(pred + 1e-5)
@@ -218,12 +218,6 @@ def contsoftmax_loss(model, params, loc_feat, cnn_features, inds):
 
 
 
-
-
-
-
-
-
 def imgcontloss_loss(model, params, loc_feat, cnn_features, inds):
     '''
     We are doing imgcontloss loss, given loc_feat, encode it into location embedding, 
@@ -388,6 +382,27 @@ def imgcontloss_eval(model, params, loc_feat, cnn_features, inds):
 
 
     
+def regress_loss(model, params,labels, loc_feat, img_feat):
+    '''
+    Args:
+        model:
+        param:
+        loc_feat: shape (batch_size, input_feat_dim)
+        loc_label: shape (batch_size)
+        inds: tensor, [0,1,2,...,batch_size-1]
+    '''
+    # create random background samples
+    # loc_feat_rand: (batch_size, input_feat_dim)
+
+    if params["dataset"].startswith("sustainbench"):
+        # get location embeddings
+        predictions = model(img_feats=img_feat.reshape(img_feat.size(0), 1, 1), locs=loc_feat)
+    elif params["dataset"].startswith("mosaiks"):
+        predictions = model(img_feats=img_feat, locs=loc_feat)
+    criterion = nn.MSELoss()
+    loss= criterion(predictions.squeeze().float(), labels.float())
+
+    return loss
 
 
 

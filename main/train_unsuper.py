@@ -27,6 +27,5 @@ trainer = Trainer(args, console=True)
 trainer.run_train()
 trainer.run_eval_final()
 
-
 val_preds = trainer.run_eval_spa_enc_only(
     eval_flag_str="LocEnc ", load_model=True)

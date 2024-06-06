@@ -12,6 +12,8 @@ def get_paths(variable_name):
     'syntconsband_data_dir': '../geo_prior_data/data/syntconsband/',
     'syntvarband_data_dir': '../geo_prior_data/data/syntvarband/',
     'fmow_data_dir': '../geo_prior_data/data/fmow/',
+    'sustainbench_data_dir': '../geo_prior_data/data/sustainbench/',
+    'mosaiks_data_dir': '../geo_prior_data/data/mosaiks/',
     'vmf_data_dir': '../geo_prior_data/data/vmf/',
     # 'vmfC50S100L1H32_data_dir': '../geo_prior_data/data/vmfC50S100L1H32/',
     }

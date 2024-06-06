@@ -47,13 +47,33 @@ def make_args_parser():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="nabirds",
-        help="""e.g., inat_2021, inat_2018, inat_2017, birdsnap, nabirds, yfcc, fmow, dhs_under5_mort, dhs_water_index""",
+        default="mosaiks_population",  # ,"",birdsnap
+        choices=[
+            "inat_2021",
+            "inat_2018",
+            "inat_2017",
+            "birdsnap",
+            "nabirds",
+            "yfcc",
+            "fmow",
+            "sustainbench_asset_index",
+            "sustainbench_under5_mort",
+            "sustainbench_water_index",
+            "sustainbench_women_bmi",
+            "sustainbench_women_edu",
+            "sustainbench_sanitation_index",
+            "mosaiks_population",
+            "mosaiks_elevation",
+            "mosaiks_forest_cover",
+            "mosaiks_nightlights",
+        ],
+        help="""Dataset to use. Options are: inat_2021, inat_2018, inat_2017, birdsnap, nabirds, yfcc, fmow, sustainbench_asset_index, sustainbench_under5_mort, sustainbench_water_index, sustainbench_women_bmi,          sustainbench_women_edu, sustainbench_sanitation_index,mosaiks_population, mosaiks_elevation, mosaiks_forest_cover, mosaiks_nightlights""",
     )
+
     parser.add_argument(
         "--meta_type",
         type=str,
-        default="ebird_meta",
+        default="orig_meta",
         help="""e.g., orig_meta, ebird_meta""",
     )  # orig_meta, ebird_meta
     parser.add_argument("--eval_split", type=str, default="val", help="""val, test""")
@@ -75,13 +95,13 @@ def make_args_parser():
     parser.add_argument(
         "--load_cnn_features",
         type=str,
-        default="F",
+        default="T",
         help="""whether to load CNN feature (2048 dimention) on val/test dataset""",
     )
     parser.add_argument(
         "--load_cnn_features_train",
         type=str,
-        default="F",
+        default="T",
         help="""whether to load CNN feature (2048 dimention) on training dataset""",
     )
     parser.add_argument(
@@ -110,11 +130,57 @@ def make_args_parser():
         fewshot: prediction from the CNN model in few-shot settings
     """,
     )
+    parser.add_argument(
+        "--sustainbench_num_rbf_anchor_pts",
+        type=int,
+        default=100,
+        help="""The number of RBF anchor points used in in the rbf nl_mean feature encoder for the sustain bench dataset
+    """,
+    )
+
+    parser.add_argument(
+        "--sustainbench_rbf_kernel_size",
+        type=int,
+        default=50,
+        help="""The number of RBF kernel_size used in in the rbf nl_mean feature encoder for the sustain bench dataset
+    """,
+    )
+    parser.add_argument(
+        "--sustainbench_net_dropout",
+        type=float,
+        default=0.25,
+        help="Dropout rate for the sustainbench network",
+    )
+
+    parser.add_argument(
+        "--sustainbench_hidden_dim",
+        type=int,
+        default=128,
+        help="The number of hidden dimensions for the sustainbench network",
+    )
+
+    parser.add_argument(
+        "--mosaiks_net_dropout",
+        type=float,
+        default=0.1,
+        help="Dropout rate for the mosaiks network",
+    )
+
+    parser.add_argument(
+        "--mosaiks_hidden_dim",
+        type=int,
+        default=128,
+        help="The number of hidden dimensions for the mosaiks network",
+    )
 
     parser.add_argument("--device", type=str, default="cuda:0")
 
-    parser.add_argument("--model_dir", type=str, default="../models/")
-    parser.add_argument("--num_epochs", type=int, default=1)
+    parser.add_argument("--model_dir", type=str, default="../models/regression")
+    parser.add_argument("--num_epochs", type=int, default=30)
+
+    parser.add_argument(
+        "--ebed_dim_before_regress", type=int, default=64, help="embedding dim before regress"
+    )  # for regression, the loc encoder returns a params["ebed_dim_before_regress"]-dim location ebed and a params["ebed_dim_before_regress"]-dim image ebed
 
     parser.add_argument(
         "--num_epochs_unsuper",
@@ -127,7 +193,7 @@ def make_args_parser():
     parser.add_argument(
         "--spa_enc_type",
         type=str,
-        default="Space2Vec-grid",
+        default="wrap",
         help="""this is the type of location encoder, e.g., Space2Vec-grid, Space2Vec-theory, xyz, NeRF,Sphere2Vec-sphereC, Sphere2Vec-sphereC+, Sphere2Vec-sphereM, Sphere2Vec-sphereM+, Sphere2Vec-dfs, rbf, rff, wrap, wrap_ffn, tile""",
     )
     parser.add_argument(
@@ -200,7 +266,7 @@ def make_args_parser():
         "--map_range",
         nargs="+",
         type=float,
-        default=[-162, -59, 20, 56], #[-180, 180, -90, 90],
+        default=[-162, -59, 20, 56],  # [-180, 180, -90, 90],
         help="the maximum map extent, (xmin, xmax, ymin, ymax)",
     )
     parser.add_argument(
@@ -371,8 +437,6 @@ def make_args_parser():
     parser.add_argument(
         "--max_num_exs_per_class", type=int, default=100, help="batch size"
     )
-    # parser.add_argument('--balanced_train_loader', default=True, action='store_true',
-    #     help="banlance train loader")
     parser.add_argument(
         "--balanced_train_loader", type=str, default="T", help="banlance train loader"
     )
@@ -415,6 +479,35 @@ def make_args_parser():
 def update_params(params):
     if params["dataset"] not in ["birdsnap", "nabirds"]:
         params["meta_type"] = ""  # orig_meta, ebird_meta
+    params["regress_dataset"] = [
+        "sustainbench_asset_index",
+        "sustainbench_under5_mort",
+        "sustainbench_water_index",
+        "sustainbench_women_bmi",
+        "sustainbench_women_edu",
+        "sustainbench_sanitation_index",
+        "mosaiks_population",
+        "mosaiks_elevation",
+        "mosaiks_forest_cover",
+        "mosaiks_nightlights",
+    ]
+    if params["dataset"] in params["regress_dataset"]:
+        params["use_date_feats"] = "F"
+        params["eval_split"] = "test"
+        params["load_cnn_features_train"] = "T"
+        params["load_cnn_features"] = "T"
+        params['load_cnn_predictions'] = "F"
+    else:
+        params["load_cnn_features_train"] = "F"
+        params["load_cnn_features"] = "F"
+    # elif params["dataset"] in [
+    #     "sustainbench_asset_index",
+    #     "sustainbench_under5_mort",
+    #     "sustainbench_water_index",
+    # ]:
+    #     params["split"] = "test"
+    #     params["load_cnn_features_train"] = "F"
+    #     params["load_cnn_features"] = "F"
 
     for var in [
         "save_results",
@@ -458,9 +551,10 @@ class Trainer:
         self.make_spa_enc_type_list()
 
         self.op = self.load_dataset_(params)
-        params["num_classes"] = self.op["num_classes"]
 
-        self.load_val_dataset(params)
+        if params["dataset"] not in params["regress_dataset"]:
+            params["num_classes"] = self.op["num_classes"]
+            self.load_val_dataset(params)
 
         params = self.sample_rbf_anchor_pts(params)
 
@@ -468,9 +562,9 @@ class Trainer:
 
         self.logger = self.make_logger(params)
 
-        self.make_image_dir(params)
-
-        self.process_users(params)
+        if params["dataset"] not in params["regress_dataset"]:
+            self.make_image_dir(params)
+            self.process_users(params)
 
         self.log_dataset_status(params, logger=self.logger)
 
@@ -482,11 +576,13 @@ class Trainer:
 
         self.params = params
 
-        self.model = self.create_model()
+        self.loc_enc_model = self.create_loc_model()
+
+        self.regress_enc_model = self.create_regress_model()
 
         if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
             self.optimizer = torch.optim.Adam(
-                self.model.parameters(),
+                self.loc_enc_model.parameters(),
                 lr=params["lr"],
                 weight_decay=params["weight_decay"],
             )
@@ -503,7 +599,7 @@ class Trainer:
         # op = dt.load_dataset(params, 'val', True, True)
         op = dt.load_dataset(
             params,
-            eval_split="val",
+            eval_split=params['eval_split'],
             train_remove_invalid=True,
             eval_remove_invalid=True,
             load_cnn_predictions=params["load_cnn_predictions"],
@@ -511,14 +607,15 @@ class Trainer:
             load_cnn_features_train=params["load_cnn_features_train"],
         )
 
-        if not params["load_cnn_features_train"]:
-            op["train_feats"] = None
+        if params["dataset"] not in params["regress_dataset"]:
+            if not params["load_cnn_features_train"]:
+                op["train_feats"] = None
 
-        if not params["load_cnn_features"]:
-            op["val_feats"] = None
+            if not params["load_cnn_features"]:
+                op["val_feats"] = None
 
-        if not params["load_cnn_predictions"]:
-            op["val_preds"] = None
+            if not params["load_cnn_predictions"]:
+                op["val_preds"] = None
 
         return op
 
@@ -540,7 +637,8 @@ class Trainer:
                     load_cnn_features=True,
                     load_cnn_features_train=False,
                 )
-            else:
+            # classification
+            elif params["dataset"] in params["regress_dataset"]:
                 op = dt.load_dataset(
                     params,
                     eval_split=params["eval_split"],
@@ -550,12 +648,22 @@ class Trainer:
                     load_cnn_features=False,
                     load_cnn_features_train=False,
                 )
+            # regression
+            else:
+                op = dt.load_dataset(
+                    params,
+                    eval_split=params["eval_split"],
+                    train_remove_invalid=True,
+                    eval_remove_invalid=False,  # do not remove invalid in val/test
+                    load_cnn_predictions=True,
+                    load_cnn_features=True,
+                    load_cnn_features_train=True,
+                )
 
             val_op = {}
             for key in op:
                 if key.startswith("val"):
                     val_op[key] = op[key]
-
             del op
             self.val_op = val_op
         else:
@@ -662,97 +770,184 @@ class Trainer:
 
     def log_dataset_status(self, params, logger):
         # print stats
-        logger.info("\nnum_classes\t{}".format(params["num_classes"]))
-        logger.info("num train    \t{}".format(len(self.op["train_locs"])))
-        logger.info("num val      \t{}".format(len(self.op["val_locs"])))
-        logger.info("train loss   \t" + params["train_loss"])
-        logger.info("model name   \t" + params["model_file_name"])
-        logger.info("num users    \t{}".format(params["num_users"]))
-        if params["meta_type"] != "":
-            logger.info("meta data    \t" + params["meta_type"])
+        if params["dataset"] not in params["regress_dataset"]:
+            logger.info("\nnum_classes\t{}".format(params["num_classes"]))
+            logger.info("num train    \t{}".format(len(self.op["train_locs"])))
+            logger.info("num val      \t{}".format(len(self.op["val_locs"])))
+            logger.info("train loss   \t" + params["train_loss"])
+            logger.info("model name   \t" + params["model_file_name"])
+            logger.info("num users    \t{}".format(params["num_users"]))
+            if params["meta_type"] != "":
+                logger.info("meta data    \t" + params["meta_type"])
+        else:
+            logger.info("num train    \t{}".format(len(self.op["train_locs"])))
+            logger.info("num val      \t{}".format(len(self.op["val_locs"])))
+            logger.info("train loss   \t" + params["train_loss"])
+            logger.info("model name   \t" + params["model_file_name"])
 
     def load_ocean_mask(self):
         # load ocean mask for plotting
         self.mask = np.load(get_paths("mask_dir") + "ocean_mask.npy").astype(int)
 
     def create_dataset_data_loader(
-        self, params, data_flag, classes, locs, dates, users, cnn_features
+        self,
+        params,
+        data_flag,
+        labels=None,
+        classes=None,
+        locs=None,
+        dates=None,
+        users=None,
+        cnn_features=None,
     ):
         """
         Args:
             params:
             data_flag: train/val/test
-            classes: np.array(), shape (num_samples, ), image class labels
+            labels: for regression, np.array(), shape (num_samples, ), image labels
+            classes: for classfication, np.array(), shape (num_samples, ), image class labels
             locs: np.array(), shape (num_samples, 2), image locations
             dates: np.array(), shape (num_samples, ), image dates
             users: np.array(), shape (num_samples, ), user ids,
             cnn_features: np.array(), shape (num_samples, 2048)
         """
-        # data loaders
-        # labels: torch.tensor, shape [num_samples, ]
-        labels = torch.from_numpy(classes)  # .to(params['device'])
-        # loc_feats: torch.tensor, shape [num_samples, 2] or [num_samples, 3]
-        loc_feats = ut.generate_model_input_feats(
-            spa_enc_type=params["spa_enc_type"],
-            locs=locs,
-            dates=dates,
-            params=params,
-            device=params["device"],
-        ).cpu()
-
-        users_tensor = torch.from_numpy(users)  # .to(params['device'])
-
-        if cnn_features is not None:
-            cnn_feats = torch.from_numpy(cnn_features)  # .to(params['device'])
-        else:
-            cnn_feats = None
-
-        if data_flag == "train":
-            # training dataset
-            dataset = LocationDataLoader(
-                loc_feats=loc_feats,
-                labels=labels,
-                users=users_tensor,
-                num_classes=params["num_classes"],
-                is_train=True,
-                cnn_features=cnn_feats,
+        # Classification
+        if params["dataset"] not in params["regress_dataset"]:
+            # data loaders
+            # labels: torch.tensor, shape [num_samples, ]
+            labels = torch.from_numpy(classes)  # .to(params['device'])
+            # loc_feats: torch.tensor, shape [num_samples, 2] or [num_samples, 3]
+            loc_feats = ut.generate_model_input_feats(
+                spa_enc_type=params["spa_enc_type"],
+                locs=locs,
+                dates=dates,
+                params=params,
                 device=params["device"],
-            )
-            if params["balanced_train_loader"]:
+            ).cpu()
+
+            users_tensor = torch.from_numpy(users)  # .to(params['device'])
+
+            if cnn_features is not None:
+                cnn_feats = torch.from_numpy(cnn_features)  # .to(params['device'])
+            else:
+                cnn_feats = None
+
+            if data_flag == "train":
+                # training dataset
+                dataset = LocationDataLoader(
+                    loc_feats=loc_feats,
+                    labels=labels,
+                    users=users_tensor,
+                    num_classes=params["num_classes"],
+                    is_train=True,
+                    cnn_features=cnn_feats,
+                    device=params["device"],
+                )
+                if params["balanced_train_loader"]:
+                    data_loader = torch.utils.data.DataLoader(
+                        dataset,
+                        num_workers=0,
+                        batch_size=params["batch_size"],
+                        sampler=ut.BalancedSampler(
+                            classes.tolist(),
+                            params["max_num_exs_per_class"],
+                            use_replace=False,
+                            multi_label=False,
+                        ),
+                        shuffle=False,
+                    )
+                else:
+                    data_loader = torch.utils.data.DataLoader(
+                        dataset,
+                        num_workers=0,
+                        batch_size=params["batch_size"],
+                        shuffle=True,
+                    )
+            else:
+                dataset = LocationDataLoader(
+                    loc_feats=loc_feats,
+                    labels=labels,
+                    users=users_tensor,
+                    num_classes=params["num_classes"],
+                    is_train=False,
+                    cnn_features=cnn_feats,
+                    device=params["device"],
+                )
                 data_loader = torch.utils.data.DataLoader(
                     dataset,
                     num_workers=0,
                     batch_size=params["batch_size"],
-                    sampler=ut.BalancedSampler(
-                        classes.tolist(),
-                        params["max_num_exs_per_class"],
-                        use_replace=False,
-                        multi_label=False,
-                    ),
                     shuffle=False,
                 )
+
+            return dataset, data_loader, labels, loc_feats, users_tensor, cnn_feats
+
+        # Regression
+        else:
+            # data loaders
+            # labels: torch.tensor, shape [num_samples, ]
+            labels = torch.from_numpy(labels)  # .to(params['device'])
+            # loc_feats: torch.tensor, shape [num_samples, 2] or [num_samples, 3]
+            loc_feats = ut.generate_model_input_feats(
+                spa_enc_type=params["spa_enc_type"],
+                locs=locs,
+                dates=dates,
+                params=params,
+                device=params["device"],
+            ).cpu()
+
+            if cnn_features is not None:
+                cnn_feats = torch.from_numpy(cnn_features)  # .to(params['device'])
             else:
+                cnn_feats = None
+
+            if data_flag == "train":
+                # training dataset
+                dataset = LocationDataLoader(
+                    loc_feats=loc_feats,
+                    labels=labels,
+                    is_train=True,
+                    users=None,
+                    cnn_features=cnn_feats,
+                    device=params["device"],
+                )
+                if params["balanced_train_loader"]:
+                    data_loader = torch.utils.data.DataLoader(
+                        dataset,
+                        num_workers=0,
+                        batch_size=params["batch_size"],
+                        sampler=ut.BalancedSampler(
+                            classes.tolist(),
+                            params["max_num_exs_per_class"],
+                            use_replace=False,
+                            multi_label=False,
+                        ),
+                        shuffle=False,
+                    )
+                else:
+                    data_loader = torch.utils.data.DataLoader(
+                        dataset,
+                        num_workers=0,
+                        batch_size=params["batch_size"],
+                        shuffle=True,
+                    )
+            else:
+                dataset = LocationDataLoader(
+                    loc_feats=loc_feats,
+                    labels=labels,
+                    users=None,
+                    is_train=False,
+                    cnn_features=cnn_feats,
+                    device=params["device"],
+                )
                 data_loader = torch.utils.data.DataLoader(
                     dataset,
                     num_workers=0,
                     batch_size=params["batch_size"],
-                    shuffle=True,
+                    shuffle=False,
                 )
-        else:
-            dataset = LocationDataLoader(
-                loc_feats=loc_feats,
-                labels=labels,
-                users=users_tensor,
-                num_classes=params["num_classes"],
-                is_train=False,
-                cnn_features=cnn_feats,
-                device=params["device"],
-            )
-            data_loader = torch.utils.data.DataLoader(
-                dataset, num_workers=0, batch_size=params["batch_size"], shuffle=False
-            )
 
-        return dataset, data_loader, labels, loc_feats, users_tensor, cnn_feats
+            return dataset, data_loader, labels, loc_feats, cnn_feats
 
     def create_train_sample_data_loader(self, params):
         if (
@@ -830,39 +1025,69 @@ class Trainer:
 
     def create_train_val_data_loader(self, params):
         if params["spa_enc_type"] not in self.spa_enc_baseline_list:
-            (
-                self.train_dataset,
-                self.train_loader,
-                self.train_labels,
-                self.train_loc_feats,
-                self.train_users,
-                self.train_feats,
-            ) = self.create_dataset_data_loader(
-                params,
-                data_flag="train",
-                classes=self.op["train_classes"],
-                locs=self.op["train_locs"],
-                dates=self.op["train_dates"],
-                users=self.train_users_np,
-                cnn_features=self.op["train_feats"],
-            )
+            if params["dataset"] not in params["regress_dataset"]:
+                (
+                    self.train_dataset,
+                    self.train_loader,
+                    self.train_labels,
+                    self.train_loc_feats,
+                    self.train_users,
+                    self.train_feats,
+                ) = self.create_dataset_data_loader(
+                    params,
+                    data_flag="train",
+                    classes=self.op["train_classes"],
+                    locs=self.op["train_locs"],
+                    dates=self.op["train_dates"],
+                    users=self.train_users_np,
+                    cnn_features=self.op["train_feats"],
+                )
 
-            (
-                self.val_dataset,
-                self.val_loader,
-                self.val_labels,
-                self.val_loc_feats,
-                self.val_users,
-                self.val_feats,
-            ) = self.create_dataset_data_loader(
-                params,
-                data_flag="val",
-                classes=self.op["val_classes"],
-                locs=self.op["val_locs"],
-                dates=self.op["val_dates"],
-                users=self.op["val_users"],
-                cnn_features=self.op["val_feats"],
-            )
+                (
+                    self.val_dataset,
+                    self.val_loader,
+                    self.val_labels,
+                    self.val_loc_feats,
+                    self.val_users,
+                    self.val_feats,
+                ) = self.create_dataset_data_loader(
+                    params,
+                    data_flag="val",
+                    classes=self.op["val_classes"],
+                    locs=self.op["val_locs"],
+                    dates=self.op["val_dates"],
+                    users=self.op["val_users"],
+                    cnn_features=self.op["val_feats"],
+                )
+            else:
+                (
+                    self.train_dataset,
+                    self.train_loader,
+                    self.train_labels,
+                    self.train_loc_feats,
+                    self.train_feats,
+                ) = self.create_dataset_data_loader(
+                    params,
+                    data_flag="train",
+                    labels=self.op["train_labels"],
+                    locs=self.op["train_locs"],
+                    cnn_features=self.op["train_feats"],
+                )
+
+                (
+                    self.val_dataset,
+                    self.val_loader,
+                    self.val_labels,
+                    self.val_loc_feats,
+                    self.val_feats,
+                ) = self.create_dataset_data_loader(
+                    params,
+                    data_flag="val",
+                    labels=self.op["val_labels"],
+                    locs=self.op["val_locs"],
+                    cnn_features=self.op["val_feats"],
+                )
+
         else:
             (
                 self.train_dataset,
@@ -882,22 +1107,68 @@ class Trainer:
                 self.val_feats,
             ) = None, None, None, None, None, None
 
-    def create_model(self):
+    def create_regress_model(self):
+        # Sustainbench regression task
+        if self.params["dataset"].startswith("sustainbench"):
+            img_enc_model = models.SustainBenchRegressNet(
+                train_dataset=self.op["train_feats"],
+                device=self.params["device"],
+                num_rbf_anchor_pts=self.params["sustainbench_num_rbf_anchor_pts"],
+                rbf_kernel_size=self.params["sustainbench_rbf_kernel_size"],
+                loc_enc=self.loc_enc_model,
+                dropout_p=self.params["sustainbench_net_dropout"],
+                input_dim=self.params["ebed_dim_before_regress"],
+                hidden_dim=self.params["sustainbench_hidden_dim"],
+            ).to(self.params["device"])
+            return img_enc_model
+
+        elif self.params["dataset"].startswith("mosaiks"):
+            print
+            return models.MosaiksRegressNet(
+                params=self.params,
+                input_dim = self.params["ebed_dim_before_regress"],
+                dropout_p=self.params["mosaiks_net_dropout"],
+                hidden_dim=self.params["mosaiks_hidden_dim"],
+                loc_enc=self.loc_enc_model,
+                device=self.params["device"],
+            ).to(self.params["device"])
+
+        return None
+
+    def create_loc_model(self):
         if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
             # create model
             self.params["num_loc_feats"] = self.train_loc_feats.shape[1]
             self.params["num_feats"] = self.params["num_loc_feats"]
 
-            loc_enc = ut.get_model(
-                train_locs=self.op["train_locs"],
-                params=self.params,
-                spa_enc_type=self.params["spa_enc_type"],
-                num_inputs=self.params["num_loc_feats"],
-                num_classes=self.params["num_classes"],
-                num_filts=self.params["num_filts"],
-                num_users=self.params["num_users"],
-                device=self.params["device"],
-            )
+            # classification
+            if self.params["dataset"] not in self.params["regress_dataset"]:
+                loc_enc = ut.get_loc_model(
+                    train_locs=self.op["train_locs"],
+                    params=self.params,
+                    spa_enc_type=self.params["spa_enc_type"],
+                    num_inputs=self.params["num_loc_feats"],
+                    num_classes=self.params["num_classes"],
+                    num_filts=self.params["num_filts"],
+                    num_users=self.params["num_users"],
+                    device=self.params["device"],
+                )
+            # regression
+            elif self.params["load_cnn_features_train"]:
+                loc_enc = ut.get_loc_model(
+                    train_locs=self.op["train_locs"],
+                    params=self.params,
+                    spa_enc_type=self.params["spa_enc_type"],
+                    num_inputs=self.params["num_loc_feats"],
+                    num_classes=self.params["ebed_dim_before_regress"],  # for regression, the loc encoder returns a params["ebed_dim_before_regress"]-dim location embedding
+                    num_filts=self.params["num_filts"],
+                    num_users=None,
+                    device=self.params["device"],
+                )
+            else:
+                raise ValueError(
+                    "For regression tasks, 'load_cnn_features_train' is required."
+                )
 
             unsuper_loss = self.params["unsuper_loss"]
 
@@ -926,7 +1197,6 @@ class Trainer:
                 raise Exception(f"Unknown unsuper_loss={unsuper_loss}")
         else:
             model = None
-
         return model
 
     def set_up_grid_predictor(self):
@@ -962,7 +1232,7 @@ class Trainer:
             for epoch in range(0, self.params["num_epochs_unsuper"]):
                 self.logger.info("\nUnsupervised Training Epoch\t{}".format(epoch))
                 unsupervise_train(
-                    model=self.model,
+                    model=self.loc_enc_model,
                     data_loader=self.train_loader,
                     optimizer=self.optimizer,
                     epoch=epoch,
@@ -970,11 +1240,6 @@ class Trainer:
                     logger=self.logger,
                     neg_rand_type=self.params["neg_rand_type"],
                 )
-
-                # unsupervise_eval(model = self.model,
-                #     data_loader = self.val_loader,
-                #     params = self.params,
-                #     logger = self.logger)
 
                 if (
                     epoch % self.params["unsuper_save_frequency"] == 0
@@ -1006,37 +1271,56 @@ class Trainer:
         # main train loop
         for epoch in range(self.epoch, self.epoch + self.params["num_epochs"]):
             self.logger.info("\nEpoch\t{}".format(epoch))
-            train(
-                model=self.model,
-                data_loader=train_loader,
-                optimizer=self.optimizer,
-                epoch=epoch,
-                params=self.params,
-                logger=self.logger,
-                neg_rand_type=self.params["neg_rand_type"],
-            )
-            test(
-                model=self.model,
-                data_loader=self.val_loader,
-                params=self.params,
-                logger=self.logger,
-            )
-
-            if epoch % self.params["eval_frequency"] == 0 and epoch != 0:
-                self.run_eval_spa_enc_only(
-                    eval_flag_str=f"LocEnc (Epoch {epoch})", load_model=False
+            if self.regress_enc_model is None:
+                train(
+                    model=self.loc_enc_model,
+                    data_loader=train_loader,
+                    optimizer=self.optimizer,
+                    epoch=epoch,
+                    params=self.params,
+                    logger=self.logger,
+                    neg_rand_type=self.params["neg_rand_type"],
                 )
-                self.run_eval_final(eval_flag_str=f"(Epoch {epoch})")
-                # if self.params["do_epoch_save"]:
-                #     self.save_model(unsuper_model = False, cur_epoch = epoch)
+                test(
+                    model=self.loc_enc_model,
+                    data_loader=self.val_loader,
+                    params=self.params,
+                    logger=self.logger,
+                )
+
+                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and params['dataset'] not in params['regress_dataset']:
+                    self.run_eval_spa_enc_only(
+                        eval_flag_str=f"LocEnc (Epoch {epoch})", load_model=False
+                    )
+                    self.run_eval_final(eval_flag_str=f"(Epoch {epoch})")
+                    # if self.params["do_epoch_save"]:
+                    #     self.save_model(unsuper_model = False, cur_epoch = epoch)
+            else:
+                train(
+                    model=self.regress_enc_model,
+                    data_loader=train_loader,
+                    optimizer=self.optimizer,
+                    epoch=epoch,
+                    params=self.params,
+                    logger=self.logger,
+                    neg_rand_type=self.params["neg_rand_type"],
+                )
+                test(
+                    model=self.regress_enc_model,
+                    data_loader=self.val_loader,
+                    params=self.params,
+                    logger=self.logger,
+                )
+
+                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and params['dataset'] not in params['regress_dataset']:
+                    self.run_eval_spa_enc_only(
+                        eval_flag_str=f"LocEnc (Epoch {epoch})", load_model=False
+                    )
+                    self.run_eval_final(eval_flag_str=f"(Epoch {epoch})")
+                    # if self.params["do_epoch_save"]:
+                    #     self.save_model(unsuper_model = False, cur_epoch = epoch)
 
             self.epoch += 1
-
-            # # save dense prediction image
-            # # grid_pred: (1002, 2004)
-            # grid_pred = gp.dense_prediction(model, class_of_interest)
-            # op_file_name = op_dir + str(epoch).zfill(4) + '_' + str(class_of_interest).zfill(4) + '.jpg'
-            # plt.imsave(op_file_name, 1-grid_pred, cmap='afmhot', vmin=0, vmax=1)
 
         self.save_model(unsuper_model=False)
 
@@ -1062,7 +1346,7 @@ class Trainer:
                 os.makedirs(self.op_dir + "time/")
             for ii, tm in enumerate(np.linspace(0, 1, 13)):
                 grid_pred = self.gp.dense_prediction(
-                    self.model, self.op["class_of_interest"], tm
+                    self.loc_enc_model, self.op["class_of_interest"], tm
                 )
                 op_file_name = (
                     self.op_dir
@@ -1096,19 +1380,25 @@ class Trainer:
                 # params = net_params['params']
                 # for key in params:
                 #     self.params[key] = params[key]
+                print("Successfully loaded model: ", model_file_name)
 
                 self.epoch = net_params["epoch"]
-                self.model.load_state_dict(net_params["state_dict"])
+                self.loc_enc_model.load_state_dict(net_params["state_dict"])
                 self.optimizer.load_state_dict(net_params["optimizer"])
             else:
                 self.logger.info(
                     f"Cannot load model since it not exist - {model_file_name}"
                 )
+                raise FileNotFoundError(
+                    f"Model file does not exist - {model_file_name}"
+                )
         else:
             if unsuper_model:
                 self.logger.info("Cannot load unsupervised model!")
+                raise ValueError("Cannot load unsupervised model!")
             else:
                 self.logger.info("Cannot load model!")
+                raise ValueError("Cannot load model!")
 
     def save_model(self, unsuper_model=False, cur_epoch=None):
         if unsuper_model:
@@ -1126,7 +1416,7 @@ class Trainer:
             self.logger.info("Saving output model to " + model_file_name)
             op_state = {
                 "epoch": self.epoch + 1,
-                "state_dict": self.model.state_dict(),
+                "state_dict": self.loc_enc_model.state_dict(),
                 "optimizer": self.optimizer.state_dict(),
                 "params": self.params,
             }
@@ -1171,17 +1461,17 @@ class Trainer:
         # val_feats_net: shape [batch_size, 2], torch.tensor
         val_feats_net = self.val_loc_feats
 
-        self.model.load_state_dict(net_params["state_dict"])
-        self.model.eval()
+        self.loc_enc_model.load_state_dict(net_params["state_dict"])
+        self.loc_enc_model.eval()
         val_preds_final = compute_acc_batch(
             val_preds=self.val_preds,
             val_classes=self.op["val_classes"],
-            val_split=self.op["val_split"],
+            val_split=self.op["eval_split"],
             val_feats=self.val_loc_feats,
             train_classes=None,
             train_feats=None,
             prior_type=spa_enc_type,
-            prior=self.model,
+            prior=self.loc_enc_model,
             batch_size=self.params["batch_size"],
             logger=self.logger,
             eval_flag_str="Estimate\t",
@@ -1230,313 +1520,325 @@ class Trainer:
         This is the real evaluation metric,
         since we need to load dataset again which allows invalid sample in val/test
         """
-        spa_enc_type_list = self.check_spa_enc_type_list(self.params, spa_enc_type_list)
+        if self.params["dataset"] not in self.params["regress_dataset"]:
+            spa_enc_type_list = self.check_spa_enc_type_list(self.params, spa_enc_type_list)
 
-        if self.val_op is None or "tang_et_al" in spa_enc_type_list:
-            # load the dataset for final evaluation if:
-            #  1. we have not preload it before
-            #  2. the previous val_op does not load val cnn_features while we have 'tang_et_al' in spa_enc_type_list
-            self.load_val_dataset(self.params, spa_enc_type_list)
-        op = self.val_op
+            if self.val_op is None or "tang_et_al" in spa_enc_type_list:
+                # load the dataset for final evaluation if:
+                #  1. we have not preload it before
+                #  2. the previous val_op does not load val cnn_features while we have 'tang_et_al' in spa_enc_type_list
+                self.load_val_dataset(self.params, spa_enc_type_list)
+            op = self.val_op
 
-        if hyper_params is None:
-            self.hyper_params = self.load_baseline_hyperparameter()
+            if hyper_params is None:
+                self.hyper_params = self.load_baseline_hyperparameter()
+            else:
+                self.hyper_params = hyper_params
+
+            eval_flag_str = self.edit_eval_flag_str(eval_flag_str)
+            #
+            # no prior
+            #
+            if "no_prior" in spa_enc_type_list:
+                self.logger.info("\nNo prior")
+                pred_no_prior = compute_acc_batch(
+                    params=self.params,
+                    val_preds=op["val_preds"],
+                    val_classes=op["val_classes"],
+                    val_split=op["val_split"],
+                    val_feats=None,
+                    train_classes=None,
+                    train_feats=None,
+                    prior_type="no_prior",
+                    prior=None,
+                    hyper_params=None,
+                    batch_size=1024,
+                    logger=self.logger,
+                    eval_flag_str=eval_flag_str,
+                )
+
+            #
+            # overall training frequency prior
+            #
+            if "train_freq" in spa_enc_type_list:
+                self.logger.info("\nTrain frequency prior")
+                # weight the eval predictions by the overall frequency of each class at train time
+                cls_id, cls_cnt = np.unique(self.op["train_classes"], return_counts=True)
+                train_prior = np.ones(self.params["num_classes"])
+                train_prior[cls_id] += cls_cnt
+                train_prior /= train_prior.sum()
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        prior_type="train_freq",
+                        prior=train_prior,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        prior_type="train_freq",
+                        prior=train_prior,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+
+            #
+            # Tang et al ICCV 2015, Improving Image Classification with Location Context
+            #
+            if "tang_et_al" in spa_enc_type_list:
+                # path to trained models
+                meta_str = ""
+                if self.params["dataset"] in ["birdsnap", "nabirds"]:
+                    meta_str = "_" + self.params["meta_type"]
+
+                nn_model_path_tang = "{}/bl_tang_{}{}_gps.pth.tar".format(
+                    self.params["model_dir"], self.params["dataset"], meta_str
+                )
+
+                self.logger.info("\nTang et al. prior")
+                self.logger.info("  using model :\t" + os.path.basename(nn_model_path_tang))
+                net_params = torch.load(nn_model_path_tang)
+                params = net_params["params"]
+
+                # construct features
+                val_feats_tang = {}
+                val_feats_tang["val_locs"] = ut.convert_loc_to_tensor(op["val_locs"])
+                val_feats_tang["val_feats"] = torch.from_numpy(op["val_feats"])
+                assert params["loc_encoding"] == "gps"
+
+                model = models.TangNet(
+                    params["loc_feat_size"],
+                    params["net_feats_dim"],
+                    params["embedding_dim"],
+                    params["num_classes"],
+                    params["use_loc"],
+                )
+                model.load_state_dict(net_params["state_dict"])
+                model.eval()
+
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        prior_type="train_freq",
+                        prior=train_prior,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_feats_tang,
+                        prior_type="tang_et_al",
+                        prior=model,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                del val_feats_tang  # save memory
+
+            #
+            # discretized grid prior
+            #
+            if "grid" in spa_enc_type_list:
+                self.logger.info("\nDiscrete grid prior")
+                gp = bl.GridPrior(
+                    self.op["train_locs"],
+                    self.op["train_classes"],
+                    self.params["num_classes"],
+                    self.hyper_params,
+                )
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=op["val_locs"],
+                        prior_type="grid",
+                        prior=gp,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=op["val_locs"],
+                        prior_type="grid",
+                        prior=gp,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+
+            #
+            # setup look up tree for NN lookup based methods
+            #
+            if ("nn_knn" in spa_enc_type_list) or ("nn_dist" in spa_enc_type_list):
+                if self.hyper_params["dist_type"] == "haversine":
+                    nn_tree = BallTree(
+                        np.deg2rad(self.op["train_locs"])[:, ::-1], metric="haversine"
+                    )
+                    val_locs_n = np.deg2rad(op["val_locs"])
+                else:
+                    nn_tree = BallTree(self.op["train_locs"][:, ::-1], metric="euclidean")
+                    val_locs_n = op["val_locs"]
+
+            #
+            # nearest neighbor prior - based on KNN
+            #
+            if "nn_knn" in spa_enc_type_list:
+                self.logger.info("\nNearest neighbor KNN prior")
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_n,
+                        train_classes=self.op["train_classes"],
+                        prior_type="nn_knn",
+                        prior=nn_tree,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_n,
+                        train_classes=self.op["train_classes"],
+                        prior_type="nn_knn",
+                        prior=nn_tree,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+
+            #
+            # nearest neighbor prior - based on distance
+            #
+            if "nn_dist" in spa_enc_type_list:
+                self.logger.info("\nNearest neighbor distance prior")
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_n,
+                        train_classes=self.op["train_classes"],
+                        prior_type="nn_dist",
+                        prior=nn_tree,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_n,
+                        train_classes=self.op["train_classes"],
+                        prior_type="nn_dist",
+                        prior=nn_tree,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+
+            #
+            # kernel density estimate e.g. BirdSnap CVPR 2014
+            #
+            if "kde" in spa_enc_type_list:
+                self.logger.info("\nKernel density estimate prior")
+                kde_params = {}
+                train_classes_kde, train_locs_kde, kde_params["counts"] = (
+                    bl.create_kde_grid(
+                        self.op["train_classes"], self.op["train_locs"], self.hyper_params
+                    )
+                )
+                if self.hyper_params["kde_dist_type"] == "haversine":
+                    train_locs_kde = np.deg2rad(train_locs_kde)
+                    val_locs_kde = np.deg2rad(op["val_locs"])
+                    kde_params["nn_tree_kde"] = BallTree(
+                        train_locs_kde[:, ::-1], metric="haversine"
+                    )
+                else:
+                    val_locs_kde = op["val_locs"]
+                    kde_params["nn_tree_kde"] = BallTree(
+                        train_locs_kde[:, ::-1], metric="euclidean"
+                    )
+
+                if self.params["save_results"]:
+                    compute_acc_predict_result(
+                        params=self.params,
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_kde,
+                        train_classes=train_classes_kde,
+                        train_feats=train_locs_kde,
+                        prior_type="kde",
+                        prior=kde_params,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+                else:
+                    compute_acc(
+                        val_preds=op["val_preds"],
+                        val_classes=op["val_classes"],
+                        val_split=op["val_split"],
+                        val_feats=val_locs_kde,
+                        train_classes=train_classes_kde,
+                        train_feats=train_locs_kde,
+                        prior_type="kde",
+                        prior=kde_params,
+                        hyper_params=self.hyper_params,
+                        logger=self.logger,
+                        eval_flag_str=eval_flag_str,
+                    )
+
+            if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
+                print("With", self.params["spa_enc_type"])
+                val_preds_final = self.run_eval_spa_enc_final(
+                    op, eval_flag_str=eval_flag_str
+                )
+                # print the evualtion metric when we only use spa_enc
+                # val_preds = self.run_eval_spa_enc_only()
+            if save_eval:
+                self.save_eval(
+                    val_preds_final=val_preds_final, val_pred_no_prior=pred_no_prior
+                )
         else:
-            self.hyper_params = hyper_params
+            compute_regression_acc(params=self.params,
+                        model=self.regress_enc_model,
+                        val_locs=self.val_loc_feats,
+                        val_feats=self.val_feats,
+                        val_labels=self.val_labels,
+                        # prior_type="train_freq",
+                        # prior=train_prior,
+                        logger=self.logger,)
 
-        eval_flag_str = self.edit_eval_flag_str(eval_flag_str)
-        #
-        # no prior
-        #
-        if "no_prior" in spa_enc_type_list:
-            self.logger.info("\nNo prior")
-            pred_no_prior = compute_acc_batch(
-                params=self.params,
-                val_preds=op["val_preds"],
-                val_classes=op["val_classes"],
-                val_split=op["val_split"],
-                val_feats=None,
-                train_classes=None,
-                train_feats=None,
-                prior_type="no_prior",
-                prior=None,
-                hyper_params=None,
-                batch_size=1024,
-                logger=self.logger,
-                eval_flag_str=eval_flag_str,
-            )
-
-        #
-        # overall training frequency prior
-        #
-        if "train_freq" in spa_enc_type_list:
-            self.logger.info("\nTrain frequency prior")
-            # weight the eval predictions by the overall frequency of each class at train time
-            cls_id, cls_cnt = np.unique(self.op["train_classes"], return_counts=True)
-            train_prior = np.ones(self.params["num_classes"])
-            train_prior[cls_id] += cls_cnt
-            train_prior /= train_prior.sum()
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    prior_type="train_freq",
-                    prior=train_prior,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    prior_type="train_freq",
-                    prior=train_prior,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-
-        #
-        # Tang et al ICCV 2015, Improving Image Classification with Location Context
-        #
-        if "tang_et_al" in spa_enc_type_list:
-            # path to trained models
-            meta_str = ""
-            if self.params["dataset"] in ["birdsnap", "nabirds"]:
-                meta_str = "_" + self.params["meta_type"]
-
-            nn_model_path_tang = "{}/bl_tang_{}{}_gps.pth.tar".format(
-                self.params["model_dir"], self.params["dataset"], meta_str
-            )
-
-            self.logger.info("\nTang et al. prior")
-            self.logger.info("  using model :\t" + os.path.basename(nn_model_path_tang))
-            net_params = torch.load(nn_model_path_tang)
-            params = net_params["params"]
-
-            # construct features
-            val_feats_tang = {}
-            val_feats_tang["val_locs"] = ut.convert_loc_to_tensor(op["val_locs"])
-            val_feats_tang["val_feats"] = torch.from_numpy(op["val_feats"])
-            assert params["loc_encoding"] == "gps"
-
-            model = models.TangNet(
-                params["loc_feat_size"],
-                params["net_feats_dim"],
-                params["embedding_dim"],
-                params["num_classes"],
-                params["use_loc"],
-            )
-            model.load_state_dict(net_params["state_dict"])
-            model.eval()
-
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    prior_type="train_freq",
-                    prior=train_prior,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_feats_tang,
-                    prior_type="tang_et_al",
-                    prior=model,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            del val_feats_tang  # save memory
-
-        #
-        # discretized grid prior
-        #
-        if "grid" in spa_enc_type_list:
-            self.logger.info("\nDiscrete grid prior")
-            gp = bl.GridPrior(
-                self.op["train_locs"],
-                self.op["train_classes"],
-                self.params["num_classes"],
-                self.hyper_params,
-            )
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=op["val_locs"],
-                    prior_type="grid",
-                    prior=gp,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=op["val_locs"],
-                    prior_type="grid",
-                    prior=gp,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-
-        #
-        # setup look up tree for NN lookup based methods
-        #
-        if ("nn_knn" in spa_enc_type_list) or ("nn_dist" in spa_enc_type_list):
-            if self.hyper_params["dist_type"] == "haversine":
-                nn_tree = BallTree(
-                    np.deg2rad(self.op["train_locs"])[:, ::-1], metric="haversine"
-                )
-                val_locs_n = np.deg2rad(op["val_locs"])
-            else:
-                nn_tree = BallTree(self.op["train_locs"][:, ::-1], metric="euclidean")
-                val_locs_n = op["val_locs"]
-
-        #
-        # nearest neighbor prior - based on KNN
-        #
-        if "nn_knn" in spa_enc_type_list:
-            self.logger.info("\nNearest neighbor KNN prior")
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_n,
-                    train_classes=self.op["train_classes"],
-                    prior_type="nn_knn",
-                    prior=nn_tree,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_n,
-                    train_classes=self.op["train_classes"],
-                    prior_type="nn_knn",
-                    prior=nn_tree,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-
-        #
-        # nearest neighbor prior - based on distance
-        #
-        if "nn_dist" in spa_enc_type_list:
-            self.logger.info("\nNearest neighbor distance prior")
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_n,
-                    train_classes=self.op["train_classes"],
-                    prior_type="nn_dist",
-                    prior=nn_tree,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_n,
-                    train_classes=self.op["train_classes"],
-                    prior_type="nn_dist",
-                    prior=nn_tree,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-
-        #
-        # kernel density estimate e.g. BirdSnap CVPR 2014
-        #
-        if "kde" in spa_enc_type_list:
-            self.logger.info("\nKernel density estimate prior")
-            kde_params = {}
-            train_classes_kde, train_locs_kde, kde_params["counts"] = (
-                bl.create_kde_grid(
-                    self.op["train_classes"], self.op["train_locs"], self.hyper_params
-                )
-            )
-            if self.hyper_params["kde_dist_type"] == "haversine":
-                train_locs_kde = np.deg2rad(train_locs_kde)
-                val_locs_kde = np.deg2rad(op["val_locs"])
-                kde_params["nn_tree_kde"] = BallTree(
-                    train_locs_kde[:, ::-1], metric="haversine"
-                )
-            else:
-                val_locs_kde = op["val_locs"]
-                kde_params["nn_tree_kde"] = BallTree(
-                    train_locs_kde[:, ::-1], metric="euclidean"
-                )
-
-            if self.params["save_results"]:
-                compute_acc_predict_result(
-                    params=self.params,
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_kde,
-                    train_classes=train_classes_kde,
-                    train_feats=train_locs_kde,
-                    prior_type="kde",
-                    prior=kde_params,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-            else:
-                compute_acc(
-                    val_preds=op["val_preds"],
-                    val_classes=op["val_classes"],
-                    val_split=op["val_split"],
-                    val_feats=val_locs_kde,
-                    train_classes=train_classes_kde,
-                    train_feats=train_locs_kde,
-                    prior_type="kde",
-                    prior=kde_params,
-                    hyper_params=self.hyper_params,
-                    logger=self.logger,
-                    eval_flag_str=eval_flag_str,
-                )
-
-        if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
-            print("With", self.params["spa_enc_type"])
-            val_preds_final = self.run_eval_spa_enc_final(
-                op, eval_flag_str=eval_flag_str
-            )
-            # print the evualtion metric when we only use spa_enc
-            # val_preds = self.run_eval_spa_enc_only()
-        if save_eval:
-            self.save_eval(
-                val_preds_final=val_preds_final, val_pred_no_prior=pred_no_prior
-            )
-
+    
+        
     def run_eval_spa_enc_final(self, op, eval_flag_str=""):
         spa_enc_type = self.params["spa_enc_type"]
         spa_enc_algs = set(ut.get_spa_enc_list() + ["wrap"])
@@ -1554,7 +1856,7 @@ class Trainer:
             device=self.params["device"],
         )
 
-        self.model.eval()
+        self.loc_enc_model.eval()
         if self.params["save_results"]:
             val_preds_final = compute_acc_predict_result(
                 params=self.params,
@@ -1563,7 +1865,7 @@ class Trainer:
                 val_split=op["val_split"],
                 val_feats=val_loc_feats,
                 prior_type=spa_enc_type,
-                prior=self.model,
+                prior=self.loc_enc_model,
                 logger=self.logger,
                 eval_flag_str=eval_flag_str,
             )
@@ -1574,7 +1876,7 @@ class Trainer:
                 val_split=op["val_split"],
                 val_feats=val_loc_feats,
                 prior_type=spa_enc_type,
-                prior=self.model,
+                prior=self.loc_enc_model,
                 logger=self.logger,
                 eval_flag_str=eval_flag_str,
             )
@@ -1598,14 +1900,14 @@ class Trainer:
             device=self.params["device"],
         )
 
-        self.model.eval()
+        self.loc_enc_model.eval()
         val_preds_final, val_ranks = compute_acc_and_rank(
             val_preds=op["val_preds"],
             val_classes=op["val_classes"],
             val_split=op["val_split"],
             val_feats=val_loc_feats,
             prior_type=spa_enc_type,
-            prior=self.model,
+            prior=self.loc_enc_model,
             logger=self.logger,
             eval_flag_str=eval_flag_str,
         )
@@ -1622,35 +1924,36 @@ class Trainer:
         )
         assert spa_enc_type in spa_enc_algs
 
-        if load_model:
-            self.load_model()
+        if self.params['dataset'] not in self.params['regress_dataset']:
+            if load_model:
+                self.load_model()
 
-        # construct features
-        # val_loc_feats: shape [batch_size, 2], torch.tensor
-        val_loc_feats = ut.generate_model_input_feats(
-            spa_enc_type=spa_enc_type,
-            locs=op["val_locs"],
-            dates=op["val_dates"],
-            params=self.params,
-            device=self.params["device"],
-        )
+            # construct features
+            # val_loc_feats: shape [batch_size, 2], torch.tensor
+            val_loc_feats = ut.generate_model_input_feats(
+                spa_enc_type=spa_enc_type,
+                locs=op["val_locs"],
+                dates=op["val_dates"],
+                params=self.params,
+                device=self.params["device"],
+            )
 
-        self.model.eval()
+            self.loc_enc_model.eval()
 
-        val_preds = compute_acc_batch(
-            params=self.params,
-            val_preds=None,
-            val_classes=op["val_classes"],
-            val_split=op["val_split"],
-            val_feats=val_loc_feats,
-            train_classes=None,
-            train_feats=None,
-            prior_type=spa_enc_type,
-            prior=self.model,
-            hyper_params=None,
-            batch_size=1024,
-            logger=self.logger,
-            eval_flag_str=eval_flag_str,
-        )
+            val_preds = compute_acc_batch(
+                params=self.params,
+                val_preds=None,
+                val_classes=op["val_classes"],
+                val_split=op["val_split"],
+                val_feats=val_loc_feats,
+                train_classes=None,
+                train_feats=None,
+                prior_type=spa_enc_type,
+                prior=self.loc_enc_model,
+                hyper_params=None,
+                batch_size=1024,
+                logger=self.logger,
+                eval_flag_str=eval_flag_str,
+            )
 
-        return val_preds
+            return val_preds

@@ -382,8 +382,8 @@ if __name__ == "__main__":
 
     parser.add_argument("--num_rbf_anchor_pts", type=int, default=200,
         help='The number of RBF anchor points used in in the space encoder')
-    parser.add_argument("--rbf_kernal_size", type=float, default=1.0,
-        help='The RBF kernal size in the "rbf" space encoder')
+    parser.add_argument("--rbf_kernel_size", type=float, default=1.0,
+        help='The RBF kernel size in the "rbf" space encoder')
 #     parser.add_argument("--rand_sample_weight", type=float, default=1.0,
 #         help='The weight of rand sample loss')
 
@@ -411,7 +411,7 @@ if __name__ == "__main__":
     params['hidden_dim'] = args.hidden_dim
 
     params['num_rbf_anchor_pts'] = args.num_rbf_anchor_pts
-    params['rbf_kernal_size'] = args.rbf_kernal_size
+    params['rbf_kernel_size'] = args.rbf_kernel_size
 
     params["model_dir"] = args.model_dir
     params["num_epochs"] = args.num_epochs
@@ -454,13 +454,13 @@ if __name__ == "__main__":
     #     hidden_dim = params['hidden_dim']
     #     )
     # if args.spa_enc_type == "rff":
-    #     param_args += "_{rbf_kernal_size:.1f}".format(
-    #         rbf_kernal_size = params['rbf_kernal_size']
+    #     param_args += "_{rbf_kernel_size:.1f}".format(
+    #         rbf_kernel_size = params['rbf_kernel_size']
     #         )
     # if args.spa_enc_type == "rbf":
-    #     param_args += "_{num_rbf_anchor_pts:d}_{rbf_kernal_size:.1f}".format(
+    #     param_args += "_{num_rbf_anchor_pts:d}_{rbf_kernel_size:.1f}".format(
     #         num_rbf_anchor_pts = params['num_rbf_anchor_pts'],
-    #         rbf_kernal_size = params['rbf_kernal_size']
+    #         rbf_kernel_size = params['rbf_kernel_size']
     #         )
     param_args = ut.make_model_file_param_args(params, spa_enc_type = args.spa_enc_type)
 
@@ -589,7 +589,7 @@ if __name__ == "__main__":
                 params = params,
                 device = eval_params['device'])
 
-        model = ut.get_model(
+        model = ut.get_loc_model(
             train_locs = train_locs,
             params = params, 
             spa_enc_type = params['spa_enc_type'], 
