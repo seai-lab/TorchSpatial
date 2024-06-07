@@ -4,11 +4,11 @@ DIR=../models_reg/sphere2vec_sphereC/
 
 ENC=Sphere2Vec-sphereC
 
-DATA=mosaiks_population
+DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:2
+DEVICE=cuda:1
 
 LR=0.0005
 LAYER=1
@@ -42,7 +42,7 @@ do
         --num_hidden_layer $LAYER \
         --hidden_dim $HIDDIM \
         --spa_f_act $ACT \
-        --ebed_dim_before_regress 218\
+        --embed_dim_before_regress 725\
         --unsuper_lr 0.1 \
         --lr $LR \
         --model_dir $DIR \

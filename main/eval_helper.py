@@ -5,8 +5,8 @@ import torch
 import math
 import pandas as pd
 import os
-from sklearn.neighbors import BallTree, DistanceMetric
-# from sklearn.metrics import DistanceMetric
+# from sklearn.neighbors import BallTree, DistanceMetric
+from sklearn.metrics import DistanceMetric
 from argparse import ArgumentParser
 from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 

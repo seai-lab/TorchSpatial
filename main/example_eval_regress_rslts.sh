@@ -38,7 +38,7 @@ python3 train_unsuper.py \
     --num_hidden_layer $LAYER \
     --hidden_dim $HIDDIM \
     --spa_f_act $ACT \
-    --ebed_dim_before_regress 218\
+    --embed_dim_before_regress 218\
     --lr 0.0009 \
     --model_dir $DIR \
     --num_epochs $EPOCH \

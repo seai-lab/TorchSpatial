@@ -1,10 +1,15 @@
 #!/bin/bash
 
-DIR=../models_reg/sphere2vec_sphereMplus/
+DIR=../models_reg/sh/
 
-ENC=Sphere2Vec-sphereM+
+ENC=spherical_harmonics
 
 DATA=mosaiks_nightlights
+#DATA=mosaiks_forest_cover
+#--embed_dim_before_regress 976
+#DATA=mosaiks_population
+#--embed_dim_before_regress 128
+
 META=ebird_meta
 EVALDATA=test
 
@@ -16,10 +21,10 @@ HIDDIM=512
 FREQ=64
 MINR=0.001
 MAXR=1
-EPOCH=100
+EPOCH=60
 
 
-ACT=leakyrelu
+ACT=relu
 RATIO=1.0
 
 
@@ -48,8 +53,10 @@ do
         --model_dir $DIR \
         --num_epochs $EPOCH \
         --train_sample_ratio $RATIO \
-        --device $DEVICE
+        --device $DEVICE 
     done
     done
 done
 
+        --sustainbench_num_rbf_anchor_pts 76 \
+        --sustainbench_rbf_kernel_size 53

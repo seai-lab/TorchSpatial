@@ -4,11 +4,11 @@ DIR=../models_reg/xyz/
 
 ENC=xyz
 
-DATA=mosaiks_population
+DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:3
+DEVICE=cuda:0
 
 LR=0.0005
 LAYER=1
@@ -16,7 +16,7 @@ HIDDIM=512
 FREQ=64
 MINR=0.001
 MAXR=1
-EPOCH=60
+EPOCH=80
 
 
 ACT=leakyrelu
@@ -42,7 +42,7 @@ do
         --num_hidden_layer $LAYER \
         --hidden_dim $HIDDIM \
         --spa_f_act $ACT \
-        --ebed_dim_before_regress 218\
+        --embed_dim_before_regress 725\
         --unsuper_lr 0.1 \
         --lr $LR \
         --model_dir $DIR \

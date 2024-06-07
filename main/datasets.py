@@ -884,7 +884,7 @@ def load_mosaiks_cnn_feat (data_dir, ann_file_name, split_name):
     
     return feats
 
-def load_mosaiks_data(data_dir, dataset_name, ann_file_name, cnn_feat_file_name, split_name, resample=True):
+def load_mosaiks_data(data_dir, dataset_name, ann_file_name, cnn_feat_file_name, split_name, resample=True, sample_fraction=0.1):
     """
     Return:
         locs: [data_size, 2]  (lon, lat)
@@ -916,7 +916,7 @@ def load_mosaiks_data(data_dir, dataset_name, ann_file_name, cnn_feat_file_name,
     
     return locs, labels, cnn_feats
 
-def load_sustainbench_data(data_dir, ann_file_name, label):
+def load_sustainbench_data(data_dir, ann_file_name, label, resample=True):
     """
     Return:
         locs: [data_size, 2]  (lon, lat)
@@ -934,6 +934,9 @@ def load_sustainbench_data(data_dir, ann_file_name, label):
 
     # Drop NA values for the relevant column
     da = da.dropna(subset=[normalized_column])
+
+    if resample:
+        da = da.sample(frac=sample_fraction, random_state=42)
     
     # Extract locations, labels, and features
     locs = da[["lon", "lat"]].values.astype(np.float32)

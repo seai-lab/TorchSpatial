@@ -47,7 +47,7 @@ def make_args_parser():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="mosaiks_population",  # ,"",birdsnap
+        default="inat_2017",  # ,"",birdsnap
         choices=[
             "inat_2021",
             "inat_2018",
@@ -179,8 +179,8 @@ def make_args_parser():
     parser.add_argument("--num_epochs", type=int, default=30)
 
     parser.add_argument(
-        "--ebed_dim_before_regress", type=int, default=64, help="embedding dim before regress"
-    )  # for regression, the loc encoder returns a params["ebed_dim_before_regress"]-dim location ebed and a params["ebed_dim_before_regress"]-dim image ebed
+        "--embed_dim_before_regress", type=int, default=64, help="embedding dim before regress"
+    )  # for regression, the loc encoder returns a params["embed_dim_before_regress"]-dim location embed and a params["embed_dim_before_regress"]-dim image embed
 
     parser.add_argument(
         "--num_epochs_unsuper",
@@ -320,13 +320,13 @@ def make_args_parser():
     parser.add_argument(
         "--train_sample_ratio",
         type=float,
-        default=1.0,
+        default= 0.5, #1.0,
         help="""The training dataset sample ratio for supervised learning""",
     )
     parser.add_argument(
         "--train_sample_method",
         type=str,
-        default="stratified-fix",
+        default="stratified-random",
         help="""The training dataset sample method
         1.1 stratified: stratified sampling, # samples in each class is propotional to the training distribution, each class at less has one sample
         1.2 random: random sampling, just random sample regardless the class distribution
@@ -580,9 +580,15 @@ class Trainer:
 
         self.regress_enc_model = self.create_regress_model()
 
-        if self.params["spa_enc_type"] not in self.spa_enc_baseline_list:
+        if self.params["spa_enc_type"] not in self.spa_enc_baseline_list and self.params['dataset'] not in params["regress_dataset"]:
             self.optimizer = torch.optim.Adam(
                 self.loc_enc_model.parameters(),
+                lr=params["lr"],
+                weight_decay=params["weight_decay"],
+            )
+        elif self.params['dataset'] in params["regress_dataset"]:
+            self.optimizer = torch.optim.Adam(
+                self.regress_enc_model.parameters(),
                 lr=params["lr"],
                 weight_decay=params["weight_decay"],
             )
@@ -590,6 +596,7 @@ class Trainer:
         self.set_up_grid_predictor()
 
         self.epoch = 0
+    
 
     def make_spa_enc_type_list(self):
         self.spa_enc_baseline_list = ut.get_spa_enc_baseline_list()
@@ -1111,14 +1118,10 @@ class Trainer:
         # Sustainbench regression task
         if self.params["dataset"].startswith("sustainbench"):
             img_enc_model = models.SustainBenchRegressNet(
+                params=self.params,
                 train_dataset=self.op["train_feats"],
                 device=self.params["device"],
-                num_rbf_anchor_pts=self.params["sustainbench_num_rbf_anchor_pts"],
-                rbf_kernel_size=self.params["sustainbench_rbf_kernel_size"],
                 loc_enc=self.loc_enc_model,
-                dropout_p=self.params["sustainbench_net_dropout"],
-                input_dim=self.params["ebed_dim_before_regress"],
-                hidden_dim=self.params["sustainbench_hidden_dim"],
             ).to(self.params["device"])
             return img_enc_model
 
@@ -1126,7 +1129,7 @@ class Trainer:
             print
             return models.MosaiksRegressNet(
                 params=self.params,
-                input_dim = self.params["ebed_dim_before_regress"],
+                input_dim = self.params["embed_dim_before_regress"],
                 dropout_p=self.params["mosaiks_net_dropout"],
                 hidden_dim=self.params["mosaiks_hidden_dim"],
                 loc_enc=self.loc_enc_model,
@@ -1160,7 +1163,7 @@ class Trainer:
                     params=self.params,
                     spa_enc_type=self.params["spa_enc_type"],
                     num_inputs=self.params["num_loc_feats"],
-                    num_classes=self.params["ebed_dim_before_regress"],  # for regression, the loc encoder returns a params["ebed_dim_before_regress"]-dim location embedding
+                    num_classes=self.params["embed_dim_before_regress"],  # for regression, the loc encoder returns a params["embed_dim_before_regress"]-dim location embedding
                     num_filts=self.params["num_filts"],
                     num_users=None,
                     device=self.params["device"],

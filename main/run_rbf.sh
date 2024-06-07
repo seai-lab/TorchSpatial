@@ -1,31 +1,34 @@
 #!/bin/bash
 
-DIR=../models_reg/sphere2vec_sphereMplus/
+DIR=../models_reg/rbf/
 
-ENC=Sphere2Vec-sphereM+
+ENC=rbf
 
 DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:3
+DEVICE=cuda:2
 
-LR=0.0005
+LR=0.005
 LAYER=1
 HIDDIM=512
 FREQ=64
-MINR=0.001
+MINR=0.1
 MAXR=1
 EPOCH=100
-
 
 ACT=leakyrelu
 RATIO=1.0
 
+NUM_RBF_ANCHOR_PTS=200  #[100, 200, 500]
+#rbf_kernel_size = # [0.5, 1, 2, 10]
+KERNELSIZE=2
 
-for LR in 0.0005 0.0009 0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
+
+for LR in 0.0002 #0.0001 0.00005   #0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
 do
-    for FREQ in 64 32
+    for FREQ in 32 #64
     do
     for HIDDIM in 512 1024 256
     do
@@ -52,4 +55,3 @@ do
     done
     done
 done
-

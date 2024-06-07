@@ -1,29 +1,27 @@
 #!/bin/bash
-
-DIR=../models_reg/sphere2vec_sphereMplus/
-
-ENC=Sphere2Vec-sphereM+
+DIR=../models_reg/nerf/ 
+ENC=NeRF  
 
 DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:3
+DEVICE=cuda:1
 
 LR=0.0005
 LAYER=1
 HIDDIM=512
 FREQ=64
 MINR=0.001
-MAXR=1
-EPOCH=100
+MAXR=360
+EPOCH=60
 
 
 ACT=leakyrelu
 RATIO=1.0
 
 
-for LR in 0.0005 0.0009 0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
+for LR in 0.0009 0.0001 0.00005   #0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
 do
     for FREQ in 64 32
     do
@@ -52,4 +50,3 @@ do
     done
     done
 done
-

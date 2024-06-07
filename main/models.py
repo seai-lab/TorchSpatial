@@ -154,25 +154,48 @@ class RBFFeaturePositionEncoder(nn.Module):
 
 
 class SustainBenchRegressNet(nn.Module):
-    def __init__(self, train_dataset, device, num_rbf_anchor_pts, rbf_kernel_size, loc_enc, dropout_p=0.2, input_dim=32, hidden_dim=256):
+    def __init__(self, train_dataset, device, params, loc_enc):
         super(SustainBenchRegressNet, self).__init__()
-        self.position_encoder = RBFFeaturePositionEncoder(train_locs=train_dataset, num_rbf_anchor_pts=num_rbf_anchor_pts, rbf_kernel_size=rbf_kernel_size, device=device)
-        self.img_model = nn.Sequential(
-            nn.Linear(self.position_encoder.pos_enc_output_dim, 64),
-            nn.LeakyReLU(),
-            nn.Linear(64, input_dim)
-        )
+        self.position_encoder = RBFFeaturePositionEncoder(train_locs=train_dataset, num_rbf_anchor_pts=params["num_rbf_anchor_pts"], rbf_kernel_size=params["rbf_kernel_size"], device=device)
         self.loc_enc = loc_enc
 
-        self.ffn = nn.Sequential(
-            nn.Linear(in_features=input_dim, out_features=hidden_dim),
-            nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-            nn.Dropout(p=dropout_p, inplace=False),
-            nn.Linear(in_features=hidden_dim, out_features=hidden_dim),
-            nn.LeakyReLU(),
-            nn.Dropout(p=dropout_p, inplace=False),
-            nn.Linear(in_features=hidden_dim, out_features=1),
-        )
+        if params['dataset'] == 'sustainbench_under5_mort':
+            self.img_model = nn.Sequential(
+                nn.Linear(self.position_encoder.pos_enc_output_dim, 980),
+                nn.LeakyReLU(),
+                nn.Linear(980, params["embed_dim_before_regress"])
+            )
+            self.ffn = nn.Sequential(
+                nn.Linear(in_features= params["embed_dim_before_regress"]*2, out_features=979),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=979, out_features=919),
+                nn.LeakyReLU(),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=919, out_features=523),
+                nn.LeakyReLU(),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=523, out_features=1),
+            )
+        elif params['dataset'] == 'sustainbench_women_bmi':
+            self.img_model = nn.Sequential(
+                nn.Linear(self.position_encoder.pos_enc_output_dim, 744),
+                nn.ReLU(),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(744, params["embed_dim_before_regress"]),
+            )
+            self.ffn = nn.Sequential(
+                nn.Linear(in_features= params["embed_dim_before_regress"]*2, out_features=707),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=707, out_features=919),
+                nn.LeakyReLU(),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=919, out_features=523),
+                nn.LeakyReLU(),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=523, out_features=1),
+            )
 
     def forward(self, img_feats, locs):
         '''
@@ -181,12 +204,11 @@ class SustainBenchRegressNet(nn.Module):
             locs: shape[batch_size, 2]
         '''
         feat_position = self.position_encoder(img_feats)
-        feat_embed = self.img_model(feat_position)
+        cnn_embed = self.img_model(feat_position)
 
         loc_embed = torch.squeeze(self.loc_enc(locs), dim=1)
 
-        #input_embed = torch.cat([cnn_embed, loc_embed], dim=-1)
-        input_embed = feat_embed * loc_embed
+        input_embed = torch.cat([cnn_embed, loc_embed], dim=-1)
         outputs = self.ffn(input_embed)
 
         return outputs
@@ -201,52 +223,67 @@ class MosaiksRegressNet(nn.Module):
 
         if params['dataset'] == 'mosaiks_elevation':
             self.cnn_ffn = nn.Sequential(
-                nn.Linear(in_features=2048, out_features=1024),
+                nn.Linear(in_features=2048, out_features=862),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=1024, out_features=512),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=862, out_features=846),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=512, out_features=input_dim),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=846, out_features=input_dim),
             )
             self.regress_ffn = nn.Sequential(
-                nn.Linear(in_features=input_dim, out_features=128),
+                nn.Linear(in_features=input_dim*2, out_features=893),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=893, out_features=881),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=881, out_features=510),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
                 nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=128, out_features=64),
-                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=64, out_features=1),
+                nn.Linear(in_features=510, out_features=1),
             )
         elif params['dataset'] == 'mosaiks_forest_cover':
             self.cnn_ffn = nn.Sequential(
-                nn.Linear(in_features=2048, out_features=87),
-                nn.ReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=87, out_features=input_dim),
+                nn.Linear(in_features=2048, out_features=533),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=533, out_features=input_dim),
             )
             self.regress_ffn = nn.Sequential(
-                nn.Linear(in_features=input_dim, out_features=124),
-                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Linear(in_features=input_dim*2, out_features=847),
+                nn.ReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=847, out_features=787),
+                nn.ReLU(),  # nn.Tanh(),ReLU()
                 nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=124, out_features=1),
+                nn.Linear(in_features=787, out_features=1),
             )
 
         elif params['dataset'] == 'mosaiks_nightlights':
             self.cnn_ffn = nn.Sequential(
-                nn.Linear(in_features=2048, out_features=1024),
+                nn.Linear(in_features=2048, out_features=346),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=1024, out_features=512),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=346, out_features=682),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=512, out_features=input_dim),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=682, out_features=73),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=73, out_features=input_dim),
             )
             self.regress_ffn = nn.Sequential(
-                nn.Linear(in_features=input_dim, out_features=64),
+                nn.Linear(in_features=input_dim*2, out_features=746),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
-                nn.Dropout(p=dropout_p, inplace=False),
-                nn.Linear(in_features=64, out_features=1),
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=746, out_features=416),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=416, out_features=257),
+                nn.LeakyReLU(),  # nn.Tanh(),ReLU()
+                nn.Dropout(p=0.1, inplace=False),
+                nn.Linear(in_features=257, out_features=1),
             )
 
         elif params['dataset'] == 'mosaiks_population':
@@ -257,7 +294,7 @@ class MosaiksRegressNet(nn.Module):
                 nn.Linear(in_features=1024, out_features=input_dim),
             )
             self.regress_ffn = nn.Sequential(
-                nn.Linear(in_features=input_dim, out_features=16),
+                nn.Linear(in_features=input_dim*2, out_features=16),
                 nn.LeakyReLU(),  # nn.Tanh(),ReLU()
                 nn.Dropout(p=dropout_p, inplace=False),
                 nn.Linear(in_features=16, out_features=1),
@@ -277,12 +314,11 @@ class MosaiksRegressNet(nn.Module):
         cnn_embed = self.cnn_ffn(img_feats)
         loc_embed = torch.squeeze(self.loc_enc(locs), dim=1)
 
-        #input_embed = torch.cat([cnn_embed, loc_embed], dim=-1)
-        input_embed = cnn_embed * loc_embed
+        input_embed = torch.cat([cnn_embed, loc_embed], dim=-1)
+        #input_embed = cnn_embed * loc_embed
         outputs = self.regress_ffn(input_embed)
 
         return outputs
-
 
 
 class ResLayer(nn.Module):
