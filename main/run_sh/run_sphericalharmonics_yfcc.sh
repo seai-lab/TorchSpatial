@@ -54,7 +54,8 @@ do
                         --model_dir $DIR \
                         --num_epochs $EPOCH \
                         --train_sample_ratio $RATIO \
-                        --device $DEVICE
+                        --device $DEVICE\
+			--save_result T
                 done
             done    
         done

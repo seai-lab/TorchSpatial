@@ -19,10 +19,19 @@ import losses as lo
 from dataloader import *
 from trainer_helper import *
 from eval_helper import *
+from sampler import *
+
+import pandas as pd
 
 
 def make_args_parser():
     parser = ArgumentParser()
+    parser.add_argument(
+        "--ssi_run_time",
+        type=int,
+        default="1",
+        help="""ssi run time""",
+    )
     parser.add_argument(
         "--save_results",
         type=str,
@@ -32,7 +41,7 @@ def make_args_parser():
     parser.add_argument(
         "--unsuper_dataset",
         type=str,
-        default="birdsnap",
+        default="inat_2018",
         help="""this is the dataset used for unsupervised learning training,
                 e.g., inat_2018, inat_2017, birdsnap, nabirds, yfcc, fmow""",
     )
@@ -47,7 +56,7 @@ def make_args_parser():
     parser.add_argument(
         "--dataset",
         type=str,
-        default="inat_2017",  # ,"",birdsnap
+        default="fmow",  # ,"",birdsnap
         choices=[
             "inat_2021",
             "inat_2018",
@@ -73,7 +82,7 @@ def make_args_parser():
     parser.add_argument(
         "--meta_type",
         type=str,
-        default="orig_meta",
+        default="ebird_meta",
         help="""e.g., orig_meta, ebird_meta""",
     )  # orig_meta, ebird_meta
     parser.add_argument("--eval_split", type=str, default="val", help="""val, test""")
@@ -89,7 +98,7 @@ def make_args_parser():
     parser.add_argument(
         "--load_cnn_predictions",
         type=str,
-        default="F",
+        default="T",
         help="""whether to load CNN prediction on train/val/test dataset""",
     )
     parser.add_argument(
@@ -175,8 +184,8 @@ def make_args_parser():
 
     parser.add_argument("--device", type=str, default="cuda:0")
 
-    parser.add_argument("--model_dir", type=str, default="../models/regression")
-    parser.add_argument("--num_epochs", type=int, default=30)
+    parser.add_argument("--model_dir", type=str, default="../models/ssi/")
+    parser.add_argument("--num_epochs", type=int, default=20)
 
     parser.add_argument(
         "--embed_dim_before_regress", type=int, default=64, help="embedding dim before regress"
@@ -320,24 +329,59 @@ def make_args_parser():
     parser.add_argument(
         "--train_sample_ratio",
         type=float,
-        default= 0.5, #1.0,
+        default= 0.01, #1.0,
         help="""The training dataset sample ratio for supervised learning""",
     )
     parser.add_argument(
         "--train_sample_method",
         type=str,
-        default="stratified-random",
+        default="random-fix",
         help="""The training dataset sample method
         1.1 stratified: stratified sampling, # samples in each class is propotional to the training distribution, each class at less has one sample
         1.2 random: random sampling, just random sample regardless the class distribution
         2.1 fix: sample first time and fix the sample indices
         2.2 random: random sample every times
+        3. ssi-sample: sample based on the spatial self information
 
-        stratified-fix: default
+        stratified-fix: defaultå
         stratified-random:
         random-fix:
         random-random:
+        ssi-sample
     """,
+    )
+    parser.add_argument(
+        "--ssi_sample_feat_type",
+        type=str,
+        default="feat",
+        help="""The feature type used in spatial self information sampling, e.g., feat, pred""")
+
+    parser.add_argument(
+        "--ssi_sample_k",
+        type=int,
+        default=20,
+        help="""ssi_sample_k""",
+    )
+
+    parser.add_argument(
+        "--ssi_sample_radius",
+        type=float,
+        default=100,
+        help="""ssi_sample_radius""",
+    )
+
+    parser.add_argument(
+        "--ssi_sample_n_bg",
+        type=int,
+        default=100,
+        help="""ssi_sample_n_bg""",
+    )
+
+    parser.add_argument(
+        "--ssi_sample_bucket_size",
+        type=float,
+        default=0.1,
+        help="""ssi_sample_bucket_size""",
     )
 
     # unsupervise loss
@@ -497,9 +541,6 @@ def update_params(params):
         params["load_cnn_features_train"] = "T"
         params["load_cnn_features"] = "T"
         params['load_cnn_predictions'] = "F"
-    else:
-        params["load_cnn_features_train"] = "F"
-        params["load_cnn_features"] = "F"
     # elif params["dataset"] in [
     #     "sustainbench_asset_index",
     #     "sustainbench_under5_mort",
@@ -726,15 +767,16 @@ class Trainer:
             if params["meta_type"] == "":
                 params["model_file_name"] = params[
                     "model_dir"
-                ] + "model_{}_{}_{}.pth.tar".format(
-                    params["dataset"], params["spa_enc_type"], param_args
+                ] + "model_{}_{}_{}_{}.pth.tar".format(
+                    params["dataset"], params["train_sample_ratio"], params["spa_enc_type"], param_args
                 )
             else:
                 params["model_file_name"] = params[
                     "model_dir"
-                ] + "model_{}_{}_{}_{}.pth.tar".format(
+                ] + "model_{}_{}_{}_{}_{}.pth.tar".format(
                     params["dataset"],
                     params["meta_type"],
+                    params["train_sample_ratio"],
                     params["spa_enc_type"],
                     param_args,
                 )
@@ -956,11 +998,24 @@ class Trainer:
 
             return dataset, data_loader, labels, loc_feats, cnn_feats
 
+    def get_next_available_filename(self, base_filename):
+        run_number = 1
+        while os.path.exists(f"{base_filename}_run{run_number}.npy"):
+            run_number += 1
+        return f"{base_filename}_run{run_number}.npy"
+
+    def get_available_filename(self, params, base_filename):
+        new_filename = f"{base_filename}_run{params['ssi_run_time']}.npy"
+        return new_filename
+
+
     def create_train_sample_data_loader(self, params):
+        print("Resample at scale: ", params["train_sample_ratio"],params["spa_enc_type"],"Using the sammpling method: ",params["train_sample_method"])
         if (
             params["train_sample_ratio"] < 1.0
             and params["train_sample_ratio"] > 0
             and params["spa_enc_type"] not in self.spa_enc_baseline_list
+            and params["train_sample_method"] != "ssi-sample"
         ):
             # we need to sample the training dataset for supervised learning
             train_sample_idx_file = dtul.get_sample_idx_file_path(
@@ -970,8 +1025,10 @@ class Trainer:
                 sample_ratio=params["train_sample_ratio"],
                 sample_method=params["train_sample_method"],
             )
-            params["train_sample_idx_file"] = train_sample_idx_file
 
+            # params["train_sample_idx_file"] = self.get_next_available_filename(train_sample_idx_file[:-4])
+            params["train_sample_idx_file"] = self.get_available_filename(params, train_sample_idx_file[:-4])
+            print("Sample idx file: ", params["train_sample_idx_file"])
             sample_type, sample_seed = params["train_sample_method"].split("-")
             if sample_seed == "fix" and os.path.exists(train_sample_idx_file):
                 # sample_seed == "fix" and if we have sampled idxs, just use the existing one
@@ -990,7 +1047,7 @@ class Trainer:
                     self.train_sample_idxs = np.sort(
                         np.random.choice(
                             list(range(num_sample)),
-                            size=num_sample * params["train_sample_ratio"],
+                            size=int(num_sample * params["train_sample_ratio"]),
                             replace=False,
                         )
                     )
@@ -999,6 +1056,54 @@ class Trainer:
                         f'Unknown train_sample_method: {params["train_sample_method"]}'
                     )
 
+                self.train_sample_idxs.dump(params["train_sample_idx_file"])
+
+            # self.train_sample_idxs_tensor = torch.from_numpy(self.train_sample_idxs).to(params['device'])
+            (
+                self.train_sample_dataset,
+                self.train_sample_loader,
+                self.train_sample_labels,
+                self.train_sample_loc_feats,
+                self.train_sample_users,
+                self.train_sample_feats,
+            ) = self.create_dataset_data_loader(
+                params,
+                data_flag="train",
+                classes=self.op["train_classes"][self.train_sample_idxs],
+                locs=self.op["train_locs"][self.train_sample_idxs],
+                dates=self.op["train_dates"][self.train_sample_idxs],
+                users=self.train_users_np[self.train_sample_idxs],
+                cnn_features=self.op["train_feats"][self.train_sample_idxs]
+                if self.op["train_feats"] is not None
+                else None,
+            )
+        elif (params["train_sample_ratio"] < 1.0
+            and params["train_sample_ratio"] > 0
+            and params["train_sample_method"] == "ssi-sample"):
+            feature_mapping = {
+                "pred": "train_preds",
+                "feat": "train_feats"
+            }
+            train_sample_idx_file = dtul.get_ssi_sample_idx_file_path(
+                params=params,
+                dataset=params["dataset"],
+                meta_type=params["meta_type"],
+                data_split="train",
+                sample_ratio=params["train_sample_ratio"],
+                sample_method=params["train_sample_method"],
+            )
+            params["train_sample_idx_file"] = train_sample_idx_file
+            
+            if os.path.exists(train_sample_idx_file):
+                self.train_sample_idxs = np.load(
+                    train_sample_idx_file, allow_pickle=True
+                )
+            else:
+                feats = self.op[feature_mapping[params["ssi_sample_feat_type"]]]
+                locs = self.op["train_locs"]
+                feats = torch.from_numpy(feats).to(params["device"])
+                locs= torch.from_numpy(locs).to(params["device"])
+                self.train_sample_idxs = ssi_sample(features=feats, locations=locs, sample_rate=params["train_sample_ratio"], k=params["ssi_sample_k"], radius=params["ssi_sample_radius"], n_bg=params["ssi_sample_n_bg"], bucket_size=params["ssi_sample_bucket_size"], inverse=False)
                 self.train_sample_idxs.dump(train_sample_idx_file)
 
             # self.train_sample_idxs_tensor = torch.from_numpy(self.train_sample_idxs).to(params['device'])
@@ -1020,6 +1125,13 @@ class Trainer:
                 if self.op["train_feats"] is not None
                 else None,
             )
+            final_df = pd.DataFrame({
+                "train_classes": self.op["train_classes"][self.train_sample_idxs],
+                "train_locs": self.op["train_locs"][self.train_sample_idxs],
+                "train_dates": self.op["train_dates"][self.train_sample_idxs],
+                "train_users": self.train_users_np[self.train_sample_idxs]
+            })
+            final_df.to_csv('combined_data.csv', index=False)
         else:
             (
                 self.train_sample_dataset,
@@ -1253,7 +1365,7 @@ class Trainer:
 
             self.save_model(unsuper_model=True)
 
-    def run_super_train(self):
+    def   run_super_train(self):
         if self.params["unsuper_loss"] != "none":
             # adjust the learning rate
             # we readjust the lr as the initial lr during supervised training
@@ -1291,7 +1403,7 @@ class Trainer:
                     logger=self.logger,
                 )
 
-                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and params['dataset'] not in params['regress_dataset']:
+                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and self.params['dataset'] not in self.params['regress_dataset']:
                     self.run_eval_spa_enc_only(
                         eval_flag_str=f"LocEnc (Epoch {epoch})", load_model=False
                     )
@@ -1315,7 +1427,7 @@ class Trainer:
                     logger=self.logger,
                 )
 
-                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and params['dataset'] not in params['regress_dataset']:
+                if epoch % self.params["eval_frequency"] == 0 and epoch != 0 and self.params['dataset'] not in self.params['regress_dataset']:
                     self.run_eval_spa_enc_only(
                         eval_flag_str=f"LocEnc (Epoch {epoch})", load_model=False
                     )

@@ -12,7 +12,7 @@ META=ebird_meta
 # META=orig_meta
 EVALDATA=test
 
-DEVICE=cuda:0
+DEVICE=cuda:3
 
 LR=0.005
 LAYER=1

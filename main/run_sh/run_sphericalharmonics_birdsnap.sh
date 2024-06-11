@@ -27,7 +27,7 @@ ACT=relu
 RATIO=1.0
 
 
-for x in birdsnap,ebird_meta,test # birdsnap,orig_meta,test  birdsnap,ebird_meta,test  nabirds,ebird_meta,test   inat_2018,ebird_meta,val
+for x in birdsnap,orig_meta,test
 do
     IFS=',' read DATA  META  EVALDATA <<< "${x}"
     for LR in 0.005
@@ -47,7 +47,6 @@ do
                         --max_radius $MAXR \
                         --min_radius $MINR \
                         --num_hidden_layer $LAYER \
-			--legendre_poly_num $L \
                         --hidden_dim $HIDDIM \
                         --spa_f_act $ACT \
                         --unsuper_lr 0.1 \
@@ -55,7 +54,8 @@ do
                         --model_dir $DIR \
                         --num_epochs $EPOCH \
                         --train_sample_ratio $RATIO \
-                        --device $DEVICE
+                        --device $DEVICE\
+			--save_result T
                 done
             done    
         done

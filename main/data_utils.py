@@ -106,6 +106,27 @@ def get_sample_idx_file_path(
     )
     return sample_idx_filepath
 
+def get_ssi_sample_idx_file_path(dataset, params, meta_type, data_split="train", sample_ratio=0.1, sample_method="stratified-fix"):
+    # Generate tags for the sample ratio and method
+    sample_ratio_tag = get_train_sample_ratio_tag(sample_ratio, sample_method)
+
+    # Generate a tag string for hyperparameters
+    hyperparams_tag = f"k{params['ssi_sample_k']}_radius{params['ssi_sample_radius']}_nbg{params['ssi_sample_n_bg']}_bucket{params['ssi_sample_bucket_size']}"
+
+    # Build the directory path for sample indices
+    data_dir = get_paths(f"{dataset}_data_dir")
+    sample_idx_dir = f"{data_dir}/sample_idx/"
+    if dataset == "birdsnap":
+        sample_idx_dir = f"{sample_idx_dir}/{meta_type}/"
+    if not os.path.isdir(sample_idx_dir):
+        os.makedirs(sample_idx_dir)
+
+    # Construct the file path including hyperparameters
+    sample_idx_filepath = f"{sample_idx_dir}/{data_split}_sample_{sample_ratio_tag}_{hyperparams_tag}.npy"
+
+    return sample_idx_filepath
+
+
 
 def coord_normalize(coords, extent=(-180, 180, -90, 90), do_global=False):
     """

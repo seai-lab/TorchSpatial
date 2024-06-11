@@ -198,7 +198,7 @@ def setup_console():
     logging.getLogger("").addHandler(console)
 
 
-def setup_logging(log_file, console=True, filemode="w"):
+def setup_logging(log_file, console=True, filemode="a"):
     # logging.getLogger('').handlers = []
     logging.basicConfig(
         level=logging.INFO,

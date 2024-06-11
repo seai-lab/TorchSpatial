@@ -1,22 +1,21 @@
 #!/bin/bash
 
-DIR=../models_reg/sphere2vec_sphereCplus/
+DIR=../models_reg/wrap/
 
-ENC=Sphere2Vec-sphereC+
-
+ENC=wrap
 
 DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:2
+DEVICE=cuda:0
 
 LR=0.0005
 LAYER=1
 HIDDIM=512
 FREQ=64
 MINR=0.001
-MAXR=360
+MAXR=1
 EPOCH=60
 
 

@@ -1,16 +1,19 @@
 #!/bin/bash
 
-DIR=../models/xyz/
+DIR=../models_reg/sphere2vec_sphereC/
 
-ENC=xyz
+ENC=Sphere2Vec-sphereC
 
-# DATA=birdsnap
-DATA=inat_2017
-# DATA=inat_2018
-# DATA=nabirds
+DATA=sustainbench_asset_index
+#sustainbench_asset_index
+#sustainbench_under5_mort
+#sustainbench_water_index
+#sustainbench_women_bmi
+#sustainbench_women_edu
+#sustainbench_sanitation_index
+
 META=ebird_meta
-# META=orig_meta
-EVALDATA=val
+EVALDATA=test
 
 DEVICE=cuda:2
 
@@ -20,22 +23,17 @@ HIDDIM=512
 FREQ=64
 MINR=0.001
 MAXR=1
-EPOCH=90
+EPOCH=60
 
-ACT=relu
+
+ACT=leakyrelu
 RATIO=1.0
 
 
-#for x in inat_2017,ebird_meta,val  #inat_2018,ebird_meta,val
-#do
-#    IFS=',' read DATA  META  EVALDATA <<< "${x}"
-#    for LR in 0.0005
-#    do
-#        for MINR in 0.005 0.001 0.0001
-#        do
+
 python3 train_unsuper.py \
-    --load_super_model T\
-    --eval_frequency 10 \
+    --save_results T\
+    --load_super_model F\
     --spa_enc_type $ENC \
     --meta_type $META\
     --dataset $DATA \
@@ -46,13 +44,10 @@ python3 train_unsuper.py \
     --num_hidden_layer $LAYER \
     --hidden_dim $HIDDIM \
     --spa_f_act $ACT \
+    --embed_dim_before_regress 218\
     --unsuper_lr 0.1 \
     --lr $LR \
     --model_dir $DIR \
     --num_epochs $EPOCH \
     --train_sample_ratio $RATIO \
-    --device $DEVICE \
-    --train_sample_ratio 1.0
-#        done
-#    done
-#done
+    --device $DEVICE

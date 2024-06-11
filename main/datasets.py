@@ -72,7 +72,14 @@ def load_dataset(
         class_ids = [cc["id"] for cc in cls_data]
         classes = dict(zip(class_ids, class_names))
 
-        if load_cnn_predictions:
+        if load_cnn_predictions:  
+            train_preds = load_sparse_feats(
+                data_dir
+                + "features_inception/inat2017_"
+                + "train"
+                + "_preds_sparse.npz"
+            )
+
             val_preds = load_sparse_feats(
                 data_dir
                 + "features_inception/inat2017_"
@@ -181,6 +188,12 @@ def load_dataset(
                         + "_preds_sparse.npz"
                     )
                 else:
+                    train_preds = load_sparse_feats(
+                        data_dir
+                        + "features_inception/inat2018_"
+                        + "train"
+                        + "_preds_sparse.npz"
+                    )
                     val_preds = load_sparse_feats(
                         data_dir
                         + "features_inception/inat2018_"
@@ -374,6 +387,12 @@ def load_dataset(
         classes = dict(zip(range(len(class_names)), class_names))
 
         if load_cnn_predictions:
+            train_preds = load_sparse_feats(
+                data_dir
+                + "features_inception/birdsnap_"
+                + "train"
+                + "_preds_sparse.npz"
+            )
             # load CNN pretrained model's image prediction of class
             val_preds = load_sparse_feats(
                 data_dir
@@ -425,6 +444,12 @@ def load_dataset(
         classes = dict(zip(range(len(class_names)), class_names))
 
         if load_cnn_predictions:
+            train_preds = load_sparse_feats(
+                data_dir
+                + "features_inception/nabirds_"
+                + "train"
+                + "_preds_sparse.npz"
+            )
             val_preds = load_sparse_feats(
                 data_dir
                 + "features_inception/nabirds_"
@@ -465,6 +490,9 @@ def load_dataset(
         classes = dict(zip(da["id"].values, da["name"].values))
 
         if load_cnn_predictions:
+            train_preds = np.load(
+                data_dir + "features_inception/YFCC_train_preds.npy"
+            )
             val_preds = np.load(
                 data_dir + "features_inception/YFCC_" + eval_split + "_preds.npy"
             )
@@ -601,6 +629,8 @@ def load_dataset(
     op["val_locs"] = val_locs
     # classification
     if params["dataset"] not in params["regress_dataset"]:
+        # (num_train, ), training image class prefictions
+        op["train_preds"]= train_preds
         # (num_train, ), training image class labels
         op["train_classes"] = train_classes
         # (num_train, ), training image user ids

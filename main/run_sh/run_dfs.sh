@@ -1,11 +1,13 @@
 #!/bin/bash
 
-DIR=../models_reg/sphere2vec_sphereCplus/
+DIR=../models_reg/sphere2vec_dfs/
 
-ENC=Sphere2Vec-sphereC+
-
+ENC=Sphere2Vec-dfs
 
 DATA=mosaiks_nightlights
+#DATA=mosaiks_forest_cover
+# --embed_dim_before_regress 976
+
 META=ebird_meta
 EVALDATA=test
 
@@ -16,7 +18,7 @@ LAYER=1
 HIDDIM=512
 FREQ=64
 MINR=0.001
-MAXR=360
+MAXR=1
 EPOCH=60
 
 
@@ -24,7 +26,7 @@ ACT=leakyrelu
 RATIO=1.0
 
 
-for LR in 0.0009 0.0001 0.00005   #0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
+for LR in 0.0002 0.0004 0.0001 #0.00001 #0.00002 0.00005 #0.0005 #0.00005
 do
     for FREQ in 64 32
     do
@@ -53,4 +55,5 @@ do
     done
     done
 done
+
 

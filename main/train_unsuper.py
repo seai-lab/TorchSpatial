@@ -5,7 +5,6 @@ import os
 import torch
 import pickle
 from argparse import ArgumentParser
-
 from torch import optim
 import models
 import utils as ut

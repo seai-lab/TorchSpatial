@@ -1,15 +1,14 @@
 #!/bin/bash
 
-DIR=../models_reg/sphere2vec_sphereCplus/
+DIR=../models_reg/space2vec_theory/
 
-ENC=Sphere2Vec-sphereC+
-
+ENC=Space2Vec-theory
 
 DATA=mosaiks_nightlights
 META=ebird_meta
 EVALDATA=test
 
-DEVICE=cuda:2
+DEVICE=cuda:3
 
 LR=0.0005
 LAYER=1
