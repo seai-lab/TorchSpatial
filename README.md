@@ -1,5 +1,6 @@
 # TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning
 
+![TorchSpatial Overall Framework](figs/overall_framework.png)
 
 
 
