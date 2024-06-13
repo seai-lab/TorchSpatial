@@ -13,7 +13,7 @@ The data can be downloaded from the following link:
 
 Data should be organized following the ..
 
-## Code Run
+## Code Execution
 The example bash files for running the codes can be found in main/run_bash folder
 
 
