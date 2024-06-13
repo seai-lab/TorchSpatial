@@ -1,5 +1,6 @@
 # TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning
 
+![TorchSpatial Overall Framework](figs/overall_framework.png)
 
 
 
@@ -44,3 +45,49 @@ We use the Functional Map of the World dataset (denoted as fMoW) (Klocek et al.,
 
 **Download**: [fMoW Dataset](https://github.com/fMoW/dataset)
 
+
+
+### Reference
+If you find our work useful in your research please consider citing [our ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions).  
+```
+@article{mai2023sphere2vec,
+  title={Sphere2Vec: A General-Purpose Location Representation Learning over a Spherical Surface for Large-Scale Geospatial Predictions},
+  author={Mai, Gengchen and Xuan, Yao and Zuo, Wenyun and He, Yutong and Song, Jiaming and Ermon, Stefano and Janowicz, Krzysztof and Lao, Ni},
+  journal={ISPRS Journal of Photogrammetry and Remote Sensing},
+  year={2023},
+  vol={202},
+  pages={439-462},
+  publisher={Elsevier}
+}
+```
+If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602):
+```
+@inproceedings{mai2020space2vec,
+  title={Multi-Scale Representation Learning for Spatial Feature Distributions using Grid Cells},
+  author={Mai, Gengchen and Janowicz, Krzysztof and Yan, Bo and Zhu, Rui and Cai, Ling and Lao, Ni},
+  booktitle={International Conference on Learning Representations},
+  year={2020},
+  organization={openreview}
+}
+
+@article{mai2022review,
+  title={A review of location encoding for GeoAI: methods and applications},
+  author={Mai, Gengchen and Janowicz, Krzysztof and Hu, Yingjie and Gao, Song and Yan, Bo and Zhu, Rui and Cai, Ling and Lao, Ni},
+  journal={International Journal of Geographical Information Science},
+  volume={36},
+  number={4},
+  pages={639--673},
+  year={2022},
+  publisher={Taylor \& Francis}
+}
+```
+If you use the unsupervised learning function, please also cite [our ICML 2023 paper](https://gengchenmai.github.io/csp-website/). Please refer to [our CSP webite](https://gengchenmai.github.io/csp-website/) for more detailed information.  
+```
+@inproceedings{mai2023csp,
+  title={CSP: Self-Supervised Contrastive Spatial Pre-Training for Geospatial-Visual Representations},
+  author={Mai, Gengchen and Lao, Ni and He, Yutong and Song, Jiaming and Ermon, Stefano},
+  booktitle={International Conference on Machine Learning},
+  year={2023},
+  organization={PMLR}
+}
+```
