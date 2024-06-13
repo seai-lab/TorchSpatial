@@ -8,8 +8,8 @@
 
 
 ## Data Download Instructions
-The data can be downloaded from the following link:
-[Download Data](https://www.dropbox.com/scl/fo/lsvb50zszhup2hylphdxc/AF84XwmulxVnLYJoouq_i_Q?rlkey=tc53scmvc48di52z1k9azzymk&st=ijkms1i1&dl=0)
+The data can be downloaded from the following DOI link:
+[Download Data](https://doi.org/10.6084/m9.figshare.26026798)
 
 Data should be organized following the ..
 
