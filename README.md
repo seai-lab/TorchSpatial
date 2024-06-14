@@ -53,7 +53,18 @@ Functional Map of the World dataset (denoted as fMoW) (Christie et al., 2018) is
 
 **Download**: [fMoW Dataset](https://github.com/fMoW/dataset)
 
-![Top1 classification accuracy](figs/img_cls_eval.jpg)
+
+## Results
+Table 1: The Top1 classification accuracy of different models on 7 geo-aware image classification datasets in LocBench benchmark. GPT-4V is tested with zero-shot settings, and * indicates that we resample 100 images from each dataset's test/validation set except BirdSnap and Birdsnap† whose whose test sets are used for evaluation. "Avg" column indicates the average performance of each model on all five species recognition datasets. **Bold** indicates the best models in Group B and C.
+![Top1 classification accuracy](figs/img_cls_eval.png)
+
+Table2: The R square of different models on 4 geo-aware image regression datasets in LocBench benchmark. Same format as above.
+![R square](figs/img_reg_eval.png)
+
+The average runtime for BirdSnap, BirdSnap†, NABirds†, and YFCC is within 5 minutes, and 10 to 20 minutes for iNat2017, iNat2018, and fMow.
+The number of training for each model on each dataset is one. Same as evaluation.
+All our experiments were conducted on a Ubuntu workstation equipped with 4 NVIDIA RTX A5500 GPUs each of which has 24 GB memory. 
+
 
 
 ### Reference
