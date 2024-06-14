@@ -53,6 +53,7 @@ Functional Map of the World dataset (denoted as fMoW) (Christie et al., 2018) is
 
 **Download**: [fMoW Dataset](https://github.com/fMoW/dataset)
 
+![Top1 classification accuracy](figs/img_cls_eval.jpg)
 
 
 ### Reference
