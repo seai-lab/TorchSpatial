@@ -6,7 +6,7 @@ output:
 
 # 1. Single point location encoder
 <p align="center">
-  <img src="./figs/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
+  <img src="../images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
 
@@ -217,11 +217,11 @@ Determines the mode (type) of a node based on the provided mappings.
 Computes the embedding for a path between nodes.
 - **Parameters**:
   - `path_dec`: The path decoder.
-  - `
 
 
-
+<div style="display:none">
 # 2. Aggregation location encoder
 <p align="center">
   <img src="./figs/aggregation_location_encoder_structure.png" alt="Structure of Aggregation Location Encoder Structure" title="General Structure of Location Encoder" width="40%" />
 </p>
+</div>

@@ -13,7 +13,6 @@ Here is the **v1.0**
    :maxdepth: 2
    :caption: Install:
 
-   Install/pip
    Install/conda
 
 .. toctree::
@@ -25,10 +24,9 @@ Here is the **v1.0**
 
 .. toctree::
    :maxdepth: 2
-   :caption: Advanced Concepts:
+   :caption: Basic Concepts:
 
-   Advanced Concepts/Advanced0
-   Advanced Concepts/Advanced1
+   Basic Concepts/Single point location encoder
 
 .. toctree::
    :maxdepth: 2
@@ -42,30 +40,32 @@ Here is the **v1.0**
    :maxdepth: 2
    :caption: Data:
 
-   Data/Data0
-   Data/Data1
+   Data/Image Classification Datasets
+   Data/Image Regression Datasets
 
 .. toctree::
    :maxdepth: 2
-   :caption: Others:
+   :caption: 2D Location Encoder:
 
-   Others/documentation.md
-   Others/tile-ffn.md
-   Others/xyz.md
-   Others/wrap.md
-   Others/wrap-ffn.md
-   Others/rbf.md
-   Others/rff.md
-   Others/NeRF.md
-   Others/Space2Vec-grid.md
-   Others/Space2Vec-theory.md
-   Others/Sphere2Vec-dfs.md
-   Others/Sphere2Vec-sphereC.md
-   Others/Sphere2Vec-sphereC+.md
-   Others/Sphere2Vec-sphereM.md
-   Others/Sphere2Vec-sphereM+.md
-   Others/Others0.rst
-   Others/Others1.rst
+   2D Location Encoder/tile-ffn.md
+   2D Location Encoder/wrap.md
+   2D Location Encoder/wrap-ffn.md
+   2D Location Encoder/rbf.md
+   2D Location Encoder/rff.md
+   2D Location Encoder/Space2Vec-grid.md
+   2D Location Encoder/Space2Vec-theory.md
+
+.. toctree::
+   :maxdepth: 2
+   :caption: 3D Location Encoder:
+
+   3D Location Encoder/xyz.md
+   3D Location Encoder/NeRF.md
+   3D Location Encoder/Sphere2Vec-dfs.md
+   3D Location Encoder/Sphere2Vec-sphereC.md
+   3D Location Encoder/Sphere2Vec-sphereC+.md
+   3D Location Encoder/Sphere2Vec-sphereM.md
+   3D Location Encoder/Sphere2Vec-sphereM+.md
    
 
 .. image:: /images/good.jpg
