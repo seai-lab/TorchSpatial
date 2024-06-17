@@ -1,0 +1,36 @@
+2024-05-30 22:41:46,857 - INFO - 
+num_classes	555
+2024-05-30 22:41:46,857 - INFO - num train    	22599
+2024-05-30 22:41:46,857 - INFO - num val      	1100
+2024-05-30 22:41:46,857 - INFO - train loss   	full_loss
+2024-05-30 22:41:46,857 - INFO - model name   	../models/tile/model_nabirds_ebird_meta_tile_ffn_inception_v3_0.00622347_32_0.0032920_1_512_leakyrelu.pth.tar
+2024-05-30 22:41:46,858 - INFO - num users    	5331
+2024-05-30 22:41:46,858 - INFO - meta data    	ebird_meta
+2024-05-30 22:41:47,056 - INFO - 
+Only tile_ffn
+2024-05-30 22:41:47,056 - INFO -  Model :	model_nabirds_ebird_meta_tile_ffn_inception_v3_0.00622347_32_0.0032920_1_512_leakyrelu.pth.tar
+2024-05-30 22:41:47,146 - INFO - Saving output model to ../models/tile/model_nabirds_ebird_meta_tile_ffn_inception_v3_0.00622347_32_0.0032920_1_512_leakyrelu.pth.tar
+2024-05-30 22:41:47,202 - INFO - Saving output model to ../models/tile/model_nabirds_ebird_meta_tile_ffn_inception_v3_0.00622347_32_0.0032920_1_512_leakyrelu.pth.tar
+2024-05-30 22:41:47,251 - INFO - 
+No prior
+2024-05-30 22:41:47,281 - INFO - (24633,)
+2024-05-30 22:41:48,712 - INFO - Save results to ../eval_results/eval_nabirds_ebird_meta_test_no_prior.csv
+2024-05-30 22:41:48,712 - INFO -  Split ID: 0
+2024-05-30 22:41:48,713 - INFO -  Top 1	acc (%):   76.08
+2024-05-30 22:41:48,713 - INFO -  Top 3	acc (%):   90.98
+2024-05-30 22:41:48,713 - INFO -  Top 5	acc (%):   94.06
+2024-05-30 22:41:48,713 - INFO -  Top 10	acc (%):   96.83
+2024-05-30 22:41:59,651 - INFO -  Split ID: 0
+2024-05-30 22:41:59,651 - INFO -  Top 1	hit (%):   75.78
+2024-05-30 22:41:59,651 - INFO -  Top 3	hit (%):   90.75
+2024-05-30 22:41:59,651 - INFO -  Top 5	hit (%):   93.92
+2024-05-30 22:41:59,651 - INFO -  Top 10	hit (%):   96.72
+2024-05-30 22:41:59,657 - INFO - 
+Only tile_ffn
+2024-05-30 22:41:59,657 - INFO -  Model :	model_nabirds_ebird_meta_tile_ffn_inception_v3_0.00622347_32_0.0032920_1_512_leakyrelu.pth.tar
+2024-05-30 22:41:59,675 - INFO - (1100,)
+2024-05-30 22:41:59,693 - INFO -  Split ID: 0
+2024-05-30 22:41:59,693 - INFO -  Top 1	LocEnc acc (%):   0.18
+2024-05-30 22:41:59,693 - INFO -  Top 3	LocEnc acc (%):   0.55
+2024-05-30 22:41:59,694 - INFO -  Top 5	LocEnc acc (%):   0.91
+2024-05-30 22:41:59,694 - INFO -  Top 10	LocEnc acc (%):   1.82

@@ -1,0 +1,35 @@
+2024-05-30 22:40:11,404 - INFO - 
+num_classes	8142
+2024-05-30 22:40:11,404 - INFO - num train    	436063
+2024-05-30 22:40:11,404 - INFO - num val      	24343
+2024-05-30 22:40:11,404 - INFO - train loss   	full_loss
+2024-05-30 22:40:11,404 - INFO - model name   	../models/tile/model_inat_2018_tile_ffn_0.00100363_32_0.0000032_1_512_leakyrelu.pth.tar
+2024-05-30 22:40:11,404 - INFO - num users    	18643
+2024-05-30 22:40:11,723 - INFO - 
+Only tile_ffn
+2024-05-30 22:40:11,723 - INFO -  Model :	model_inat_2018_tile_ffn_0.00100363_32_0.0000032_1_512_leakyrelu.pth.tar
+2024-05-30 22:40:11,987 - INFO - Saving output model to ../models/tile/model_inat_2018_tile_ffn_0.00100363_32_0.0000032_1_512_leakyrelu.pth.tar
+2024-05-30 22:40:12,267 - INFO - Saving output model to ../models/tile/model_inat_2018_tile_ffn_0.00100363_32_0.0000032_1_512_leakyrelu.pth.tar
+2024-05-30 22:40:12,710 - INFO - 
+No prior
+2024-05-30 22:40:12,931 - INFO - (24426,)
+2024-05-30 22:40:29,857 - INFO - Save results to ../eval_results/eval_inat_2018__val_no_prior.csv
+2024-05-30 22:40:29,857 - INFO -  Split ID: 0
+2024-05-30 22:40:29,858 - INFO -  Top 1	acc (%):   60.2
+2024-05-30 22:40:29,858 - INFO -  Top 3	acc (%):   77.9
+2024-05-30 22:40:29,858 - INFO -  Top 5	acc (%):   83.29
+2024-05-30 22:40:29,858 - INFO -  Top 10	acc (%):   88.5
+2024-05-30 22:40:51,137 - INFO -  Split ID: 0
+2024-05-30 22:40:51,137 - INFO -  Top 1	hit (%):   56.3
+2024-05-30 22:40:51,137 - INFO -  Top 3	hit (%):   74.9
+2024-05-30 22:40:51,137 - INFO -  Top 5	hit (%):   80.95
+2024-05-30 22:40:51,137 - INFO -  Top 10	hit (%):   86.87
+2024-05-30 22:40:51,142 - INFO - 
+Only tile_ffn
+2024-05-30 22:40:51,142 - INFO -  Model :	model_inat_2018_tile_ffn_0.00100363_32_0.0000032_1_512_leakyrelu.pth.tar
+2024-05-30 22:40:51,668 - INFO - (24343,)
+2024-05-30 22:41:10,916 - INFO -  Split ID: 0
+2024-05-30 22:41:10,925 - INFO -  Top 1	LocEnc acc (%):   0.01
+2024-05-30 22:41:10,925 - INFO -  Top 3	LocEnc acc (%):   0.04
+2024-05-30 22:41:10,926 - INFO -  Top 5	LocEnc acc (%):   0.06
+2024-05-30 22:41:10,927 - INFO -  Top 10	LocEnc acc (%):   0.12

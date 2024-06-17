@@ -156,7 +156,7 @@ def load_feat_model(params, eval_params, nn_model_path, val_locs, val_dates, tra
             params = params,
             device = eval_params['device'])
 
-    model = ut.get_model(
+    model = ut.get_loc_model(
         train_locs = train_locs,
         params = params, 
         spa_enc_type = params['spa_enc_type'], 

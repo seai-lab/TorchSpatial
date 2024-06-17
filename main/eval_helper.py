@@ -5,9 +5,10 @@ import torch
 import math
 import pandas as pd
 import os
-from sklearn.neighbors import BallTree, DistanceMetric
-# from sklearn.metrics import DistanceMetric
+# from sklearn.neighbors import BallTree, DistanceMetric
+from sklearn.metrics import DistanceMetric
 from argparse import ArgumentParser
+from sklearn.metrics import r2_score, mean_absolute_error, mean_squared_error
 
 from paths import get_paths
 import utils as ut
@@ -263,6 +264,43 @@ def compute_acc_batch(
     return pred_classes
 
 
+def compute_regression_acc(params, model, val_feats, val_locs, val_labels,logger):
+
+    model.eval()
+    if params['dataset'].startswith('sustainbench'):
+        val_feats = val_feats.reshape(val_feats.size(0), 1, 1)
+    else:
+        pass
+
+    predictions = model(img_feats=val_feats, locs=val_locs)
+
+
+    # Compute additional metrics
+    r2 = r2_score(val_labels.cpu().numpy(), predictions.squeeze().cpu().detach().numpy())
+    mae = mean_absolute_error(val_labels.cpu().numpy(), predictions.squeeze().cpu().detach().numpy())
+    rmse = mean_squared_error(val_labels.cpu().numpy(), predictions.squeeze().cpu().detach().numpy(), squared=False)
+
+    logger.info("Final regression evaluation results on test:")
+    logger.info(f"R2: {r2}")
+    logger.info(f"MAE: {mae}")
+    logger.info(f"RMSE: {rmse}")
+
+    # Save results to CSV if required
+    if params['save_results']:
+        epsilon = 1e-8  # Small value to prevent division by zero
+        results = pd.DataFrame({
+            'lon': val_locs[:, 0].cpu().numpy(),
+            'lat': val_locs[:, 1].cpu().numpy(),
+            'predictions': predictions.squeeze().cpu().detach().numpy(),
+            'labels': val_labels.cpu().numpy(),
+            'relative_error': (predictions.squeeze().cpu().detach().numpy() - val_labels.cpu().numpy()) / (val_labels.cpu().numpy()+ epsilon)
+        })
+        csv_filename = f"../eval_results/eval_{params['dataset']}_{params['meta_type']}_{params['eval_split']}_{params['spa_enc_type']}.csv"
+        results.to_csv(csv_filename, index=False)
+        print(f"Save results to {csv_filename}")
+
+    return
+
 def get_label_rank(loc_pred, loc_class):
     """
     Args:
@@ -479,7 +517,7 @@ def compute_acc_predict_result(
         inds = np.where(val_split == split)[0]
         for kk in np.sort(list(top_k_acc.keys())):
             logger.info(
-                " Top {}\t{}hit (%):   {}".format(
+                " Top {}\t{}acc (%):   {}".format(
                     kk, eval_flag_str, round(top_k_acc[kk][inds].mean() * 100, 2)
                 )
             )

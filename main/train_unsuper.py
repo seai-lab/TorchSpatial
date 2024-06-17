@@ -5,7 +5,6 @@ import os
 import torch
 import pickle
 from argparse import ArgumentParser
-
 from torch import optim
 import models
 import utils as ut
@@ -26,7 +25,6 @@ args = parser.parse_args()
 trainer = Trainer(args, console=True)
 trainer.run_train()
 trainer.run_eval_final()
-
 
 val_preds = trainer.run_eval_spa_enc_only(
     eval_flag_str="LocEnc ", load_model=True)

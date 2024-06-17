@@ -1,0 +1,35 @@
+2024-05-30 22:54:28,567 - INFO - 
+num_classes	8142
+2024-05-30 22:54:28,567 - INFO - num train    	436063
+2024-05-30 22:54:28,567 - INFO - num val      	24343
+2024-05-30 22:54:28,567 - INFO - train loss   	full_loss
+2024-05-30 22:54:28,567 - INFO - model name   	../models/wrap/model_inat_2018_wrap_0.00316757_32_0.0001197_1_256_leakyrelu.pth.tar
+2024-05-30 22:54:28,567 - INFO - num users    	18643
+2024-05-30 22:54:28,917 - INFO - 
+Only wrap
+2024-05-30 22:54:28,917 - INFO -  Model :	model_inat_2018_wrap_0.00316757_32_0.0001197_1_256_leakyrelu.pth.tar
+2024-05-30 22:54:29,303 - INFO - Saving output model to ../models/wrap/model_inat_2018_wrap_0.00316757_32_0.0001197_1_256_leakyrelu.pth.tar
+2024-05-30 22:54:29,531 - INFO - Saving output model to ../models/wrap/model_inat_2018_wrap_0.00316757_32_0.0001197_1_256_leakyrelu.pth.tar
+2024-05-30 22:54:29,956 - INFO - 
+No prior
+2024-05-30 22:54:30,166 - INFO - (24426,)
+2024-05-30 22:54:46,889 - INFO - Save results to ../eval_results/eval_inat_2018__val_no_prior.csv
+2024-05-30 22:54:46,889 - INFO -  Split ID: 0
+2024-05-30 22:54:46,889 - INFO -  Top 1	acc (%):   60.2
+2024-05-30 22:54:46,889 - INFO -  Top 3	acc (%):   77.9
+2024-05-30 22:54:46,889 - INFO -  Top 5	acc (%):   83.29
+2024-05-30 22:54:46,889 - INFO -  Top 10	acc (%):   88.5
+2024-05-30 22:55:09,597 - INFO -  Split ID: 0
+2024-05-30 22:55:09,598 - INFO -  Top 1	hit (%):   73.11
+2024-05-30 22:55:09,598 - INFO -  Top 3	hit (%):   86.72
+2024-05-30 22:55:09,598 - INFO -  Top 5	hit (%):   89.98
+2024-05-30 22:55:09,598 - INFO -  Top 10	hit (%):   92.81
+2024-05-30 22:55:09,603 - INFO - 
+Only wrap
+2024-05-30 22:55:09,603 - INFO -  Model :	model_inat_2018_wrap_0.00316757_32_0.0001197_1_256_leakyrelu.pth.tar
+2024-05-30 22:55:10,093 - INFO - (24343,)
+2024-05-30 22:55:29,401 - INFO -  Split ID: 0
+2024-05-30 22:55:29,402 - INFO -  Top 1	LocEnc acc (%):   1.86
+2024-05-30 22:55:29,402 - INFO -  Top 3	LocEnc acc (%):   5.05
+2024-05-30 22:55:29,402 - INFO -  Top 5	LocEnc acc (%):   7.74
+2024-05-30 22:55:29,402 - INFO -  Top 10	LocEnc acc (%):   13.24
