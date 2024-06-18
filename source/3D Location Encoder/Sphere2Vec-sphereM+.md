@@ -1,4 +1,4 @@
-# SphereGridMixScaleSpatialRelationLocationEncoder Documentation
+# SphereGridMixScaleSpatialRelationLocationEncoder
 
 ## Overview
 The `SphereGridMixScaleSpatialRelationLocationEncoder` is engineered for advanced spatial encoding, integrating a position encoder that leverages geometrically scaled sinusoidal functions. It processes these encodings through a multi-layer feed-forward neural network to create detailed spatial embeddings.

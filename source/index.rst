@@ -11,30 +11,16 @@ Here is the **v1.0**
 
 .. toctree::
    :maxdepth: 2
-   :caption: Install:
-
-   Install/conda
-
-.. toctree::
-   :maxdepth: 2
    :caption: Get Started:
 
-   Get Started/Introduction by Example
-   Get Started/Colab Notebooks and Video Tutorials
+   Get Started/Installation
+   Get Started/Introduction
 
 .. toctree::
    :maxdepth: 2
    :caption: Basic Concepts:
 
    Basic Concepts/Single point location encoder
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Package Reference:
-
-   Package Reference/LocEncoder
-   Package Reference/LocEncoder.nn
-   Package Reference/LocEncoder.data
 
 .. toctree::
    :maxdepth: 2
@@ -68,7 +54,6 @@ Here is the **v1.0**
    3D Location Encoder/Sphere2Vec-sphereM+.md
    
 
-.. image:: /images/good.jpg
 
 Indices and tables
 ==================

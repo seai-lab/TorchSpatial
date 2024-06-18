@@ -1,4 +1,4 @@
-# SphereGridSpatialRelationLocationEncoder Documentation
+# SphereGridSpatialRelationLocationEncoder
 
 ## Overview
 The `SphereGridSpatialRelationLocationEncoder` is engineered for encoding spatial relationships between locations. It leverages the `SphereGridSpatialRelationPositionEncoder` to initially encode spatial differences, then processes these through a customizable multi-layer feed-forward neural network to produce high-dimensional spatial embeddings.

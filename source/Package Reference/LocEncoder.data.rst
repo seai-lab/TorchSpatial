@@ -1,2 +1,0 @@
-LocEncoder.data
-+++++++++++++++

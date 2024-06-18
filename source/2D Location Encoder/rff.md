@@ -1,4 +1,4 @@
-# RFFSpatialRelationLocationEncoder Documentation
+# RFFSpatialRelationLocationEncoder
 
 ## Overview
 The `RFFSpatialRelationLocationEncoder` is designed to process spatial relations between locations using Random Fourier Features (RFF) adapted for spatial encoding. It utilizes the `RFFSpatialRelationPositionEncoder` to transform spatial coordinates into a high-dimensional space, enhancing the model's ability to capture and interpret spatial relationships across various scales.
