@@ -1,3 +1,2 @@
 myst-parser
-python_docs_theme
 renku-sphinx-theme
