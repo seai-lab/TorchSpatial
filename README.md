@@ -72,7 +72,7 @@ All our experiments were conducted on a Ubuntu workstation equipped with 4 NVIDI
 
 
 ### Reference
-If you find our work useful in your research please consider citing [our ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions).  
+If you find our work useful in your research please consider citing our TorchSpatial paper and [ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions).  
 ```
 @article{wu2024torchspatial,
   title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
