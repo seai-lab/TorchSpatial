@@ -10,7 +10,11 @@
 
 ## Data Download Instructions
 The data can be downloaded from the following DOI link:
-[Download Data](https://doi.org/10.6084/m9.figshare.26026798)
+[Download Data](https://doi.org/10.6084/m9.figshare.26026798
+        
+        
+        
+        )
 
 Data should be organized following the ..
 
@@ -80,8 +84,17 @@ If you find our work useful in your research please consider citing [our ISPRS P
   publisher={Elsevier}
 }
 ```
-If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602):
+If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602
+        
+        ):
 ```
+@article{wu2024torchspatial,
+  title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
+  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and others},
+  journal={arXiv preprint arXiv:2406.15658},
+  year={2024}
+}
+
 @inproceedings{mai2020space2vec,
   title={Multi-Scale Representation Learning for Spatial Feature Distributions using Grid Cells},
   author={Mai, Gengchen and Janowicz, Krzysztof and Yan, Bo and Zhu, Rui and Cai, Ling and Lao, Ni},
