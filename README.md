@@ -76,7 +76,7 @@ If you find our work useful in your research please consider citing our TorchSpa
 ```
 @article{wu2024torchspatial,
   title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
-  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and others},
+  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and Ermon, Stefano and Ganu, Tanuja and Nambi, Akshay and Lao, Ni and Mai, Gengchen},
   journal={arXiv preprint arXiv:2406.15658},
   year={2024}
 }
