@@ -74,6 +74,13 @@ All our experiments were conducted on a Ubuntu workstation equipped with 4 NVIDI
 ### Reference
 If you find our work useful in your research please consider citing [our ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions).  
 ```
+@article{wu2024torchspatial,
+  title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
+  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and others},
+  journal={arXiv preprint arXiv:2406.15658},
+  year={2024}
+}
+
 @article{mai2023sphere2vec,
   title={Sphere2Vec: A General-Purpose Location Representation Learning over a Spherical Surface for Large-Scale Geospatial Predictions},
   author={Mai, Gengchen and Xuan, Yao and Zuo, Wenyun and He, Yutong and Song, Jiaming and Ermon, Stefano and Janowicz, Krzysztof and Lao, Ni},
@@ -82,13 +89,6 @@ If you find our work useful in your research please consider citing [our ISPRS P
   vol={202},
   pages={439-462},
   publisher={Elsevier}
-}
-
-@article{wu2024torchspatial,
-  title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
-  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and others},
-  journal={arXiv preprint arXiv:2406.15658},
-  year={2024}
 }
 ```
 If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602):
