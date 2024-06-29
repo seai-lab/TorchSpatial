@@ -1,6 +1,17 @@
 # TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning
 🚧 Constructing...
 
+## Overview
+TorchSpatial offers a comprehensive framework and benchmark suite designed to advance spatial representation learning (SRL). It supports the development and evaluation of location encoders using extensive benchmarks and innovative evaluation metrics.
+
+## Features
+- **Unified Framework**: Integrates 15 recognized location encoders to enhance scalability and reproducibility.
+- **LocBench Benchmark**: Includes 11 datasets for geo-aware image classification and regression, enabling thorough performance assessments across various geographic distributions.
+- **Geo-Bias Score**: A novel metric to evaluate model performance and geographic bias, promoting spatial fairness in GeoAI applications.
+
+## Availability
+Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics on GitHub: [TorchSpatial GitHub Repository](https://github.com/seai-lab/TorchSpatial).
+
 ![TorchSpatial Overall Framework](figs/TorchSpatial_task4.jpg)
 
 
