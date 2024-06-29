@@ -19,7 +19,7 @@ The `SphericalHarmonicsSpatialRelationLocationEncoder` is designed to encode spa
 - **ffn_use_layernormalize**: Whether to use layer normalization.
 - **ffn_skip_connection**: Whether to include skip connections within the network layers.
 - **ffn_context_str**: Context string for debugging and detailed logging within the network.
-- 
+
 ## Methods
 ### forward(coords)
 - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
