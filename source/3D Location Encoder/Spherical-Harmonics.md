@@ -49,7 +49,7 @@ Where:
 -  $\phi$ is longitude in radians.
 -  $\theta$ is latitude in radians.
 
-## 2. Spherical Harmonics
+#### 2. Spherical Harmonics
 Spherical harmonics are orthogonal functions defined on the sphere, used to generate a positional encoding. The function $Y_l^m(\theta, \phi)$ for a degree $l$ and order $m$ is given by:
 
 $$
