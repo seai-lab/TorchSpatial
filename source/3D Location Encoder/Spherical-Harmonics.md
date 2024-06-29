@@ -39,7 +39,7 @@ This position encoder transforms geographic coordinates (longitude and latitude)
 ### Formula
 The encoder utilizes spherical harmonics to encode spatial data, transforming coordinates (longitude and latitude) into a three-dimensional spherical coordinate system, and then applying spherical harmonics to these coordinates.
 
-## 1. Conversion to Spherical Coordinates
+#### 1. Conversion to Spherical Coordinates
 Given longitude ( $\phi$  ) and latitude ( $\theta$  ), the coordinates are converted into spherical coordinates. Each point on the surface of the sphere is expressed as:
 - $x = \cos(\phi) \sin(\theta)$ 
 - $y = \sin(\phi) \sin(\theta)$ 
@@ -60,7 +60,7 @@ Where:
 - $P_l^m$ are the associated Legendre polynomials.
 - $e^{im\phi}$ is the complex exponential function.
 
-## 3. Encoding Formula
+#### 3. Encoding Formula
 The position encoding using spherical harmonics is computed as a sum of these functions across a range of degrees and orders, generally formulated as:
 
 $$
