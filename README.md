@@ -130,3 +130,6 @@ If you use the unsupervised learning function, please also cite [our ICML 2023 p
   organization={PMLR}
 }
 ```
+
+### License
+Our code is under MIT license. All data products created through our work that are not covered under upstream licensing agreements are available via a CC BY-NC 4.0 license. All upstream data use restrictions take precedence over this license.
