@@ -1,0 +1,226 @@
+2024-05-23 17:15:55,932 - INFO - 
+num_classes	555
+2024-05-23 17:15:55,932 - INFO - num train    	22599
+2024-05-23 17:15:55,932 - INFO - num val      	1100
+2024-05-23 17:15:55,932 - INFO - train loss   	full_loss
+2024-05-23 17:15:55,932 - INFO - model name   	../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-23 17:15:55,932 - INFO - num users    	5331
+2024-05-23 17:15:55,933 - INFO - meta data    	ebird_meta
+2024-05-23 17:15:56,708 - INFO - 
+Epoch	0
+2024-05-23 17:16:17,113 - INFO - [20480/22599]	Loss  : 1.6591
+2024-05-23 17:16:18,129 - INFO - Test loss   : 1.0968
+2024-05-23 17:16:18,129 - INFO - 
+Epoch	1
+2024-05-23 17:16:38,507 - INFO - [20480/22599]	Loss  : 1.3185
+2024-05-23 17:16:39,528 - INFO - Test loss   : 0.3637
+2024-05-23 17:16:39,529 - INFO - 
+Epoch	2
+2024-05-23 17:16:59,951 - INFO - [20480/22599]	Loss  : 1.1092
+2024-05-23 17:17:00,953 - INFO - Test loss   : 0.5217
+2024-05-23 17:17:00,953 - INFO - 
+Epoch	3
+2024-05-23 17:17:21,297 - INFO - [20480/22599]	Loss  : 1.0390
+2024-05-23 17:17:22,103 - INFO - Test loss   : 0.4443
+2024-05-23 17:17:22,104 - INFO - 
+Epoch	4
+2024-05-23 17:17:42,393 - INFO - [20480/22599]	Loss  : 0.9929
+2024-05-23 17:17:43,369 - INFO - Test loss   : 0.3695
+2024-05-23 17:17:43,369 - INFO - 
+Epoch	5
+2024-05-23 17:18:04,065 - INFO - [20480/22599]	Loss  : 0.9580
+2024-05-23 17:18:05,086 - INFO - Test loss   : 0.4628
+2024-05-23 17:18:05,086 - INFO - 
+Epoch	6
+2024-05-23 17:18:25,364 - INFO - [20480/22599]	Loss  : 0.9334
+2024-05-23 17:18:26,379 - INFO - Test loss   : 0.4225
+2024-05-23 17:18:26,379 - INFO - 
+Epoch	7
+2024-05-23 17:18:46,610 - INFO - [20480/22599]	Loss  : 0.9118
+2024-05-23 17:18:47,626 - INFO - Test loss   : 0.4542
+2024-05-23 17:18:47,627 - INFO - 
+Epoch	8
+2024-05-23 17:19:07,850 - INFO - [20480/22599]	Loss  : 0.8945
+2024-05-23 17:19:08,866 - INFO - Test loss   : 0.4696
+2024-05-23 17:19:08,866 - INFO - 
+Epoch	9
+2024-05-23 17:19:29,236 - INFO - [20480/22599]	Loss  : 0.8801
+2024-05-23 17:19:29,790 - INFO - Test loss   : 0.4740
+2024-05-23 17:19:29,790 - INFO - 
+Epoch	10
+2024-05-23 17:19:50,135 - INFO - [20480/22599]	Loss  : 0.8690
+2024-05-23 17:19:51,079 - INFO - Test loss   : 0.4967
+2024-05-23 17:19:51,091 - INFO - (1100,)
+2024-05-23 17:19:51,136 - INFO -  Split ID: 0
+2024-05-23 17:19:51,137 - INFO -  Top 1	LocEnc (Epoch 10)acc (%):   2.64
+2024-05-23 17:19:51,137 - INFO -  Top 3	LocEnc (Epoch 10)acc (%):   6.82
+2024-05-23 17:19:51,137 - INFO -  Top 5	LocEnc (Epoch 10)acc (%):   10.64
+2024-05-23 17:19:51,137 - INFO -  Top 10	LocEnc (Epoch 10)acc (%):   17.09
+2024-05-23 17:19:51,138 - INFO - 
+No prior
+2024-05-23 17:19:51,165 - INFO - (24633,)
+2024-05-23 17:19:51,835 - INFO -  Split ID: 0
+2024-05-23 17:19:51,836 - INFO -  Top 1	(Epoch 10)acc (%):   76.08
+2024-05-23 17:19:51,836 - INFO -  Top 3	(Epoch 10)acc (%):   90.98
+2024-05-23 17:19:51,836 - INFO -  Top 5	(Epoch 10)acc (%):   94.06
+2024-05-23 17:19:51,836 - INFO -  Top 10	(Epoch 10)acc (%):   96.83
+2024-05-23 17:20:21,446 - INFO -  Split ID: 0
+2024-05-23 17:20:21,447 - INFO -  Top 1	(Epoch 10)acc (%):   81.46
+2024-05-23 17:20:21,447 - INFO -  Top 3	(Epoch 10)acc (%):   93.53
+2024-05-23 17:20:21,447 - INFO -  Top 5	(Epoch 10)acc (%):   95.86
+2024-05-23 17:20:21,447 - INFO -  Top 10	(Epoch 10)acc (%):   97.9
+2024-05-23 17:20:21,450 - INFO - 
+Epoch	11
+2024-05-23 17:20:41,533 - INFO - [20480/22599]	Loss  : 0.8539
+2024-05-23 17:20:42,356 - INFO - Test loss   : 0.5089
+2024-05-23 17:20:42,356 - INFO - 
+Epoch	12
+2024-05-23 17:21:02,893 - INFO - [20480/22599]	Loss  : 0.8407
+2024-05-23 17:21:03,889 - INFO - Test loss   : 0.5385
+2024-05-23 17:21:03,889 - INFO - 
+Epoch	13
+2024-05-23 17:21:24,624 - INFO - [20480/22599]	Loss  : 0.8333
+2024-05-23 17:21:25,587 - INFO - Test loss   : 0.5290
+2024-05-23 17:21:25,587 - INFO - 
+Epoch	14
+2024-05-23 17:21:46,058 - INFO - [20480/22599]	Loss  : 0.8221
+2024-05-23 17:21:47,074 - INFO - Test loss   : 0.5707
+2024-05-23 17:21:47,074 - INFO - 
+Epoch	15
+2024-05-23 17:22:07,063 - INFO - [20480/22599]	Loss  : 0.8155
+2024-05-23 17:22:08,079 - INFO - Test loss   : 0.5718
+2024-05-23 17:22:08,080 - INFO - 
+Epoch	16
+2024-05-23 17:22:28,384 - INFO - [20480/22599]	Loss  : 0.8056
+2024-05-23 17:22:29,402 - INFO - Test loss   : 0.5945
+2024-05-23 17:22:29,402 - INFO - 
+Epoch	17
+2024-05-23 17:22:50,071 - INFO - [20480/22599]	Loss  : 0.7990
+2024-05-23 17:22:51,091 - INFO - Test loss   : 0.5999
+2024-05-23 17:22:51,091 - INFO - 
+Epoch	18
+2024-05-23 17:23:11,167 - INFO - [20480/22599]	Loss  : 0.7918
+2024-05-23 17:23:12,187 - INFO - Test loss   : 0.6236
+2024-05-23 17:23:12,187 - INFO - 
+Epoch	19
+2024-05-23 17:23:29,273 - INFO - [20480/22599]	Loss  : 0.7845
+2024-05-23 17:23:29,629 - INFO - Test loss   : 0.6282
+2024-05-23 17:23:29,630 - INFO - 
+Epoch	20
+2024-05-23 17:23:49,787 - INFO - [20480/22599]	Loss  : 0.7820
+2024-05-23 17:23:50,789 - INFO - Test loss   : 0.6291
+2024-05-23 17:23:50,798 - INFO - (1100,)
+2024-05-23 17:23:50,843 - INFO -  Split ID: 0
+2024-05-23 17:23:50,844 - INFO -  Top 1	LocEnc (Epoch 20)acc (%):   2.91
+2024-05-23 17:23:50,844 - INFO -  Top 3	LocEnc (Epoch 20)acc (%):   7.64
+2024-05-23 17:23:50,844 - INFO -  Top 5	LocEnc (Epoch 20)acc (%):   10.73
+2024-05-23 17:23:50,844 - INFO -  Top 10	LocEnc (Epoch 20)acc (%):   17.18
+2024-05-23 17:23:50,845 - INFO - 
+No prior
+2024-05-23 17:23:50,868 - INFO - (24633,)
+2024-05-23 17:23:51,560 - INFO -  Split ID: 0
+2024-05-23 17:23:51,560 - INFO -  Top 1	(Epoch 20)acc (%):   76.08
+2024-05-23 17:23:51,560 - INFO -  Top 3	(Epoch 20)acc (%):   90.98
+2024-05-23 17:23:51,560 - INFO -  Top 5	(Epoch 20)acc (%):   94.06
+2024-05-23 17:23:51,560 - INFO -  Top 10	(Epoch 20)acc (%):   96.83
+2024-05-23 17:24:21,077 - INFO -  Split ID: 0
+2024-05-23 17:24:21,077 - INFO -  Top 1	(Epoch 20)acc (%):   81.81
+2024-05-23 17:24:21,078 - INFO -  Top 3	(Epoch 20)acc (%):   93.52
+2024-05-23 17:24:21,078 - INFO -  Top 5	(Epoch 20)acc (%):   95.86
+2024-05-23 17:24:21,078 - INFO -  Top 10	(Epoch 20)acc (%):   97.8
+2024-05-23 17:24:21,078 - INFO - 
+Epoch	21
+2024-05-23 17:24:41,469 - INFO - [20480/22599]	Loss  : 0.7761
+2024-05-23 17:24:42,474 - INFO - Test loss   : 0.6548
+2024-05-23 17:24:42,474 - INFO - 
+Epoch	22
+2024-05-23 17:25:02,886 - INFO - [20480/22599]	Loss  : 0.7739
+2024-05-23 17:25:03,896 - INFO - Test loss   : 0.6586
+2024-05-23 17:25:03,896 - INFO - 
+Epoch	23
+2024-05-23 17:25:24,281 - INFO - [20480/22599]	Loss  : 0.7664
+2024-05-23 17:25:25,299 - INFO - Test loss   : 0.6870
+2024-05-23 17:25:25,299 - INFO - 
+Epoch	24
+2024-05-23 17:25:45,933 - INFO - [20480/22599]	Loss  : 0.7584
+2024-05-23 17:25:46,951 - INFO - Test loss   : 0.6965
+2024-05-23 17:25:46,951 - INFO - 
+Epoch	25
+2024-05-23 17:26:07,317 - INFO - [20480/22599]	Loss  : 0.7547
+2024-05-23 17:26:08,321 - INFO - Test loss   : 0.7121
+2024-05-23 17:26:08,321 - INFO - 
+Epoch	26
+2024-05-23 17:26:28,725 - INFO - [20480/22599]	Loss  : 0.7521
+2024-05-23 17:26:29,741 - INFO - Test loss   : 0.7117
+2024-05-23 17:26:29,742 - INFO - 
+Epoch	27
+2024-05-23 17:26:50,408 - INFO - [20480/22599]	Loss  : 0.7450
+2024-05-23 17:26:51,368 - INFO - Test loss   : 0.7499
+2024-05-23 17:26:51,368 - INFO - 
+Epoch	28
+2024-05-23 17:27:11,664 - INFO - [20480/22599]	Loss  : 0.7411
+2024-05-23 17:27:12,627 - INFO - Test loss   : 0.7460
+2024-05-23 17:27:12,627 - INFO - 
+Epoch	29
+2024-05-23 17:27:32,966 - INFO - [20480/22599]	Loss  : 0.7407
+2024-05-23 17:27:33,837 - INFO - Test loss   : 0.7521
+2024-05-23 17:27:33,837 - INFO - Saving output model to ../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-23 17:27:33,851 - INFO - Saving output model to ../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-23 17:27:33,886 - INFO - 
+No prior
+2024-05-23 17:27:33,909 - INFO - (24633,)
+2024-05-23 17:27:34,586 - INFO -  Split ID: 0
+2024-05-23 17:27:34,586 - INFO -  Top 1	acc (%):   76.08
+2024-05-23 17:27:34,587 - INFO -  Top 3	acc (%):   90.98
+2024-05-23 17:27:34,587 - INFO -  Top 5	acc (%):   94.06
+2024-05-23 17:27:34,587 - INFO -  Top 10	acc (%):   96.83
+2024-05-23 17:28:04,220 - INFO -  Split ID: 0
+2024-05-23 17:28:04,220 - INFO -  Top 1	acc (%):   81.65
+2024-05-23 17:28:04,220 - INFO -  Top 3	acc (%):   93.4
+2024-05-23 17:28:04,220 - INFO -  Top 5	acc (%):   95.71
+2024-05-23 17:28:04,221 - INFO -  Top 10	acc (%):   97.71
+2024-05-23 17:28:04,221 - INFO - 
+Space2Vec-theory
+2024-05-23 17:28:04,221 - INFO -  Model :	model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-23 17:28:04,237 - INFO - (1100,)
+2024-05-23 17:28:04,283 - INFO -  Split ID: 0
+2024-05-23 17:28:04,284 - INFO -  Top 1	LocEnc acc (%):   2.82
+2024-05-23 17:28:04,284 - INFO -  Top 3	LocEnc acc (%):   7.82
+2024-05-23 17:28:04,284 - INFO -  Top 5	LocEnc acc (%):   11.55
+2024-05-23 17:28:04,284 - INFO -  Top 10	LocEnc acc (%):   18.64
+2024-05-31 01:49:51,812 - INFO - 
+num_classes	555
+2024-05-31 01:49:51,812 - INFO - num train    	22599
+2024-05-31 01:49:51,812 - INFO - num val      	1100
+2024-05-31 01:49:51,812 - INFO - train loss   	full_loss
+2024-05-31 01:49:51,812 - INFO - model name   	../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-31 01:49:51,812 - INFO - num users    	5331
+2024-05-31 01:49:51,812 - INFO - meta data    	ebird_meta
+2024-05-31 01:49:52,560 - INFO - 
+Only Space2Vec-theory
+2024-05-31 01:49:52,560 - INFO -  Model :	model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-31 01:49:52,689 - INFO - Saving output model to ../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-31 01:49:52,734 - INFO - Saving output model to ../models/space2vec_theory/model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-31 01:49:52,780 - INFO - 
+No prior
+2024-05-31 01:49:52,812 - INFO - (24633,)
+2024-05-31 01:49:54,367 - INFO - Save results to ../eval_results/eval_nabirds_ebird_meta_test_no_prior.csv
+2024-05-31 01:49:54,368 - INFO -  Split ID: 0
+2024-05-31 01:49:54,368 - INFO -  Top 1	acc (%):   76.08
+2024-05-31 01:49:54,368 - INFO -  Top 3	acc (%):   90.98
+2024-05-31 01:49:54,368 - INFO -  Top 5	acc (%):   94.06
+2024-05-31 01:49:54,368 - INFO -  Top 10	acc (%):   96.83
+2024-05-31 01:50:06,742 - INFO -  Split ID: 0
+2024-05-31 01:50:06,742 - INFO -  Top 1	hit (%):   81.65
+2024-05-31 01:50:06,742 - INFO -  Top 3	hit (%):   93.4
+2024-05-31 01:50:06,743 - INFO -  Top 5	hit (%):   95.71
+2024-05-31 01:50:06,743 - INFO -  Top 10	hit (%):   97.71
+2024-05-31 01:50:06,749 - INFO - 
+Only Space2Vec-theory
+2024-05-31 01:50:06,749 - INFO -  Model :	model_nabirds_ebird_meta_Space2Vec-theory_inception_v3_0.0100_32_0.0500000_360.000_1_256_BATCH4096_leakyrelu.pth.tar
+2024-05-31 01:50:06,788 - INFO - (1100,)
+2024-05-31 01:50:06,832 - INFO -  Split ID: 0
+2024-05-31 01:50:06,833 - INFO -  Top 1	LocEnc acc (%):   2.82
+2024-05-31 01:50:06,833 - INFO -  Top 3	LocEnc acc (%):   7.82
+2024-05-31 01:50:06,833 - INFO -  Top 5	LocEnc acc (%):   11.55
+2024-05-31 01:50:06,833 - INFO -  Top 10	LocEnc acc (%):   18.64
