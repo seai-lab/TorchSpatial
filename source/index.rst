@@ -7,7 +7,7 @@ Welcome to TorchSpatial's documentation!
 ========================================
 .. image:: /images/hi.jpg
 
-Here is the **v1.0**
+Here is the **v0.1.0**
 
 .. toctree::
    :maxdepth: 2
