@@ -6,7 +6,7 @@ TorchSpatial offers a comprehensive framework and benchmark suite designed to ad
 
 ## Features
 - **Unified Framework**: Integrates 15 recognized location encoders to enhance scalability and reproducibility.
-- **LocBench Benchmark**: Includes 11 datasets for geo-aware image classification and regression, enabling thorough performance assessments across various geographic distributions.
+- **LocBench Benchmark**: Includes 17 datasets for geo-aware image classification and regression, enabling thorough performance assessments across various geographic distributions.
 - **Geo-Bias Score**: A novel metric to evaluate model performance and geographic bias, promoting spatial fairness in GeoAI applications.
 
 ## Availability
