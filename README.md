@@ -13,7 +13,7 @@ TorchSpatial offers a comprehensive framework and benchmark suite designed to ad
 Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics on GitHub: [TorchSpatial GitHub Repository](https://github.com/seai-lab/TorchSpatial).
 
 ## Overall Framework
-![TorchSpatial Overall Framework](figs/TorchSpatial_10regTasks.jpg)
+![TorchSpatial Overall Framework](figs/TorchSpatial4_10regTasks.jpg)
 
 
 
