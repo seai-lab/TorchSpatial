@@ -22,9 +22,11 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 
 ## Data Download Instructions
 The data can be downloaded from the following DOI link:
-[Download Data](https://doi.org/10.6084/m9.figshare.26026798)
-
-Data should be organized following the ..
+[Download Data](https://doi.org/10.6084/m9.figshare.26026798
+        
+        
+        
+        )
 
 ## Code Execution
 The example bash files for running the codes can be found in main/run_bash folder
