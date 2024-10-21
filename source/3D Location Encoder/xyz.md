@@ -48,7 +48,9 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
   - Calculate `x, y, z` coordinates using the following equations:
 
       $$x = \cos(lat) \times \cos(lon)$$
+
       $$y = \cos(lat) \times \sin(lon)$$  
+      
       $$z = \sin(lat)$$
     </p>
 

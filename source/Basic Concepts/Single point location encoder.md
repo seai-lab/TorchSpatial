@@ -9,7 +9,9 @@ output:
   <img src="https://github.com/seai-lab/TorchSpatial/blob/main/source/images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
-If the image cannot display, please click this [Link](https://drive.google.com/uc?id=14-nU3GBKaPjU91yepJVzXcZtVYDgXCZV).
+<div style="border:1px solid #000; padding:10px; border-radius:5px;">
+<strong>Note:</strong> If the image cannot display, please click this <a href="https://drive.google.com/uc?id=14-nU3GBKaPjU91yepJVzXcZtVYDgXCZV">Link</a>. 
+</div>
 
 
 
