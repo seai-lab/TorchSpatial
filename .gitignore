@@ -1,2 +1,5 @@
 _build
 auto_commit.sh
+.gitignore
+data/*
+47020978
