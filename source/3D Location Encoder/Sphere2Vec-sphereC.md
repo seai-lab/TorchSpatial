@@ -37,8 +37,12 @@ The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial rela
 
 ### Overview
   <p align="center">
-      <img src="../images/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="60%" />
+      <img src="../images/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="80%" />
   </p>
+  <div style="border:1px solid #000; padding:10px; border-radius:5px;">
+    <strong>Note:</strong> If the image cannot display, please click this <a href="https://drive.google.com/uc?id=1yKVBVC8r6ML747Xc1Vd07Ufdy7QTsJMX">Link</a>. 
+    </div>
+
 #### Spherical Coordinate Transformation
 
 - The encoder first transforms geographical coordinates (longitude and latitude) from degrees to radians.

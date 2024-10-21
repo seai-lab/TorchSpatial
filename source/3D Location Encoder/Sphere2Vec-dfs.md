@@ -40,6 +40,10 @@ This position encoder leverages Discrete Fourier Transform (DFT) techniques to e
     <p align="center">
       <img src="../images/dfs.png" alt="dfs-transformation" title="dfs-transformation" width="80%" />
     </p>
+    <div style="border:1px solid #000; padding:10px; border-radius:5px;">
+    <strong>Note:</strong> If the image cannot display, please click this <a href="https://drive.google.com/uc?id=150PnCy6JKDpaoAl2PFOR_3z06c-Wul81">Link</a>. 
+    </div>
+
 ### Features
 - **Frequency Domain Conversion**: Transforms spatial data into a frequency-based representation, capturing inherent spatial frequencies and patterns effectively.
 - **Multi-Scale Analysis**: By varying the number of frequencies and their initialization, the encoder can adapt to different spatial scales and resolutions.
