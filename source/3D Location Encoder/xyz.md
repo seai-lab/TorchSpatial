@@ -46,9 +46,18 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
 - **Formulas:**
   - Convert latitude `lat` and longitude `lon` coordinates into radians.
   - Calculate `x, y, z` coordinates using the following equations:
-    <p align="center">
-      <img src="https://drive.google.com/uc?id=1tviSk-NbxB0G8fTx5vYpkvBJXmiBK08g" alt="xyz-transformation" title="xyz-transformation" width="80%" />
+
+      $$x = \cos(lat) \times \cos(lon)$$  
+      $$y = \cos(lat) \times \sin(lon)$$  
+      $$z = \sin(lat)$$
     </p>
+
+    Where:
+
+    - *lat* is the latitude coordinate in radians.
+    - *lon* is the longitude coordinate in radians.
+    - *x*, *y*, *z* are the resulting Cartesian coordinates.
+
   - Concatenate `x, y, z` coordinates to form the high-dimensional vector representation.
 
 - **Returns:**

@@ -9,6 +9,10 @@ output:
   <img src="../images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
+$$
+Enc(\mathbf{x}) = \mathbf{NN}(PE(\mathbf{x}))
+$$
+
 
 ## EncoderMultiLayerFeedForwardNN()  
 `NN(⋅) : ℝ^W -> ℝ^d` is a learnable neural network component which maps the input position embedding `PE(x) ∈ ℝ^W` into the location embedding `Enc(x) ∈ ℝ^d`. A common practice is to define `NN(⋅)` as a multi-layer perceptron, while Mac Aodha et al. (2019) adopted a more complex `NN(⋅)` which includes an initial fully connected layer, followed by a series of residual blocks. The purpose of `NN(⋅)` is to provide a learnable component for the location encoder, which captures the complex interaction between input locations and target labels.

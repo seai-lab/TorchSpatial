@@ -36,6 +36,15 @@ The `NERFSpatialRelationLocationEncoder` is designed to compute spatial embeddin
     <img src="../images/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="60%" />
 </p>
 
+Encoded \( x \) = \(\bigoplus_{i=0}^{L-1}\) \([ \sin(2^i \pi x), \cos(2^i \pi x)]\)
+
+Encoded \( y \) = \(\bigoplus_{i=0}^{L-1}\) \([ \sin(2^i \pi y), \cos(2^i \pi y)]\)
+
+Encoded \( z \) = \(\bigoplus_{i=0}^{L-1}\) \([ \sin(2^i \pi z), \cos(2^i \pi z)]\)
+
+Where ⊕ denotes concatenation of vectors.
+
+
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
 - **frequency_num**: Number of different sinusoidal frequencies used to encode spatial differences.
