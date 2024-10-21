@@ -34,7 +34,8 @@ release = '0.01'
 extensions = [
     "sphinx.ext.autodoc",
     "myst_parser",
-    'sphinx.ext.imgconverter'
+    'sphinx.ext.imgconverter',
+    'sphinx.ext.mathjax'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
