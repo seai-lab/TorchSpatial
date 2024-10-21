@@ -14,6 +14,7 @@
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
 #import sphinx_pdj_theme
+from sphinx.ext import imgconverter
 
 # -- Project information -----------------------------------------------------
 
