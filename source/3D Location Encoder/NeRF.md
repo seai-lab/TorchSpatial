@@ -1,4 +1,6 @@
-# NERFSpatialRelationLocationEncoder
+# <em>NeRF</em>
+
+> # NERFSpatialRelationLocationEncoder
 
 ## Overview
 The `NERFSpatialRelationLocationEncoder` is designed to compute spatial embeddings from coordinate data using a Neural Radiance Field (NeRF) based encoding approach. This encoder integrates a position encoding strategy, leveraging a `NERFSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.

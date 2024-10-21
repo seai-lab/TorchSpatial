@@ -1,4 +1,6 @@
-# SphereMixScaleSpatialRelationLocationEncoder
+# <em>Space2Vec-sphereM</em>
+
+> # SphereMixScaleSpatialRelationLocationEncoder
 
 ## Overview
 The `SphereMixScaleSpatialRelationLocationEncoder` is engineered to encode spatial relationships between locations using advanced position encoding techniques. It integrates the `SphereMixScaleSpatialRelationPositionEncoder` for initial encoding and processes the results through a multi-layer feed-forward neural network to produce high-dimensional spatial embeddings.

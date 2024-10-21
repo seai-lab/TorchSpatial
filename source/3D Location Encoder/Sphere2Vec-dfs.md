@@ -1,4 +1,6 @@
-# DFTSpatialRelationLocationEncoder
+# <em>Space2Vec-dfs</em>
+
+> # DFTSpatialRelationLocationEncoder
 
 ## Overview
 The `DFTSpatialRelationLocationEncoder` is designed to process spatial relations between locations using Discrete Fourier Transform (DFT) principles adapted for spatial encoding. It utilizes the `DFTSpatialRelationPositionEncoder` to transform spatial coordinates into a frequency domain, enhancing the model's ability to capture and interpret spatial relationships across various scales.

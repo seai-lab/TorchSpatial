@@ -1,4 +1,7 @@
-# SphericalHarmonicsSpatialRelationLocationEncoder
+# <em>Siren(SH)</em>
+
+> # SphericalHarmonicsSpatialRelationLocationEncoder
+
 
 ## Overview
 The `SphericalHarmonicsSpatialRelationLocationEncoder` is designed to encode spatial relationships using spherical harmonics, which are particularly useful for modeling functions on the sphere. This encoder is complemented by the `SphericalHarmonicsSpatialRelationPositionEncoder`, which transforms geographical coordinates into a three-dimensional space and applies spherical harmonics for positional encoding.

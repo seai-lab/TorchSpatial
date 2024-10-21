@@ -1,4 +1,6 @@
-# SphereSpatialRelationLocationEncoder
+# <em>Space2Vec-sphereC</em>
+
+> # SphereSpatialRelationLocationEncoder
 
 ## Overview
 The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations using a spherical coordinate system. This encoder integrates a position encoding strategy, leveraging a `SphereSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.

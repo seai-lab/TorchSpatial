@@ -1,4 +1,6 @@
-# XYZSpatialRelationLocationEncoder
+# <em>xyz</em>
+
+> # XYZSpatialRelationLocationEncoder
 
 ## Overview
 The `XYZSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations. This encoder integrates a position encoding strategy, leveraging an `XYZSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.
