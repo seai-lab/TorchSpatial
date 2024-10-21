@@ -10,9 +10,7 @@ output:
 </p>
 
 If the image cannot display, please click this [Link](https://drive.google.com/uc?id=14-nU3GBKaPjU91yepJVzXcZtVYDgXCZV).
-$$
-Enc(\mathbf{x}) = \mathbf{NN}(PE(\mathbf{x}))
-$$
+
 
 
 ## EncoderMultiLayerFeedForwardNN()  
@@ -223,10 +221,3 @@ Computes the embedding for a path between nodes.
 - **Parameters**:
   - `path_dec`: The path decoder.
 
-
-<div style="display:none">
-# 2. Aggregation location encoder
-<p align="center">
-  <img src="./images/aggregation_location_encoder_structure.png" alt="Structure of Aggregation Location Encoder Structure" title="General Structure of Location Encoder" width="40%" />
-</p>
-</div>

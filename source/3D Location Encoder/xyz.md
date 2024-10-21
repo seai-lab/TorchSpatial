@@ -47,16 +47,15 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
   - Convert latitude `lat` and longitude `lon` coordinates into radians.
   - Calculate `x, y, z` coordinates using the following equations:
 
-      $$
-      x = \cos(lat) \times \cos(lon)
-      $$
-      $$
-      y = \cos(lat) \times \sin(lon)
-      $$  
-      $$
-      z = \sin(lat)
-      $$
+      $$x = \cos(lat) \times \cos(lon)$$
+      $$y = \cos(lat) \times \sin(lon)$$  
+      $$z = \sin(lat)$$
     </p>
+
+      <div style="border:1px solid #000; padding:10px; border-radius:5px;">
+      <strong>Note:</strong> If the equations cannot render properly, please click this <a href="https://drive.google.com/uc?id=1tviSk-NbxB0G8fTx5vYpkvBJXmiBK08g">Link</a>. 
+      </div>
+
 
     Where:
 

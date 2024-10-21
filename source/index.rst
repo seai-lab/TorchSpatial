@@ -20,7 +20,8 @@ Here is the **v0.1.0**
    :maxdepth: 2
    :caption: Basic Concepts:
 
-   Basic Concepts/Single point location encoder
+   Basic Concepts/Single point location encoder.md
+   Basic Concepts/Aggregation location encoder
 
 .. toctree::
    :maxdepth: 2
