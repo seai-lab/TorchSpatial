@@ -37,7 +37,7 @@ do
     do
         for ANCHOR in 100 200 500
         do
-            python3 main.py \
+            python3 main.py
                 --spa_enc_type $ENC \
                 --meta_type $META\
                 --dataset $DATA \
