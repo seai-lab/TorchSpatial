@@ -1,2 +1,3 @@
 myst-parser
 renku-sphinx-theme
+sphinx_pdj_theme
