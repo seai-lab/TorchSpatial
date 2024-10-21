@@ -25,7 +25,7 @@ KERNELSIZE=2
 ANCHOR=200
 
 
-python3 train_unsuper.py \
+python3 main.py \
     --save_results T\
     --load_super_model F\
     --spa_enc_type $ENC \
