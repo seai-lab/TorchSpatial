@@ -31,7 +31,7 @@ RATIO=1.0
 
 
 
-python3 main.py \
+python3 main.py
     --save_results T\
     --load_super_model F\
     --spa_enc_type $ENC \
