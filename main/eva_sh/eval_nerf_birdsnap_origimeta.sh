@@ -17,7 +17,7 @@ EPOCH=0
 ACT=sigmoid 
 RATIO=1.0 
 
-python3 train_unsuper.py \
+python3 main.py
     --save_results T\
     --load_super_model T\
     --num_epochs $EPOCH \
