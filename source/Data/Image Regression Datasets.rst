@@ -2,8 +2,7 @@ Image Regression Datasets
 ++++++++++++++++++++++++++++++++++++++++++++++++++
 
 The datasets for image regression tasks are originally from the MOSAIKS dataset (Rolf et al., 2021) and the SustainBench benchmark (Yeh et al., 2021). We preprocess the data to fit the image regression task settings.
-The data can be downloaded from the following DOI link:
-`Download Data <https://doi.org/10.6084/m9.figshare.26026798>`_
+The data can be downloaded from the following DOI link: https://doi.org/10.6084/m9.figshare.26026798
 
 MOSAIKS Population Density
 =============================
