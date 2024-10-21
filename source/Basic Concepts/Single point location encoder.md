@@ -9,6 +9,7 @@ output:
   <img src="https://github.com/seai-lab/TorchSpatial/blob/main/source/images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
+If the image cannot display, please click this [Link](https://drive.google.com/uc?id=14-nU3GBKaPjU91yepJVzXcZtVYDgXCZV).
 $$
 Enc(\mathbf{x}) = \mathbf{NN}(PE(\mathbf{x}))
 $$
