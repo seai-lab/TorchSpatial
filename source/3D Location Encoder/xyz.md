@@ -49,7 +49,7 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
 
       $$
       x = \cos(lat) \times \cos(lon)
-      $$  
+      $$
       $$
       y = \cos(lat) \times \sin(lon)
       $$  
