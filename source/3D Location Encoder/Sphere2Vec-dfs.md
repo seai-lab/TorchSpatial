@@ -36,7 +36,7 @@ The `DFTSpatialRelationLocationEncoder` is designed to process spatial relations
 ### Overview
 This position encoder leverages Discrete Fourier Transform (DFT) techniques to encode spatial coordinates into the frequency domain, enabling the model to recognize patterns and relationships that are not immediately apparent in the spatial domain.
     <p align="center">
-      <img src="../figs/dfs.png" alt="dfs-transformation" title="dfs-transformation" width="80%" />
+      <img src="../images/dfs.png" alt="dfs-transformation" title="dfs-transformation" width="80%" />
     </p>
 ### Features
 - **Frequency Domain Conversion**: Transforms spatial data into a frequency-based representation, capturing inherent spatial frequencies and patterns effectively.

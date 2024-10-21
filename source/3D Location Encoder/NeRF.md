@@ -33,7 +33,7 @@ The `NERFSpatialRelationLocationEncoder` is designed to compute spatial embeddin
 
 ### Features
 <p align="center">
-    <img src="../figs/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="60%" />
+    <img src="../images/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="60%" />
 </p>
 
 ### Configuration Parameters

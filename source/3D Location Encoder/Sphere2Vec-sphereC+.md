@@ -37,7 +37,7 @@ The `SphereGridSpatialRelationLocationEncoder` is engineered for encoding spatia
 - **Sinusoidal Encoding**: Applies sinusoidal functions to encode spatial differences, enhancing the model's ability to learn from these features.
 - **Configurable Parameters**: Supports customization of encoding parameters such as space dimensionality and computation device.
     <p align="center">
-      <img src="../figs/sphereC+.png" alt="sphereC-plus-transformation" title="sphereC-plus-transformation" width="80%" />
+      <img src="../images/sphereC+.png" alt="sphereC-plus-transformation" title="sphereC-plus-transformation" width="80%" />
     </p>
 ### Configuration Parameters
 - **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).

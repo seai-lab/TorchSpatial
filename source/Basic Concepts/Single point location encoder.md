@@ -4,16 +4,16 @@ output:
   pdf_document: default
 ---
 
-# 1. Single point location encoder
+# Single point location encoder
 <p align="center">
   <img src="../images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
 
-## 1.1 EncoderMultiLayerFeedForwardNN()  
+## EncoderMultiLayerFeedForwardNN()  
 `NN(⋅) : ℝ^W -> ℝ^d` is a learnable neural network component which maps the input position embedding `PE(x) ∈ ℝ^W` into the location embedding `Enc(x) ∈ ℝ^d`. A common practice is to define `NN(⋅)` as a multi-layer perceptron, while Mac Aodha et al. (2019) adopted a more complex `NN(⋅)` which includes an initial fully connected layer, followed by a series of residual blocks. The purpose of `NN(⋅)` is to provide a learnable component for the location encoder, which captures the complex interaction between input locations and target labels.
 
-### 1.1.1 Properties
+### Properties
 
 - `input_dim` (int): Dimensionality of the input embeddings.
 - `output_dim` (int): Dimensionality of the output of the network.
@@ -25,7 +25,7 @@ output:
 - `skip_connection` (bool): If set to True, enables skip connections between layers.
 - `context_str` (str, optional): An optional string providing context for this instance, such as indicating its role within a larger model.
 
-### 1.1.3 Methods
+### Methods
 
 #### `__init__(input_dim, output_dim, num_hidden_layers=0, dropout_rate=None, hidden_dim=-1, activation="sigmoid", use_layernormalize=False, skip_connection=False, context_str=None)`
 Constructor for the `EncoderMultiLayerFeedForwardNN` class.
@@ -53,10 +53,10 @@ Defines the forward pass of the network.
 
 
 
-## 1.2 PositionEncoder()
+## PositionEncoder()
 `PE(⋅)` is the most important component which distinguishes different `Enc(x)`. Usually, `PE(⋅)` is a *deterministic* function which transforms location x into a W-dimension vector, so-called position embedding. The purpose of `PE(⋅)` is to do location feature normalization (Chu et al. 2019, Mac Aodha et al. 2019, Rao et al. 2020) and/or feature decomposition (Mai et al. 2020b, Zhong et al. 2020) so that the output `PE(x)` is more learning-friendly for `NN(⋅)`. In Table 1 we further classify different `Enc(x)` into four sub-categories based on their `PE(⋅)`: discretization-based, direct, sinusoidal, and sinusoidal multi-scale location encoder. Each of them will be discussed in detail below.
 
-### 1.2.1 Properties
+### Properties
 - `spa_embed_dim` (int): The dimension of the output spatial relation embedding.
 - `coord_dim` (int): The dimensionality of space (e.g., 2 for 2D, 3 for 3D).
 - `frequency_num` (int): The number of different frequencies/wavelengths for the sinusoidal functions.
@@ -67,7 +67,7 @@ Defines the forward pass of the network.
 - `device` (str): The device to which tensors will be moved ('cuda' or 'cpu').
 
 
-### 1.2.2 Methods
+### Methods
 ### `get_activation_function(activation, context_str)`
 - **Parameters**:
   - `activation`: A string that specifies the type of activation function to retrieve.
@@ -222,6 +222,6 @@ Computes the embedding for a path between nodes.
 <div style="display:none">
 # 2. Aggregation location encoder
 <p align="center">
-  <img src="./figs/aggregation_location_encoder_structure.png" alt="Structure of Aggregation Location Encoder Structure" title="General Structure of Location Encoder" width="40%" />
+  <img src="./images/aggregation_location_encoder_structure.png" alt="Structure of Aggregation Location Encoder Structure" title="General Structure of Location Encoder" width="40%" />
 </p>
 </div>

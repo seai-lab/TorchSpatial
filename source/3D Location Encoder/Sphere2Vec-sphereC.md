@@ -35,7 +35,7 @@ The `SphereSpatialRelationLocationEncoder` is designed for encoding spatial rela
 
 ### Overview
   <p align="center">
-      <img src="../figs/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="60%" />
+      <img src="../images/Sphere2Vec-sphereC.png" alt="Sphere2Vec-sphereC-transformation" title="Sphere2Vec-sphereC-transformation" width="60%" />
   </p>
 #### Spherical Coordinate Transformation
 
