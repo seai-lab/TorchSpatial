@@ -6,7 +6,7 @@ output:
 
 # Single point location encoder
 <p align="center">
-  <img src="../images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
+  <img src="source/images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
 
 $$
