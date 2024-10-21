@@ -1,6 +1,6 @@
-# <em>tile-ffn</em>
+# <em>tile</em>
 
-> ## GridLookupSpatialRelationLocationEncoder
+> # GridLookupSpatialRelationLocationEncoder
 
 ## Overview
 The `GridLookupSpatialRelationLocationEncoder` is designed to process spatial relations between locations using a grid-based lookup approach for spatial encoding. It utilizes the `GridLookupSpatialRelationPositionEncoder` to transform spatial coordinates into a high-dimensional space, enhancing the model's ability to capture and interpret spatial relationships across various scales.

@@ -1,4 +1,6 @@
-# Space2Vec-theory - TheoryGridCellSpatialRelationLocationEncoder
+# <em>Space2Vec-theory</em>
+
+> # TheoryGridCellSpatialRelationLocationEncoder
 
 ## Overview
 The `TheoryGridCellSpatialRelationLocationEncoder` extends the `LocationEncoder` to encode spatial relationships between locations using advanced theoretical methods. This encoder uses a specialized position encoder (`TheoryGridCellSpatialRelationPositionEncoder`) to transform spatial differences into a high-dimensional space, and further processes these embeddings through a custom multi-layer feed-forward neural network.

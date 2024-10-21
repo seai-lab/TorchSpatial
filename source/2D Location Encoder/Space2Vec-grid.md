@@ -1,4 +1,6 @@
-# Space2Vec-grid (GridCellSpatialRelationLocationEncoder)
+# <em>Space2Vec-grid</em>
+
+> # GridCellSpatialRelationLocationEncoder
 
 ## Overview
 The `GridCellSpatialRelationLocationEncoder` is designed for encoding spatial relations between locations. This encoder integrates a position encoding strategy, leveraging a `GridCellSpatialRelationPositionEncoder`, and further processes the encoded positions through a customizable multi-layer feed-forward neural network.

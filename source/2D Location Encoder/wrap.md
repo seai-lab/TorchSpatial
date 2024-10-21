@@ -1,4 +1,6 @@
-# FCNet
+# <em>wrap</em>
+
+> # FCNet
 
 ## Overview
 The `FCNet` class is a fully connected neural network designed for classification tasks. It consists of multiple residual layers to enhance feature extraction and can classify input data into multiple categories.

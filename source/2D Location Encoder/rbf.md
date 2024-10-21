@@ -1,4 +1,6 @@
-# RBFSpatialRelationLocationEncoder
+# <em>rbf</em>
+
+> # RBFSpatialRelationLocationEncoder
 
 ## Overview
 The `RBFSpatialRelationLocationEncoder` is designed to process spatial relations between locations using Radial Basis Function (RBF) principles adapted for spatial encoding. It utilizes the `RBFSpatialRelationPositionEncoder` to transform spatial coordinates into a high-dimensional space, enhancing the model's ability to capture and interpret spatial relationships across various scales.
