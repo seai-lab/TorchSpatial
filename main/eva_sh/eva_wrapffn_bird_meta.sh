@@ -22,7 +22,7 @@ ACT=relu
 RATIO=1.0
 
 
-python3 train_unsuper.py \
+python3 main.py \
     --save_results T\
     --load_super_model T\
     --spa_enc_type $ENC \

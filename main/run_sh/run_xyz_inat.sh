@@ -33,7 +33,7 @@ RATIO=1.0
 #    do
 #        for MINR in 0.005 0.001 0.0001
 #        do
-python3 train_unsuper.py \
+python3 main.py \
     --load_super_model T\
     --eval_frequency 10 \
     --spa_enc_type $ENC \

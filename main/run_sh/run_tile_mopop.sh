@@ -27,7 +27,7 @@ for LR in 0.00001 #0.00001 0.00002 0.00005 #0.0005 #0.00005
 do
     for MINR in 0.0001 0.001 0.000001
     do
-    python3 train_unsuper.py \
+    python3 main.py \
         --save_results T\
         --load_super_model F\
         --spa_enc_type $ENC \
