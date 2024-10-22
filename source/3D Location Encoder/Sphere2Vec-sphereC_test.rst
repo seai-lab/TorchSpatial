@@ -134,7 +134,7 @@ Usage Example
 -------------
 
 .. code-block:: python
-    
+
     # Initialize the encoder
     encoder = SphereSpatialRelationLocationEncoder(
         spa_embed_dim=64,
