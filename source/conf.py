@@ -10,11 +10,11 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
+import os
+import sys
 # sys.path.insert(0, os.path.abspath('.'))
 #import sphinx_pdj_theme
-from sphinx.ext import imgconverter
+import sphinx.ext
 
 # -- Project information -----------------------------------------------------
 
