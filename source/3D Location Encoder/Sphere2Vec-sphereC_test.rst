@@ -135,7 +135,6 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
 
 - **Parameters**:
     - `coords`: Batch of spatial differences.
-
 - **Returns**:
     - Batch of spatial relation embeddings in high-dimensional space.
 
