@@ -31,7 +31,7 @@ def main():
     # Run training
     trainer.run_train()
 
-    # final evaluation
+    # Final evaluation
     trainer.run_eval_final()
 
     # Run spatial encoder evaluation
