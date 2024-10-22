@@ -21,6 +21,7 @@ Here is the **v0.1.0**
    :caption: Basic Concepts:
 
    Basic Concepts/Single Point Location.md
+   Basic Concepts/Single Point Location Encoder
    Basic Concepts/Aggregation Location
 
 .. toctree::
@@ -53,8 +54,7 @@ Here is the **v0.1.0**
    3D Location Encoder/Sphere2Vec-sphereC+
    3D Location Encoder/Sphere2Vec-sphereM
    3D Location Encoder/Sphere2Vec-sphereM+
-   3D Location Encoder/Spherical-Harmonics.md
-   3D Location Encoder/Spherical-Harmonics_test
+   3D Location Encoder/Spherical-Harmonics
    
 
 
