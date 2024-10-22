@@ -59,16 +59,23 @@ Formula
 The encoder utilizes spherical harmonics to encode spatial data, transforming coordinates (longitude and latitude) into a three-dimensional spherical coordinate system, and then applying spherical harmonics to these coordinates.
 
 #. Conversion to Spherical Coordinates
+
 Given longitude ( :math:`\phi`  ) and latitude ( :math:`\theta`  ), the coordinates are converted into spherical coordinates. Each point on the surface of the sphere is expressed as:
-- :math:`x = \cos(\phi) \sin(\theta)` 
-- :math:`y = \sin(\phi) \sin(\theta)` 
-- :math:`z = \cos(\theta)` 
+
+.. math::
+    x = \cos(\phi) \sin(\theta)
+.. math::
+    y = \sin(\phi) \sin(\theta)
+.. math::
+    z = \cos(\theta)
 
 Where:
+
 -  :math:`\phi` is longitude in radians.
 -  :math:`\theta` is latitude in radians.
 
 #. Spherical Harmonics
+
 Spherical harmonics are orthogonal functions defined on the sphere, used to generate a positional encoding. The function :math:`Y_l^m(\theta, \phi)` for a degree :math:`l` and order :math:`m` is given by:
 
 .. math::
@@ -79,6 +86,7 @@ Where:
 - :math:`e^{im\phi}` is the complex exponential function.
 
 #. Encoding Formula
+
 The position encoding using spherical harmonics is computed as a sum of these functions across a range of degrees and orders, generally formulated as:
 
 .. math::
