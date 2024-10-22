@@ -41,9 +41,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the location encoder to produce final spatial embeddings.
 - **Parameters**:
-  - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form ``(batch_size, num_context_pt, coord_dim)``.
+    - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form ``(batch_size, num_context_pt, coord_dim)``.
 - **Returns**:
-  - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of ``(batch_size, num_context_pt, spa_embed_dim)``.
+    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of ``(batch_size, num_context_pt, spa_embed_dim)``.
 
 :class:`SphereSpatialRelationPositionEncoder`
 =============================================
@@ -82,47 +82,53 @@ Methods
 --------
 
 .. method:: cal_elementwise_angle(coord, cur_freq)
+    :no-index:
 
 Calculates the angle for sinusoidal function based on the coordinate difference and current frequency.
 - **Parameters**:
-  - ``coord``: Spatial difference (deltaX or deltaY).
-  - ``cur_freq``: Current frequency index.
+    - ``coord``: Spatial difference (deltaX or deltaY).
+    - ``cur_freq``: Current frequency index.
 - **Returns**:
-  - Calculated angle for sinusoidal transformation.
+    - Calculated angle for sinusoidal transformation.
 
 .. method:: cal_coord_embed(coords_tuple)
+    :no-index:
 
 Converts a tuple of coordinates into an embedded format using sinusoidal encoding.
 - **Parameters**:
-  - ``coords_tuple``: Tuple containing deltaX and deltaY.
+    - ``coords_tuple``: Tuple containing deltaX and deltaY.
 - **Returns**:
-  - High-dimensional vector representing the embedded coordinates.
+    - High-dimensional vector representing the embedded coordinates.
 
 .. method:: cal_pos_enc_output_dim()
+    :no-index:
 
 Calculates the output dimension of the position-encoded spatial relationship.
 - **Returns**:
-  - The dimension of the encoded spatial relation embedding.
+    - The dimension of the encoded spatial relation embedding.
 
 .. method:: cal_freq_list()
+    :no-index:
 
 Calculates the list of frequencies used for the sinusoidal encoding based on the initialization method specified.
 - **Modifies**:
-  - Internal frequency list based on the maximum and minimum radii and the total number of frequencies.
+    - Internal frequency list based on the maximum and minimum radii and the total number of frequencies.
 
 .. method:: cal_freq_mat()
+    :no-index:
 
 Generates a matrix of frequencies to be used for batch processing of spatial data.
 - **Modifies**:
-  - Internal frequency matrix to match the dimensions required for vectorized operations.
+    - Internal frequency matrix to match the dimensions required for vectorized operations.
 
 .. method:: make_output_embeds(coords)
+    :no-index:
 
 Processes a batch of coordinates and converts them into spatial relation embeddings.
 - **Parameters**:
-  - `coords`: Batch of spatial differences.
+    - `coords`: Batch of spatial differences.
 - **Returns**:
-  - Batch of spatial relation embeddings in high-dimensional space.
+    - Batch of spatial relation embeddings in high-dimensional space.
 
 Usage Example
 -------------
