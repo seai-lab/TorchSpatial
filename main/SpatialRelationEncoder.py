@@ -45,7 +45,6 @@ def _cal_freq_list(freq_init, frequency_num, max_radius, min_radius):
         2^{0}*pi, ..., 2^{L-1}*pi
         """
         #
-
         freq_list = np.pi * np.exp2(np.arange(frequency_num).astype(float))
 
     return freq_list
