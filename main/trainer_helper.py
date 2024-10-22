@@ -46,11 +46,14 @@ def unsupervise_train(
         """
         optimizer.zero_grad()
         if params["unsuper_loss"] == "l2regress":
-            loss = lo.l2regress_loss(model, params, loc_feat, cnn_features, inds)
+            loss = lo.l2regress_loss(
+                model, params, loc_feat, cnn_features, inds)
         elif "imgcontloss" in params["unsuper_loss"]:
-            loss = lo.imgcontloss_loss(model, params, loc_feat, cnn_features, inds)
+            loss = lo.imgcontloss_loss(
+                model, params, loc_feat, cnn_features, inds)
         elif "contsoftmax" in params["unsuper_loss"]:
-            loss = lo.contsoftmax_loss(model, params, loc_feat, cnn_features, inds)
+            loss = lo.contsoftmax_loss(
+                model, params, loc_feat, cnn_features, inds)
 
         # loss = lo.embedding_loss(model, params, loc_feat, loc_class, user_ids, inds, neg_rand_type = neg_rand_type)
 
@@ -99,11 +102,14 @@ def unsupervise_eval(model, data_loader, params, logger=None):
             """
 
             if params["unsuper_loss"] == "l2regress":
-                loss = lo.l2regress_loss(model, params, loc_feat, cnn_features, inds)
+                loss = lo.l2regress_loss(
+                    model, params, loc_feat, cnn_features, inds)
             elif "imgcontloss" in params["unsuper_loss"]:
-                loss = lo.imgcontloss_eval(model, params, loc_feat, cnn_features, inds)
+                loss = lo.imgcontloss_eval(
+                    model, params, loc_feat, cnn_features, inds)
             elif "contsoftmax" in params["unsuper_loss"]:
-                loss = lo.contsoftmax_loss(model, params, loc_feat, cnn_features, inds)
+                loss = lo.contsoftmax_loss(
+                    model, params, loc_feat, cnn_features, inds)
 
             loss_avg.update(loss.item(), len(loc_feat))
 
@@ -171,7 +177,7 @@ def train(
                 img_feat=cnn_features,
                 labels=label,
             )
-            
+
         loss.backward()
         optimizer.step()
 
@@ -197,7 +203,7 @@ def test(model, data_loader, params, logger=None):
 
     inds = torch.arange(params["batch_size"]).to(params["device"])
     with torch.no_grad():
-        
+
         for batch_data in data_loader:
             if params["dataset"] in params["regress_dataset"]:
                 loc_feat, label, cnn_features = batch_data
@@ -206,7 +212,7 @@ def test(model, data_loader, params, logger=None):
             else:
                 loc_feat, loc_class = batch_data
 
-            if params["dataset"] not in params["regress_dataset"]:    
+            if params["dataset"] not in params["regress_dataset"]:
                 """
                 loc_feat: (batch_size, input_feat_dim)
                 loc_class: (batch_size)
@@ -215,22 +221,23 @@ def test(model, data_loader, params, logger=None):
                 # loc_pred: (batch_size, num_classes)
                 loc_pred = model(loc_feat)
                 # pos_loss: (batch_size)
-                pos_loss = lo.bce_loss(loc_pred[inds[: loc_feat.shape[0]], loc_class])
+                pos_loss = lo.bce_loss(
+                    loc_pred[inds[: loc_feat.shape[0]], loc_class])
                 loss = pos_loss.mean()
 
                 loss_avg.update(loss.item(), loc_feat.shape[0])
-            else: 
+            else:
                 """
                 loc_feat: (batch_size, 2)
                 loc_label: (batch_size)
                 cnn_features: (batch_size, cnn_feat_dim = 2048) for Mosaiks, and (batch_size) for SustainBench
                 """
                 loss = lo.regress_loss(
-                model=model,
-                params=params,
-                loc_feat=loc_feat,
-                img_feat=cnn_features,
-                labels=label,
+                    model=model,
+                    params=params,
+                    loc_feat=loc_feat,
+                    img_feat=cnn_features,
+                    labels=label,
                 )
 
                 loss_avg.update(loss.item(), loc_feat.shape[0])
