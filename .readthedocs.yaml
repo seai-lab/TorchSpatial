@@ -9,7 +9,13 @@ build:
 
 python:
   install:
-    - requirements: source/requirements.txt
+    - method: pip
+      path: .
+    - method: pip
+      requirements: source/requirements.txt
+    - method: pip
+      pip_install:  # Directly install Sphinx 8.0
+        - sphinx>=8.0,<9.0
 
 sphinx:
   configuration: source/conf.py
