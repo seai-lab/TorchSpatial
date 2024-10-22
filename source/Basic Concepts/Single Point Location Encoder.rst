@@ -42,6 +42,7 @@ Constructor for the `EncoderMultiLayerFeedForwardNN` class.
     - ``context_str`` (str, optional): Contextual string for the encoder.
 
 .. method:: forward(input_tensor)
+    :noindex:
 
 Defines the forward pass of the network.
 
@@ -84,6 +85,7 @@ Methods
 - **Exceptions**: Raises an `Exception` with the message `"{context_str} activation not recognized."` if the specified activation function is not one of the supported options.
 
 .. method:: cal_freq_list(freq_init, frequency_num, max_radius, min_radius)
+    :noindex:
 
 - **Parameters**:
     - `freq_init`: A string that specifies the initialization method for frequencies ('random' or 'geometric').
@@ -96,6 +98,7 @@ Methods
 
 
 .. method:: cal_freq_mat()
+    :noindex:
 
 Generates a matrix of frequencies for encoding.
 
@@ -108,6 +111,7 @@ Computes the dimension of the encoded spatial relation embedding based on the fr
 - **Returns**: The input dimension (int) of the encoder.
 
 .. method:: cal_elementwise_angle(coord, cur_freq)
+    :noindex:
 
 Calculates the angle for each coordinate and frequency, to be used in the sinusoidal functions.
 
@@ -117,6 +121,7 @@ Calculates the angle for each coordinate and frequency, to be used in the sinuso
 - **Returns**: The calculated angle (float).
 
 .. method:: cal_coord_embed(coords_tuple)
+    :noindex:
 
 Encodes a tuple of coordinates into a sinusoidal embedding.
 
@@ -125,6 +130,7 @@ Encodes a tuple of coordinates into a sinusoidal embedding.
 - **Returns**: A list of sinusoidal embeddings (`list`).
 
 .. method:: forward(coords)
+    :noindex:
 
 Abstract method for transforming spatial coordinates into embeddings. Must be implemented by subclasses.
 
