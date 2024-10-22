@@ -71,8 +71,7 @@ Most grid data is two-dimensional, requiring simultaneous encoding of both dimen
 Formula Development
 ~~~~~~~~~~~~~~~~~~~
 
-Base Sinusoidal Encoding
-+++++++++++++++++++++++++
+- **Base Sinusoidal Encoding**
 
 For each coordinate component $x$ and $y$, apply sinusoidal functions across multiple scales:
 
@@ -83,8 +82,7 @@ Where:
 - :math:`L` is the number of different frequencies used.
 - :math:`\omega_i` are the scaled frequencies.
 
-Frequency Scaling
-+++++++++++++++++
+- **Frequency Scaling**
 
 Given the grid structure, frequency scaling might be adapted based on typical distances or resolutions encountered in grid data:
 
@@ -92,8 +90,7 @@ Given the grid structure, frequency scaling might be adapted based on typical di
 
 This scaling method aligns the frequency increments with the spatial resolution of grid cells, allowing the encoder to capture variations within and between cells.
 
-Enhanced Spatial Encoding
-+++++++++++++++++++++++++
+- **Enhanced Spatial Encoding**
 
 To account for the two-dimensional nature of grid data and potentially the interactions between grid cells, the encoding can be expanded to include mixed terms that combine :math:`x` and :math:`y` coordinates:
 
@@ -101,8 +98,7 @@ To account for the two-dimensional nature of grid data and potentially the inter
 
 These mixed terms help to model cross-dimensional spatial interactions, which are critical in grid-like structures where horizontal and vertical relationships might influence the spatial analysis.
 
-Output Dimensionality
-++++++++++++++++++++++
+- **Output Dimensionality**
 
 The output dimensionality, considering the enhanced encoding, becomes:
 
