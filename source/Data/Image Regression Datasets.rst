@@ -28,4 +28,4 @@ Similarly, Satellite RGB bands are used to predict the elevation at the correspo
 SustainBench Series
 =============================
 The SustainBench series including 6 datasets: Asset Index, Women BMI, Water Index, Child Mortality Rate, Sanitation Index, and Women Edu.
-They were derived from survey data from the Demographic and Health Surveys (DHS) program. 
+Satellite images and street-level images are collected in these datasets to predict socio-economic indicators across 7 UN Sustainable Development Goals (SDGs), and the indices data were derived from survey data from the Demographic and Health Surveys (DHS) program. See details in `SustainBench <https://sustainlab-group.github.io/sustainbench/docs/datasets/>`_.
