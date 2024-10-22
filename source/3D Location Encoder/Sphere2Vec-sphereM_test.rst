@@ -73,11 +73,15 @@ Formula Development
 
 - **Base Sinusoidal Encoding**
 
-For each coordinate component $x$ and $y$, apply sinusoidal functions across multiple scales:
+For each coordinate component :math:`x` and :math:`y`, apply sinusoidal functions across multiple scales:
 
-:math:`E(x, y) = \bigoplus{}^{L-1}_{i=0} \left\[ \sin(\omega_i x), \cos(\omega_i x), \sin(\omega_i y), \cos(\omega_i y) \right\]`
+.. math::
+
+   E(x, y) = \bigoplus_{i=0}^{L-1} \left[ \sin(\omega_i x), \cos(\omega_i x), \sin(\omega_i y), \cos(\omega_i y) \right]
+
 
 Where:
+
 - :math:`\bigoplus` denotes vector concatenation.
 - :math:`L` is the number of different frequencies used.
 - :math:`\omega_i` are the scaled frequencies.
@@ -94,7 +98,9 @@ This scaling method aligns the frequency increments with the spatial resolution 
 
 To account for the two-dimensional nature of grid data and potentially the interactions between grid cells, the encoding can be expanded to include mixed terms that combine :math:`x` and :math:`y` coordinates:
 
-:math:`E_{\text{enhanced}}(x, y) = E(x, y) \oplus \left\[\sin(\omega_i x) \cdot \cos(\omega_i y), \cos(\omega_i x) \cdot \sin(\omega_i y)\right\]`
+.. math::
+
+   E_{\text{enhanced}}(x, y) = E(x, y) \oplus \left[ \sin(\omega_i x) \cdot \cos(\omega_i y), \cos(\omega_i x) \cdot \sin(\omega_i y) \right]
 
 These mixed terms help to model cross-dimensional spatial interactions, which are critical in grid-like structures where horizontal and vertical relationships might influence the spatial analysis.
 
