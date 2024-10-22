@@ -6,6 +6,7 @@ import torch
 import pickle
 from argparse import ArgumentParser
 from torch import optim
+
 import models
 import utils as ut
 import datasets as dt
@@ -19,12 +20,23 @@ from trainer_helper import *
 from eval_helper import *
 from trainer import *
 
-parser = make_args_parser()
-args = parser.parse_args()
+def main():
+    # Argument parser
+    parser = make_args_parser()
+    args = parser.parse_args()
 
-trainer = Trainer(args, console=True)
-trainer.run_train()
-trainer.run_eval_final()
+    # Initialize trainer
+    trainer = Trainer(args, console=True)
 
-val_preds = trainer.run_eval_spa_enc_only(
-    eval_flag_str="LocEnc ", load_model=True)
+    # Run training
+    trainer.run_train()
+
+    # Run final evaluation
+    trainer.run_eval_final()
+
+    # Run spatial encoder evaluation
+    val_preds = trainer.run_eval_spa_enc_only(
+        eval_flag_str="LocEnc ", load_model=True)
+
+if __name__ == "__main__":
+    main()
