@@ -63,8 +63,10 @@ Methods
     :no-index:
 
 Processes a batch of coordinates and converts them into spatial relation embeddings.
+
 - **Parameters:**
     - `coords`: Batch of spatial differences.
+
 - **Formulas:**
     - Convert latitude `lat` and longitude `lon` coordinates into radians.
     - Calculate `x, y, z` coordinates using the following equations:
@@ -78,6 +80,38 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
         - *lon* is the longitude coordinate in radians.
         - *x*, *y*, *z* are the resulting Cartesian coordinates.
       - Concatenate `x, y, z` coordinates to form the high-dimensional vector representation.
+
 - **Returns:**
     - Batch of spatial relation embeddings in high-dimensional space.
-    
+
+.. method:: forward(coords)
+    :no-index:
+
+Feeds the processed coordinates through the encoder to produce final spatial embeddings.
+
+- **Parameters:**
+    - `coords`: Coordinates to process.
+
+- **Returns:**
+    - Tensor of spatial relation embeddings.
+
+Usage Example
+-------------
+
+.. code-block:: python
+
+    encoder = XYZSpatialRelationLocationEncoder(
+        spa_embed_dim=64,
+        coord_dim=2,
+        device="cuda",
+        ffn_act="relu",
+        ffn_num_hidden_layers=1,
+        ffn_dropout_rate=0.5,
+        ffn_hidden_dim=256,
+        ffn_use_layernormalize=True,
+        ffn_skip_connection=True,
+        ffn_context_str="XYZSpatialRelationEncoder"
+    )
+
+    coords = np.array([...])  # your coordinate data
+    embeddings = encoder.forward(coords)
