@@ -12,5 +12,5 @@ The :class:`NERFSpatialRelationLocationEncoder` is designed to compute spatial e
 Features
 --------
 
-- **Position Encoding (``self.position_encoder``)**: Utilizes the :class:`NERFSpatialRelationPositionEncoder` to encode spatial differences (latitude, longitude) using NeRF-inspired sinusoidal functions.
-- **Feed-Forward Neural Network (``self.ffn``)**: Transforms the position-encoded data through a series of feed-forward layers to produce high-dimensional spatial embeddings.
+- **Position Encoding (`self.position_encoder`)**: Utilizes the :class:`NERFSpatialRelationPositionEncoder` to encode spatial differences (latitude, longitude) using NeRF-inspired sinusoidal functions.
+- **Feed-Forward Neural Network (`self.ffn`)**: Transforms the position-encoded data through a series of feed-forward layers to produce high-dimensional spatial embeddings.
