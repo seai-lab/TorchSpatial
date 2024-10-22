@@ -52,6 +52,7 @@ Here is the **v0.1.0**
    3D Location Encoder/Sphere2Vec-sphereC
    3D Location Encoder/Sphere2Vec-sphereC+
    3D Location Encoder/Sphere2Vec-sphereM.md
+   3D Location Encoder/Sphere2Vec-sphereM_test
    3D Location Encoder/Sphere2Vec-sphereM+.md
    3D Location Encoder/Spherical-Harmonics.md
    
