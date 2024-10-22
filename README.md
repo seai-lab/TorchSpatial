@@ -36,8 +36,6 @@ The data can be downloaded from the following DOI link:
 ## Code Execution
 The example bash files for running the codes can be found in main/run_bash folder
 
-
-
 ## Image Datasets
 
 ### BirdSnap
