@@ -33,7 +33,4 @@ We also encompass 8 location encoders that learn location embeddings from 3D spa
 
 * *Sphere2Vec-sphereC*, *Sphere2Vec-sphereC+*, *Sphere2Vec-sphereM*, *Sphere2Vec-sphereM+*, *Sphere2Vec-dfs* are variants of *Sphere2Vec*, a multi-scale location encoder for spherical surface. They are the first location encoder series that preserves the spherical surface distance between any two points to our knowledge. See details in :doc:`/3D Location Encoder/Sphere2Vec-sphereC`, :doc:`/3D Location Encoder/Sphere2Vec-sphereC+`, :doc:`/3D Location Encoder/Sphere2Vec-sphereM`, :doc:`/3D Location Encoder/Sphere2Vec-sphereM+`, and :doc:`/3D Location Encoder/Sphere2Vec-dfs`.
 
-* *Spherical-Harmonics* is also a spherical location encoder proposed recently. It uses spherical harmonic basis functions as the position encoder :math:`\mathit{PE}^{\mathit{Spherical-Harmonics}}(x)` and a sinusoidal representation network (SirenNets) as the :math:`\mathbf{NN}()`.
-
-
-
+* *Siren(SH)* is also a spherical location encoder proposed recently. It uses spherical harmonic basis functions as the position encoder :math:`\mathit{PE}^{\mathit{Spherical-Harmonics}}(x)` and a sinusoidal representation network (SirenNets) as the :math:`\mathbf{NN}()`. See details in :doc:`/3D Location Encoder/Spherical-Harmonics`.

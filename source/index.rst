@@ -46,11 +46,11 @@ Here is the **v0.1.0**
    :maxdepth: 2
    :caption: 3D Location Encoder:
 
-   3D Location Encoder/xyz.md
-   3D Location Encoder/NeRF.md
-   3D Location Encoder/Sphere2Vec-dfs.md
-   3D Location Encoder/Sphere2Vec-sphereC.md
-   3D Location Encoder/Sphere2Vec-sphereC+.md
+   3D Location Encoder/xyz
+   3D Location Encoder/NeRF
+   3D Location Encoder/Sphere2Vec-dfs
+   3D Location Encoder/Sphere2Vec-sphereC
+   3D Location Encoder/Sphere2Vec-sphereC+
    3D Location Encoder/Sphere2Vec-sphereM.md
    3D Location Encoder/Sphere2Vec-sphereM+.md
    3D Location Encoder/Spherical-Harmonics.md

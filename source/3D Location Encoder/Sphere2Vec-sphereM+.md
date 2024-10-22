@@ -38,8 +38,11 @@ Processes input coordinates through the location encoder to produce detailed spa
 ### Overview
 This position encoder transforms spatial coordinates using a sophisticated sinusoidal encoding method, featuring multiple scales to capture a wide range of spatial details.
     <p align="center">
-      <img src="../images/sphereM+.png" alt="sphereM-plus-transformation" title="sphereM-plus-transformation" width="60%" />
+      <img src="../images/sphereM+.png" alt="sphereM-plus-transformation" title="sphereM-plus-transformation" width="100%" />
     </p>
+    <div style="border:1px solid #000; padding:0px; border-radius:0px;">
+    <strong>Note:</strong> If the image cannot display, please click this <a href="https://drive.google.com/uc?id=1WU5xy-9oYsGnnyjDlEsrWnNsYdRJk_bc">Link</a>. 
+    </div>
 
 ### Features
 - **Multi-Scale Sinusoidal Encoding**: Applies sinusoidal functions at multiple scales to encode spatial differences, capturing a wide range of spatial details.

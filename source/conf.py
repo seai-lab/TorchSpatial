@@ -10,20 +10,19 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
-# import sys
-# sys.path.insert(0, os.path.abspath('.'))
+import os
+import sys
+sys.path.insert(0, os.path.abspath('.'))
 #import sphinx_pdj_theme
-from sphinx.ext import imgconverter
 
 # -- Project information -----------------------------------------------------
 
 project = 'TorchSpatial'
-copyright = '2024, SEAI'
-author = 'SEAI'
+copyright = '2024, SEAI Lab'
+author = 'SEAI Lab'
 
 # The full version, including alpha/beta/rc tags
-release = '0.01'
+release = '0.1.0'
 
 
 # -- General configuration ---------------------------------------------------
@@ -35,7 +34,7 @@ extensions = [
     "sphinx.ext.autodoc",
     "myst_parser",
     'sphinx.ext.imgconverter',
-    'sphinx.ext.mathjax'
+    'sphinx.ext.mathjax',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
