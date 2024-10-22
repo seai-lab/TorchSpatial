@@ -86,8 +86,8 @@ Methods
 
 Calculates the angle for sinusoidal function based on the coordinate difference and current frequency.
 - **Parameters**:
-    * ``coord``: Spatial difference (deltaX or deltaY).
-    * ``cur_freq``: Current frequency index.
+- ``coord``: Spatial difference (deltaX or deltaY).
+- ``cur_freq``: Current frequency index.
 - **Returns**:
     - Calculated angle for sinusoidal transformation.
 
