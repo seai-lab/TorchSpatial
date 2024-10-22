@@ -1,9 +1,12 @@
 import numpy as np
 from scipy.stats import norm
 
+
 class Surprisal:
     def __init__(self):
         pass
+
+
 class AnalyticalSurprisal(Surprisal):
     def __init__(self):
         super().__init__()
@@ -14,9 +17,11 @@ class AnalyticalSurprisal(Surprisal):
         for k in self.mean_dict.keys():
             if k[0] == k[1]:
                 beta2 = 1 - 2 / self.mean_dict[k]
-                Mu_corrected += beta1 * self.mean_coef_dict[k] * self.mean_dict[k] / beta2
+                Mu_corrected += beta1 * \
+                    self.mean_coef_dict[k] * self.mean_dict[k] / beta2
             else:
-                Mu_corrected += beta1 * self.mean_coef_dict[k] * self.mean_dict[k]
+                Mu_corrected += beta1 * \
+                    self.mean_coef_dict[k] * self.mean_dict[k]
 
         return Mu_corrected
 
@@ -26,9 +31,11 @@ class AnalyticalSurprisal(Surprisal):
         self.xmean = np.sum(cs * ns) / np.sum(ns)
         self.xvar = np.sum((ns * (cs - self.xmean)) ** 2)
 
-        self.mean, self.mean_dict, self.mean_coef_dict = self.compute_mean(cs, ns)
+        self.mean, self.mean_dict, self.mean_coef_dict = self.compute_mean(
+            cs, ns)
         self.mean_corrected = self.correct()
-        self.std, self.std_dict, self.std_coef_dict = self.compute_std(cs, ns, ignores)
+        self.std, self.std_dict, self.std_coef_dict = self.compute_std(
+            cs, ns, ignores)
         self.scaling_factor = self.N / (self.W * self.xvar)
 
     def get_fitted_params(self):
@@ -73,7 +80,8 @@ class AnalyticalSurprisal(Surprisal):
         #     S2 += S2_tmp
         S1 = 2 * np.sum(w_map**2)
         S2 = 4 * np.sum(np.sum(w_map, axis=1)**2)
-        S3 = N * np.sum(np.power((x - xmean), 4)) / (np.sum(np.power(x - xmean, 2)))**2
+        S3 = N * np.sum(np.power((x - xmean), 4)) / \
+            (np.sum(np.power(x - xmean, 2)))**2
 
         S4 = (N**2 - 3*N + 3) * S1 - N * S2 + 3*W**2
         S5 = (N**2 - N) * S1 - 2 * N * S2 + 6*W**2
@@ -84,7 +92,8 @@ class AnalyticalSurprisal(Surprisal):
         N = Z.shape[0] * Z.shape[1]
         S1, S2, S3, S4, S5, W = self.compute_wiki_S(w_map, Z)
         Mu_wiki = -1 / (N - 1)
-        Sigma_wiki = np.sqrt((N * S4 - S3 * S5) / ((N - 1) * (N - 2) * (N - 3) * W**2) - Mu_wiki**2)
+        Sigma_wiki = np.sqrt((N * S4 - S3 * S5) /
+                             ((N - 1) * (N - 2) * (N - 3) * W**2) - Mu_wiki**2)
 
         return Mu_wiki, Sigma_wiki
 
@@ -125,12 +134,14 @@ class AnalyticalSurprisal(Surprisal):
         for i, (ci, ni, igi) in enumerate(zip(cs, ns, ignores)):
             for j, (cj, nj, igj) in enumerate(zip(cs, ns, ignores)):
                 if ci != cj:
-                    var_num = min(ni, nj) * (4 * max(ni, nj) / N) * (1 - 4 * max(ni, nj) / N)
+                    var_num = min(ni, nj) * (4 * max(ni, nj) /
+                                             N) * (1 - 4 * max(ni, nj) / N)
                     var_coef = ((ci - xmean) * (cj - xmean) - 2 * (ci - xmean) * (cs[r_max] - xmean) + (
                                 cs[r_max] - xmean) ** 2) ** 2
                     var += var_coef * var_num * igi * igj
                 else:
-                    var_num = 2 * (ni - 1) * 4 * ni / N * (1 - (4 * (2 * ni - 1)) / (3 * N))
+                    var_num = 2 * (ni - 1) * 4 * ni / N * \
+                        (1 - (4 * (2 * ni - 1)) / (3 * N))
                     var_coef = (ci - cs[r_max]) ** 4
                     var += var_coef * var_num * igi * igj
 
