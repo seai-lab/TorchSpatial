@@ -18,6 +18,20 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 
 
 ## Environment Settings
+## Environment Settings
+
+To set up the environment for the TorchSpatial project, follow these steps:
+
+1. **Locate the Environment File**  
+   The environment settings are defined in the `environment.yml` file located in the `TorchSpatial/main/` directory. This file contains all the necessary dependencies for the project.
+
+2. **Install Conda (if not already installed)**  
+   Ensure you have [Anaconda](https://www.anaconda.com/products/distribution) or [Miniconda](https://docs.conda.io/en/latest/miniconda.html) installed on your system. You can download the installer from the respective links.
+
+3. **Create the Conda Environment**  
+   Open your terminal (or Anaconda Prompt on Windows) and navigate to the directory containing the `environment.yml` file. Use the following command to create the environment:
+   ```bash
+   conda env create -f TorchSpatial/main/environment.yml
 
 
 ## Data Download Instructions
