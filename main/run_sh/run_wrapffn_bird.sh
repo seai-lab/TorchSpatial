@@ -31,7 +31,7 @@ do
     IFS=',' read DATA  META  EVALDATA <<< "${x}"
     for LR in 0.005 0.002 0.001 0.0005
     do
-        python3 train_unsuper.py \
+        python3 main.py \
             --spa_enc_type $ENC \
             --meta_type $META\
             --dataset $DATA \

@@ -27,7 +27,7 @@ do
     do
     for HIDDIM in 512 1024 256
     do
-    python3 train_unsuper.py \
+    python3 main.py
         --save_results T\
         --load_super_model F\
         --spa_enc_type $ENC \

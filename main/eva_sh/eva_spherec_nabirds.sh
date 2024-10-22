@@ -23,7 +23,7 @@ RATIO=1.0
 
 
 
-python3 train_unsuper.py \
+python3 main.py \
     --spa_enc_type $ENC \
     --meta_type $META\
     --dataset $DATA \

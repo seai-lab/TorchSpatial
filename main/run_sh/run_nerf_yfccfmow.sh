@@ -38,7 +38,7 @@ do
                     do
                         for ACT in relu leakyrelu sigmoid
                         do
-                        python3 train_unsuper.py \
+                        python3 main.py \
                             --spa_enc_type $ENC \
                             --dataset $DATA \
                             --eval_split $EVALDATA \
