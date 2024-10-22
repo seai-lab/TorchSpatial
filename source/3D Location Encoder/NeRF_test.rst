@@ -35,8 +35,9 @@ Methods
 --------
 
 .. method:: forward(coords)
+
 - **Purpose**: Processes input coordinates through the location encoder to produce final spatial embeddings.
-- **Parameters**:
+- **Parameters**: 
    - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form ``(batch_size, num_context_pt, coord_dim)``.
 - **Returns**:
    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of ``(batch_size, num_context_pt, spa_embed_dim)``.
@@ -47,13 +48,7 @@ Methods
 Features
 --------
 
-<p align="center">
-    <img src="../images/NeRF.png" alt="NeRF-transformation" title="NeRF-transformation" width="60%" />
-</p>
-
-<div style="border:1px solid #000; padding:10px; border-radius:5px;">
-<strong>Note:</strong> If the image cannot display, please click this <a href="https://drive.google.com/uc?id=1GmI59derPQYZmbpqwndTGYE69MYLOSMp">Link</a>.
-</div>
+.. image:: ../images/NeRF.png
 
 Configuration Parameters
 ------------------------
@@ -67,16 +62,19 @@ Methods
 --------
 
 .. method:: cal_freq_list()
+
 - **Purpose**: Calculates the list of frequencies used for the sinusoidal encoding based on the NeRF methodology, using an exponential scaling of frequencies.
 - **Modifies**:
     - Internal frequency list based on the specified initialization method.
 
 .. method:: cal_freq_mat()
+
 - **Purpose**: Creates a frequency matrix to be used in the encoding process.
 - **Modifies**:
     - Internal frequency matrix to match the dimensions required for vectorized operations.
 
 .. method:: make_output_embeds(coords)
+
 - **Purpose**: Processes a batch of coordinates and converts them into spatial relation embeddings.
 - **Parameters**:
     - ``coords``: Batch of geographic coordinates.
