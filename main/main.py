@@ -20,6 +20,7 @@ from trainer_helper import *
 from eval_helper import *
 from trainer import *
 
+
 def main():
     # Argument parser
     parser = make_args_parser()
@@ -37,6 +38,7 @@ def main():
     # Run spatial encoder evaluation
     val_preds = trainer.run_eval_spa_enc_only(
         eval_flag_str="LocEnc ", load_model=True)
+
 
 if __name__ == "__main__":
     main()
