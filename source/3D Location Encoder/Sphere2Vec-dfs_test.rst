@@ -36,7 +36,7 @@ Configuration Parameters
 Methods
 --------
 
-.. method:: forward(coords)
+.. method:: forward(coords) :no-index:
 
     - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
     - **Parameters**:
@@ -92,7 +92,7 @@ Methods
     - **Returns**:
         - High-dimensional vector representing the frequency domain embeddings.
 
-.. method:: make_output_embeds(coords)
+.. method:: make_output_embeds(coords) :no-index:
     - **Description**: Converts input spatial data into a comprehensive set of frequency domain features.
     - **Parameters**:
         - ``coords``: Spatial coordinates to encode.
