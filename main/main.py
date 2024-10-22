@@ -34,7 +34,7 @@ def main():
     # Final evaluation
     trainer.run_eval_final()
 
-    # Run spatial encoder evaluation
+    # Spatial encoder evaluation
     val_preds = trainer.run_eval_spa_enc_only(
         eval_flag_str="LocEnc ", load_model=True)
 
