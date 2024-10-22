@@ -58,7 +58,7 @@ Formula
 
 The encoder utilizes spherical harmonics to encode spatial data, transforming coordinates (longitude and latitude) into a three-dimensional spherical coordinate system, and then applying spherical harmonics to these coordinates.
 
-#. Conversion to Spherical Coordinates
+1. Conversion to Spherical Coordinates
 
 Given longitude ( :math:`\phi`  ) and latitude ( :math:`\theta`  ), the coordinates are converted into spherical coordinates. Each point on the surface of the sphere is expressed as:
 
@@ -74,7 +74,7 @@ Where:
 -  :math:`\phi` is longitude in radians.
 -  :math:`\theta` is latitude in radians.
 
-#. Spherical Harmonics
+2. Spherical Harmonics
 
 Spherical harmonics are orthogonal functions defined on the sphere, used to generate a positional encoding. The function :math:`Y_l^m(\theta, \phi)` for a degree :math:`l` and order :math:`m` is given by:
 
@@ -82,10 +82,11 @@ Spherical harmonics are orthogonal functions defined on the sphere, used to gene
     Y_l^m(\theta, \phi) = P_l^m(\cos(\theta)) e^{im\phi}
 
 Where:
+
 - :math:`P_l^m` are the associated Legendre polynomials.
 - :math:`e^{im\phi}` is the complex exponential function.
 
-#. Encoding Formula
+3. Encoding Formula
 
 The position encoding using spherical harmonics is computed as a sum of these functions across a range of degrees and orders, generally formulated as:
 
@@ -93,6 +94,7 @@ The position encoding using spherical harmonics is computed as a sum of these fu
     \text{Enc}(x, y, z) = \sum_{l=0}^{L} \sum_{m=-l}^{l} c_{lm} Y_l^m(\theta, \phi)
 
 Where:
+
 - :math:`c_{lm}` are coefficients, which may be learned or predefined.
 - :math:`L` is the maximum degree of spherical harmonics used, determined by the `legendre_poly_num`.
 
