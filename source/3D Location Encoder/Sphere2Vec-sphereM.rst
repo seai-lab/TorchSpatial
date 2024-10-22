@@ -42,10 +42,10 @@ Methods
 Processes input coordinates through the location encoder to generate final spatial embeddings.
 
 - **Parameters**:
-    - `coords` (List or np.ndarray): Coordinates to process, formatted as `(batch_size, num_context_pt, coord_dim)`.
+    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as `(batch_size, num_context_pt, coord_dim)`.
 
 - **Returns**:
-    - `sprenc` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
+    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`SphereMixScaleSpatialRelationPositionEncoder`
 =====================================================
@@ -132,8 +132,8 @@ Methods
     :no-index:
 
 - **Parameters**:
-    - `coord`: The deltaX or deltaY.
-    - `cur_freq`: The frequency index.
+    - ``coord``: The deltaX or deltaY.
+    - ``cur_freq``: The frequency index.
 - **Returns**:
     - The calculated angle for the sinusoidal transformation.
 
@@ -143,7 +143,7 @@ Methods
 Converts a batch of coordinates into sinusoidally-encoded vectors.
 
 - **Parameters**:
-    - `coords_tuple`: Tuple of spatial differences.
+    - ``coords_tuple``: Tuple of spatial differences.
 - **Returns**:
     - High-dimensional vector representing the encoded spatial relationships.
 

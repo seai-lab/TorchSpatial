@@ -41,9 +41,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the encoder to produce final spatial embeddings.
 - **Parameters**:
-    - `coords` (List or np.ndarray): Coordinates to be processed, expected in the format `(batch_size, num_context_pt, coord_dim)`.
+    - ``coords`` (List or np.ndarray): Coordinates to be processed, expected in the format `(batch_size, num_context_pt, coord_dim)`.
 - **Returns**:
-    - `sprenc` (Tensor): Spatial relation embeddings, shaped `(batch_size, num_context_pt, spa_embed_dim)`.
+    - ``sprenc`` (Tensor): Spatial relation embeddings, shaped `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`SphereGridSpatialRelationPositionEncoder`
 =================================================
@@ -74,7 +74,7 @@ Methods
 
 - **Description**: Converts a batch of coordinates into spatial relation embeddings.
 - **Parameters**:
-    - `coords`: Spatial differences to be encoded.
+    - ``coords``: Spatial differences to be encoded.
 - **Returns**:
     - Spatial relation embeddings in high-dimensional space.
 
@@ -83,7 +83,7 @@ Methods
 
 - **Description**: Feeds processed coordinates through the encoder to generate final spatial embeddings.
 - **Parameters**:
-    - `coords`: Coordinates to process.
+    - ``coords``: Coordinates to process.
 - **Returns**:
     - Tensor of spatial relation embeddings.
 

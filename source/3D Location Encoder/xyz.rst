@@ -37,9 +37,9 @@ Methods
 
 - **Purpose:** Processes input coordinates through the location encoder to produce final spatial embeddings.
 - **Parameters:**
-    - `coords` (List or np.ndarray): Coordinates to process, expected to be in the form `(batch_size, num_context_pt, coord_dim)`.
+    - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form `(batch_size, num_context_pt, coord_dim)`.
 - **Returns:**
-    - `sprenc` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
+    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`XYZSpatialRelationPositionEncoder`
 ==========================================
@@ -65,7 +65,7 @@ Methods
 Processes a batch of coordinates and converts them into spatial relation embeddings.
 
 - **Parameters:**
-    - `coords`: Batch of spatial differences.
+    - ``coords``: Batch of spatial differences.
 
 - **Formulas:**
     - Convert latitude `lat` and longitude `lon` coordinates into radians.
@@ -99,7 +99,7 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
 Feeds the processed coordinates through the encoder to produce final spatial embeddings.
 
 - **Parameters:**
-    - `coords`: Coordinates to process.
+    - ``coords``: Coordinates to process.
 
 - **Returns:**
     - Tensor of spatial relation embeddings.

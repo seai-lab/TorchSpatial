@@ -134,7 +134,7 @@ Generates a matrix of frequencies to be used for batch processing of spatial dat
 Processes a batch of coordinates and converts them into spatial relation embeddings.
 
 - **Parameters**:
-    - `coords`: Batch of spatial differences.
+    - ``coords``: Batch of spatial differences.
 
 - **Returns**:
     - Batch of spatial relation embeddings in high-dimensional space.

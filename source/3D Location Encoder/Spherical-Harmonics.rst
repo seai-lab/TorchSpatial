@@ -35,9 +35,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
 - **Parameters**:
-    - coords (List or np.ndarray): Coordinates to process, formatted as (batch_size, num_context_pt, coord_dim).
+    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as (batch_size, num_context_pt, coord_dim).
 - **Returns**:
-    - sprenc (Tensor): The final spatial relation embeddings, shaped (batch_size, num_context_pt, spa_embed_dim).
+    - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped (batch_size, num_context_pt, spa_embed_dim).
 
 :class:`SphericalHarmonicsSpatialRelationPositionEncoder`
 =========================================================
@@ -115,7 +115,7 @@ Methods
 
 - **Description**: Converts geographical coordinates into embeddings using spherical harmonics.
 - **Parameters**:
-    - coords: Coordinates in the format (batch_size, num_context_pt, coord_dim).
+    - ``coords``: Coordinates in the format (batch_size, num_context_pt, coord_dim).
 - **Returns**:
     - High-dimensional embeddings representing the input data in terms of spherical harmonics.
 
@@ -124,7 +124,7 @@ Methods
 
 - **Description**: Encodes a list of geographic coordinates into their spherical harmonics embeddings.
 - **Parameters**:
-    - coords: A list of coordinates.
+    - ``coords``: A list of coordinates.
 - **Returns**:
     - Tensor of spatial relation embeddings shaped as (batch_size, num_context_pt, pos_enc_output_dim).   
 

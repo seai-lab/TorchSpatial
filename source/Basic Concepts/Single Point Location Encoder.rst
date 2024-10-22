@@ -28,7 +28,7 @@ Methods
 
 .. method:: __init__(input_dim, output_dim, num_hidden_layers=0, dropout_rate=None, hidden_dim=-1, activation="sigmoid", use_layernormalize=False, skip_connection=False, context_str=None)
 
-Constructor for the `EncoderMultiLayerFeedForwardNN` class.
+Constructor for the :class:`EncoderMultiLayerFeedForwardNN` class.
 
 - **Parameters**:
     - ``input_dim`` (int): Dimensionality of the input embeddings.
@@ -63,14 +63,14 @@ PositionEncoder()
 Properties
 ----------
 
-    - ``spa_embed_dim`` (int): The dimension of the output spatial relation embedding.
-    - ``coord_dim`` (int): The dimensionality of space (e.g., 2 for 2D, 3 for 3D).
-    - ``frequency_num`` (int): The number of different frequencies/wavelengths for the sinusoidal functions.
-    - ``max_radius`` (float): The largest context radius the model can handle.
-    - ``min_radius`` (float): The smallest context radius considered by the model.
-    - ``freq_init`` (str): Method to initialize the frequency list ('random' or 'geometric').
-    - ``ffn`` (nn.Module, optional): A feedforward neural network module to be applied to the embeddings.
-    - ``device`` (str): The device to which tensors will be moved ('cuda' or 'cpu').
+- ``spa_embed_dim`` (int): The dimension of the output spatial relation embedding.
+- ``coord_dim`` (int): The dimensionality of space (e.g., 2 for 2D, 3 for 3D).
+- ``frequency_num`` (int): The number of different frequencies/wavelengths for the sinusoidal functions.
+- ``max_radius`` (float): The largest context radius the model can handle.
+- ``min_radius`` (float): The smallest context radius considered by the model.
+- ``freq_init`` (str): Method to initialize the frequency list ('random' or 'geometric').
+- ``ffn`` (nn.Module, optional): A feedforward neural network module to be applied to the embeddings.
+- ``device`` (str): The device to which tensors will be moved ('cuda' or 'cpu').
 
 Methods
 -------
@@ -78,8 +78,8 @@ Methods
 .. method:: get_activation_function(activation, context_str)
 
 - **Parameters**:
-    - `activation`: A string that specifies the type of activation function to retrieve.
-    - `context_str`: A string that provides context for the error message if the activation function is not recognized.
+    - ``activation``: A string that specifies the type of activation function to retrieve.
+    - ``context_str``: A string that provides context for the error message if the activation function is not recognized.
 - **Returns**: An activation function object from the `torch.nn` module.
 - **Description**: Retrieves an activation function object based on the specified `activation` string. It supports 'leakyrelu', 'relu', 'sigmoid', and 'tanh'. If the specified activation is not recognized, it raises an exception with a context-specific error message.
 - **Exceptions**: Raises an `Exception` with the message `"{context_str} activation not recognized."` if the specified activation function is not one of the supported options.
@@ -88,10 +88,10 @@ Methods
     :noindex:
 
 - **Parameters**:
-    - `freq_init`: A string that specifies the initialization method for frequencies ('random' or 'geometric').
-    - `frequency_num`: An integer representing the number of frequencies to generate.
-    - `max_radius`: A float representing the maximum radius, used as the upper bound for random initialization or the geometric sequence's start point.
-    - `min_radius`: A float representing the minimum radius, used as the geometric sequence's end point.
+    - ``freq_init``: A string that specifies the initialization method for frequencies ('random' or 'geometric').
+    - ``frequency_num``: An integer representing the number of frequencies to generate.
+    - ``max_radius``: A float representing the maximum radius, used as the upper bound for random initialization or the geometric sequence's start point.
+    - ``min_radius``: A float representing the minimum radius, used as the geometric sequence's end point.
 - **Returns**: A NumPy array `freq_list` containing the list of frequencies initialized as per the method specified by `freq_init`.
 - **Description**: Calculates a list of frequencies based on the initialization method specified. If `freq_init` is 'random', it generates `frequency_num` random frequencies, each multiplied by `max_radius`. If `freq_init` is 'geometric', it generates a list of frequencies based on a geometric progression from `min_radius` to `max_radius` with `frequency_num` elements.
 - **Exceptions**: None explicitly raised, but if `frequency_num` is less than 1, it may cause an error in the geometric initialization logic.
@@ -116,8 +116,8 @@ Computes the dimension of the encoded spatial relation embedding based on the fr
 Calculates the angle for each coordinate and frequency, to be used in the sinusoidal functions.
 
 - **Parameters**:
-    - `coord`: The coordinate value (`deltaX` or `deltaY`).
-    - `cur_freq`: The current frequency being processed.
+    - ``coord``: The coordinate value (`deltaX` or `deltaY`).
+    - ``cur_freq``: The current frequency being processed.
 - **Returns**: The calculated angle (float).
 
 .. method:: cal_coord_embed(coords_tuple)
@@ -126,7 +126,7 @@ Calculates the angle for each coordinate and frequency, to be used in the sinuso
 Encodes a tuple of coordinates into a sinusoidal embedding.
 
 - **Parameters**:
-    - `coords_tuple`: A tuple of coordinate values.
+    - ``coords_tuple``: A tuple of coordinate values.
 - **Returns**: A list of sinusoidal embeddings (`list`).
 
 .. method:: forward(coords)
@@ -135,137 +135,137 @@ Encodes a tuple of coordinates into a sinusoidal embedding.
 Abstract method for transforming spatial coordinates into embeddings. Must be implemented by subclasses.
 
 - **Parameters**:
-    - `coords`: Spatial coordinates to encode.
+    - ``coords``: Spatial coordinates to encode.
 - **Raises**:
-    - `NotImplementedError`: If the method is not overridden by a subclass.
+    - ``NotImplementedError``: If the method is not overridden by a subclass.
 
 .. method:: visualize_embed_cosine
 
 Visualizes the cosine similarity of embeddings on a 2D plot.
 
 - **Parameters**:
-    - `embed`: Embedding vector with shape `(spa_embed_dim, 1)`.
-    - `module`: The model module containing the embedding layers.
-    - `layername`: Specifies the layer name for which the embeddings are visualized (`"input_emb"` or `"output_emb"`).
-    - `coords`: Coordinates for the embeddings.
-    - `extent`: Extent of the plot area.
-    - `centerpt`: (Optional) The center point to highlight.
-    - `xy_list`: (Optional) List of points to plot.
-    - `pt_size`: (Optional) Size of the points.
-    - `polygon`: (Optional) Polygon to outline on the plot.
-    - `img_path`: (Optional) Path to save the plot image.
+    - ``embed``: Embedding vector with shape `(spa_embed_dim, 1)`.
+    - ``module``: The model module containing the embedding layers.
+    - ``layername``: Specifies the layer name for which the embeddings are visualized (`"input_emb"` or `"output_emb"`).
+    - ``coords``: Coordinates for the embeddings.
+    - ``extent``: Extent of the plot area.
+    - ``centerpt``: (Optional) The center point to highlight.
+    - ``xy_list``: (Optional) List of points to plot.
+    - ``pt_size``: (Optional) Size of the points.
+    - ``polygon``: (Optional) Polygon to outline on the plot.
+    - ``img_path``: (Optional) Path to save the plot image.
 
 .. method:: get_coords
 
 Generates a grid of coordinates within a specified extent.
 
 - **Parameters**:
-    - `extent`: The bounding box for the coordinate grid.
-    - `interval`: The spacing between points in the grid.
+    - ``extent``: The bounding box for the coordinate grid.
+    - ``interval``: The spacing between points in the grid.
 
 .. method:: map_id2geo
 
 Plots geographical locations based on their IDs.
 
 - **Parameters**:
-    - `place2geo`: A mapping from place IDs to geographical coordinates.
+    - ``place2geo``: A mapping from place IDs to geographical coordinates.
 
 .. method:: visualize_encoder
 
 Visualizes the output of an encoder layer for a given set of coordinates.
 
 - **Parameters**:
-    - `module`: The model module containing the encoder.
-    - `layername`: Specifies the encoder layer (`"input_emb"` or `"output_emb"`).
-    - `coords`: Coordinates for visualization.
-    - `extent`: Extent of the plot area.
-    - `num_ch`: Number of channels to visualize.
-    - `img_path`: (Optional) Path to save the visualization.
+    - ``module``: The model module containing the encoder.
+    - ``layername``: Specifies the encoder layer (`"input_emb"` or `"output_emb"`).
+    - ``coords``: Coordinates for visualization.
+    - ``extent``: Extent of the plot area.
+    - ``num_ch``: Number of channels to visualize.
+    - ``img_path``: (Optional) Path to save the visualization.
 
 .. method:: spa_enc_embed_clustering
 
 Performs spatial encoding embedding clustering and visualization.
 
 - **Parameters**:
-    - `module`: The model module to use for forward pass.
-    - `num_cluster`: Number of clusters for the agglomerative clustering.
-    - `extent`: Extent of the plot area.
-    - `interval`: Interval between points in the grid.
-    - `coords`: Coordinates for clustering.
-    - `tsne_comp`: Number of components for t-SNE reduction.
+    - ``module``: The model module to use for forward pass.
+    - ``num_cluster``: Number of clusters for the agglomerative clustering.
+    - ``extent``: Extent of the plot area.
+    - ``interval``: Interval between points in the grid.
+    - ``coords``: Coordinates for clustering.
+    - ``tsne_comp``: Number of components for t-SNE reduction.
 
 .. method:: make_enc_map
 
 Creates a map visualization based on encoder cluster labels.
 
 - **Parameters**:
-    - `cluster_labels`: Cluster labels for each point in the grid.
-    - `num_cluster`: Number of clusters.
-    - `extent`: Extent of the plot area.
-    - `margin`: Margin around the plot area.
-    - `xy_list`: (Optional) List of points to plot.
-    - `polygon`: (Optional) Polygon to outline on the plot.
-    - `usa_gdf`: (Optional) GeoDataFrame for the USA map.
-    - `coords_color`: (Optional) Color for the coordinates.
-    - `colorbar`: (Optional) Flag to display a color bar.
-    - `img_path`: (Optional) Path to save the map image.
-    - `xlabel`, `ylabel`: (Optional) Labels for the x and y axes.
+    - ``cluster_labels``: Cluster labels for each point in the grid.
+    - ``num_cluster``: Number of clusters.
+    - ``extent``: Extent of the plot area.
+    - ``margin``: Margin around the plot area.
+    - ``xy_list``: (Optional) List of points to plot.
+    - ``polygon``: (Optional) Polygon to outline on the plot.
+    - ``usa_gdf``: (Optional) GeoDataFrame for the USA map.
+    - ``coords_color``: (Optional) Color for the coordinates.
+    - ``colorbar``: (Optional) Flag to display a color bar.
+    - ``img_path``: (Optional) Path to save the map image.
+    - ``xlabel``, `ylabel`: (Optional) Labels for the x and y axes.
 
 .. method:: explode
 
 Converts a GeoDataFrame with MultiPolygons into a GeoDataFrame with Polygons.
 
 - **Parameters**:
-    - `indata`: Input GeoDataFrame or file path.
+    - ``indata``: Input GeoDataFrame or file path.
 
 .. method:: get_pts_in_box
 
 Filters points within a specified bounding box.
 
 - **Parameters**:
-    - `place2geo`: A mapping from place IDs to geographical coordinates.
-    - `extent`: The bounding box for filtering.
+    - ``place2geo``: A mapping from place IDs to geographical coordinates.
+    - ``extent``: The bounding box for filtering.
 
 .. method:: load_USA_geojson
 
 Loads and projects the USA mainland GeoJSON to the EPSG:2163 projection system.
 
 - **Parameters**:
-    - `us_geojson_file`: Path to the USA GeoJSON file.
+    - ``us_geojson_file``: Path to the USA GeoJSON file.
 
 .. method:: get_projected_mainland_USA_states
 
 Loads and projects mainland USA states from a GeoJSON file to the EPSG:2163 projection system.
 
 - **Parameters**:
-    - `us_states_geojson_file`: Path to the USA states GeoJSON file.
+    - ``us_states_geojson_file``: Path to the USA states GeoJSON file.
 
 .. method:: read2idIndexFile
 
 Reads an entity or relation to ID mapping file.
 
 - **Parameters**:
-    - `Index2idFilePath`: Path to the file containing the mappings.
+    - ``Index2idFilePath``: Path to the file containing the mappings.
 
 .. method:: reverse_dict
 
 Reverses a dictionary mapping.
 
 - **Parameters**:
-    - `iri2id`: The dictionary to reverse.
+    - ``iri2id``: The dictionary to reverse.
 
 .. method:: get_node_mode
 
 Determines the mode (type) of a node based on the provided mappings.
 
 - **Parameters**:
-    - `node_maps`: A mapping of node types to their IDs.
-    - `node_id`: The ID of the node to determine the mode for.
+    - ``node_maps``: A mapping of node types to their IDs.
+    - ``node_id``: The ID of the node to determine the mode for.
 
 .. method:: path_embedding_compute
 
 Computes the embedding for a path between nodes.
 
 - **Parameters**:
-    - `path_dec`: The path decoder.
+    - ``path_dec``: The path decoder.
 
