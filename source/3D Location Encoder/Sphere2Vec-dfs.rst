@@ -39,10 +39,10 @@ Methods
 .. method:: forward(coords) 
     :no-index:
 
-    - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
-    - **Parameters**:
+- **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
+- **Parameters**:
     - ``coords`` (List or np.ndarray): Coordinates to process, formatted as ``(batch_size, num_context_pt, coord_dim)``.
-    - **Returns**:
+- **Returns**:
     - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped ``(batch_size, num_context_pt, spa_embed_dim)``.
 
 :class:`DFTSpatialRelationPositionEncoder`
@@ -79,29 +79,29 @@ Methods
 
 .. method:: cal_elementwise_angle(coord, cur_freq)
 
-    - **Description**: Calculates the angle for each frequency based on the spatial coordinate.
-    - **Parameters**:
+- **Description**: Calculates the angle for each frequency based on the spatial coordinate.
+- **Parameters**:
     - ``coord``: Spatial difference, either deltaX or deltaY.
     - ``cur_freq``: Current frequency index.
-    - **Returns**:
+- **Returns**:
     - Computed angle for the transformation.
 
 .. method:: cal_coord_embed(coords_tuple)
 
-    - **Description**: Encodes a set of coordinates into their frequency domain representations.
-    - **Parameters**:
-        - ``coords_tuple``: A tuple of spatial differences.
-    - **Returns**:
-        - High-dimensional vector representing the frequency domain embeddings.
+- **Description**: Encodes a set of coordinates into their frequency domain representations.
+- **Parameters**:
+    - ``coords_tuple``: A tuple of spatial differences.
+- **Returns**:
+    - High-dimensional vector representing the frequency domain embeddings.
 
 .. method:: make_output_embeds(coords) 
     :no-index:
 
-    - **Description**: Converts input spatial data into a comprehensive set of frequency domain features.
-    - **Parameters**:
-        - ``coords``: Spatial coordinates to encode.
-    - **Returns**:
-        - High-dimensional embeddings that represent the input data in the frequency domain.
+- **Description**: Converts input spatial data into a comprehensive set of frequency domain features.
+- **Parameters**:
+    - ``coords``: Spatial coordinates to encode.
+- **Returns**:
+    - High-dimensional embeddings that represent the input data in the frequency domain.
 
 Usage Example
 -------------
