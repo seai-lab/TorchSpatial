@@ -22,7 +22,6 @@ from trainer import *
 
 
 def main():
-    # Argument parser
     parser = make_args_parser()
     args = parser.parse_args()
 
