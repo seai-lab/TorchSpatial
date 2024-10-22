@@ -55,7 +55,7 @@ Overview
 
 This position encoder transforms spatial coordinates using a sophisticated sinusoidal encoding method, featuring multiple scales to capture a wide range of spatial details.
 
-.. image:: ../images/Sphere2Vec-sphereM+.png
+.. image:: ../images/sphereM+.png
     :width: 100%
     :align: center
     :alt: sphereM-plus-transformation
