@@ -105,7 +105,7 @@ Feeds the processed coordinates through the encoder to produce final spatial emb
     - Tensor of spatial relation embeddings.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 

@@ -20,8 +20,8 @@ Here is the **v0.1.0**
    :maxdepth: 2
    :caption: Basic Concepts:
 
-   Basic Concepts/Single point location encoder.md
-   Basic Concepts/Aggregation location encoder
+   Basic Concepts/Single Point Location Encoder.md
+   Basic Concepts/Aggregation Location Encoder
 
 .. toctree::
    :maxdepth: 2
@@ -52,9 +52,9 @@ Here is the **v0.1.0**
    3D Location Encoder/Sphere2Vec-sphereC
    3D Location Encoder/Sphere2Vec-sphereC+
    3D Location Encoder/Sphere2Vec-sphereM
-   3D Location Encoder/Sphere2Vec-sphereM+.md
-   3D Location Encoder/Sphere2Vec-sphereM+_test
+   3D Location Encoder/Sphere2Vec-sphereM+
    3D Location Encoder/Spherical-Harmonics.md
+   3D Location Encoder/Spherical-Harmonics_test
    
 
 

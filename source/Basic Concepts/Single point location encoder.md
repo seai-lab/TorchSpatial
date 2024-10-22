@@ -4,7 +4,7 @@ output:
   pdf_document: default
 ---
 
-# Single point location encoder
+# Single Point Location Encoder
 <p align="center">
   <img src="https://github.com/seai-lab/TorchSpatial/blob/main/source/images/single_location_encoder_structure.png" alt="Location Encoder Structure" title="General Structure of Single Location Encoder" width="30%" />
 </p>
