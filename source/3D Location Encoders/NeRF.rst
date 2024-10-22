@@ -56,10 +56,10 @@ Features
 Configuration Parameters
 ------------------------
 
-- `coord_dim`: Dimensionality of the space being encoded (e.g., 2D, 3D).
-- `frequency_num`: Number of different sinusoidal frequencies used to encode spatial differences.
-- `freq_init`: Frequency initialization method, set to 'nerf' for NeRF-based encoding.
-- `device`: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
+- ``coord_dim``: Dimensionality of the space being encoded (e.g., 2D, 3D).
+- ``frequency_num``: Number of different sinusoidal frequencies used to encode spatial differences.
+- ``freq_init``: Frequency initialization method, set to 'nerf' for NeRF-based encoding.
+- ``device``: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
 
 Methods
 --------

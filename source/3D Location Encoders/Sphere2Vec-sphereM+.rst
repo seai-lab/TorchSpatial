@@ -91,8 +91,8 @@ Methods
 Calculates the angle for sinusoidal encoding based on the coordinate and the current frequency.
 
 - **Parameters**:
-    - `coord`: Spatial difference, either deltaX or deltaY.
-    - `cur_freq`: Current frequency index.
+    - ``coord``: Spatial difference, either deltaX or deltaY.
+    - ``cur_freq``: Current frequency index.
 - **Returns**:
     - Computed angle for the sinusoidal transformation.
 

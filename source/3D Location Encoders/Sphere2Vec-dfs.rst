@@ -41,9 +41,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
 - **Parameters**:
-    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as ``(batch_size, num_context_pt, coord_dim)``.
+    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as `(batch_size, num_context_pt, coord_dim)`.
 - **Returns**:
-    - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped ``(batch_size, num_context_pt, spa_embed_dim)``.
+    - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`DFTSpatialRelationPositionEncoder`
 ==========================================

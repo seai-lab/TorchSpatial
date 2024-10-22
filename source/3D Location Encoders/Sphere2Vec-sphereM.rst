@@ -82,15 +82,17 @@ For each coordinate component :math:`x` and :math:`y`, apply sinusoidal function
 
 Where:
 
-- :math:`\bigoplus` denotes vector concatenation.
-- :math:`L` is the number of different frequencies used.
-- :math:`\omega_i` are the scaled frequencies.
+    - :math:`\bigoplus` denotes vector concatenation.
+    - :math:`L` is the number of different frequencies used.
+    - :math:`\omega_i` are the scaled frequencies.
 
 - **Frequency Scaling**
 
 Given the grid structure, frequency scaling might be adapted based on typical distances or resolutions encountered in grid data:
 
-:math:`\omega_i = \pi \cdot \left(\frac{2^i}{\text{cell size}}\right)`
+.. math::
+
+    \omega_i = \pi \cdot \left(\frac{2^i}{\text{cell size}}\right)
 
 This scaling method aligns the frequency increments with the spatial resolution of grid cells, allowing the encoder to capture variations within and between cells.
 
@@ -108,7 +110,8 @@ These mixed terms help to model cross-dimensional spatial interactions, which ar
 
 The output dimensionality, considering the enhanced encoding, becomes:
 
-:math:`\text{Output Dim} = 4L + 2L = 6L`
+.. math:: 
+    \text{Output Dim} = 4L + 2L = 6L
 
 Where :math:`4L` comes from the original sinusoidal terms for :math:`x` and :math:`y`, and :math:`2L` from the mixed terms added for cross-dimensional interactions.
 

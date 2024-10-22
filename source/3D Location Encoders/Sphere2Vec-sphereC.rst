@@ -41,9 +41,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the location encoder to produce final spatial embeddings.
 - **Parameters**:
-    - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form ``(batch_size, num_context_pt, coord_dim)``.
+    - ``coords`` (List or np.ndarray): Coordinates to process, expected to be in the form `(batch_size, num_context_pt, coord_dim)`.
 - **Returns**:
-    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of ``(batch_size, num_context_pt, spa_embed_dim)``.
+    - ``sprenc`` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`SphereSpatialRelationPositionEncoder`
 =============================================

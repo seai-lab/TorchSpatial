@@ -9,7 +9,7 @@ The :class:`SphericalHarmonicsSpatialRelationLocationEncoder` is designed to enc
 Features
 --------
 
-- **Position Encoding** ``self.position_encoder``: Utilizes `SphericalHarmonicsSpatialRelationPositionEncoder` for converting longitude and latitude into 3D coordinates and encoding them using spherical harmonics.
+- **Position Encoding** ``self.position_encoder``: Utilizes :class:`SphericalHarmonicsSpatialRelationPositionEncoder` for converting longitude and latitude into 3D coordinates and encoding them using spherical harmonics.
 - **Feed-Forward Neural Network** ``self.ffn``: Processes the spherical harmonics encoded data through a multi-layer feed-forward neural network to generate final spatial embeddings.
 
 Configuration Parameters
@@ -35,9 +35,9 @@ Methods
 
 - **Purpose**: Processes input coordinates through the encoder to produce spatial embeddings.
 - **Parameters**:
-    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as (batch_size, num_context_pt, coord_dim).
+    - ``coords`` (List or np.ndarray): Coordinates to process, formatted as `(batch_size, num_context_pt, coord_dim)`.
 - **Returns**:
-    - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped (batch_size, num_context_pt, spa_embed_dim).
+    - ``sprenc`` (Tensor): The final spatial relation embeddings, shaped `(batch_size, num_context_pt, spa_embed_dim)`.
 
 :class:`SphericalHarmonicsSpatialRelationPositionEncoder`
 =========================================================
@@ -71,8 +71,8 @@ Given longitude ( :math:`\phi`  ) and latitude ( :math:`\theta`  ), the coordina
 
 Where:
 
--  :math:`\phi` is longitude in radians.
--  :math:`\theta` is latitude in radians.
+    -  :math:`\phi` is longitude in radians.
+    -  :math:`\theta` is latitude in radians.
 
 **2. Spherical Harmonics**
 
@@ -83,8 +83,8 @@ Spherical harmonics are orthogonal functions defined on the sphere, used to gene
 
 Where:
 
-- :math:`P_l^m` are the associated Legendre polynomials.
-- :math:`e^{im\phi}` is the complex exponential function.
+    - :math:`P_l^m` are the associated Legendre polynomials.
+    - :math:`e^{im\phi}` is the complex exponential function.
 
 **3. Encoding Formula**
 
@@ -95,8 +95,8 @@ The position encoding using spherical harmonics is computed as a sum of these fu
 
 Where:
 
-- :math:`c_{lm}` are coefficients, which may be learned or predefined.
-- :math:`L` is the maximum degree of spherical harmonics used, determined by the `legendre_poly_num`.
+    - :math:`c_{lm}` are coefficients, which may be learned or predefined.
+    - :math:`L` is the maximum degree of spherical harmonics used, determined by the `legendre_poly_num`.
 
 These embeddings are then processed through a feed-forward neural network, incorporating linear transformations and non-linear activations to produce the final spatial relation embeddings suitable for machine learning applications.
 
@@ -115,7 +115,7 @@ Methods
 
 - **Description**: Converts geographical coordinates into embeddings using spherical harmonics.
 - **Parameters**:
-    - ``coords``: Coordinates in the format (batch_size, num_context_pt, coord_dim).
+    - ``coords``: Coordinates in the format `(batch_size, num_context_pt, coord_dim)`.
 - **Returns**:
     - High-dimensional embeddings representing the input data in terms of spherical harmonics.
 
@@ -126,7 +126,7 @@ Methods
 - **Parameters**:
     - ``coords``: A list of coordinates.
 - **Returns**:
-    - Tensor of spatial relation embeddings shaped as (batch_size, num_context_pt, pos_enc_output_dim).   
+    - Tensor of spatial relation embeddings shaped as `(batch_size, num_context_pt, pos_enc_output_dim)`.   
 
 Usage Example
 =============

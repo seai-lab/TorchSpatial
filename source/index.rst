@@ -20,9 +20,8 @@ Here is the **v0.1.0**
    :maxdepth: 2
    :caption: Basic Concepts:
 
-   Basic Concepts/Single Point Location.md
    Basic Concepts/Single Point Location Encoder
-   Basic Concepts/Aggregation Location
+   Basic Concepts/Aggregation Location Encoder
 
 .. toctree::
    :maxdepth: 2
@@ -33,28 +32,28 @@ Here is the **v0.1.0**
 
 .. toctree::
    :maxdepth: 2
-   :caption: 2D Location Encoder:
+   :caption: 2D Location Encoders:
 
-   2D Location Encoder/tile-ffn.md
-   2D Location Encoder/wrap.md
-   2D Location Encoder/wrap-ffn.md
-   2D Location Encoder/rbf.md
-   2D Location Encoder/rff.md
-   2D Location Encoder/Space2Vec-grid.md
-   2D Location Encoder/Space2Vec-theory.md
+   2D Location Encoders/tile-ffn.md
+   2D Location Encoders/wrap.md
+   2D Location Encoders/wrap-ffn.md
+   2D Location Encoders/rbf.md
+   2D Location Encoders/rff.md
+   2D Location Encoders/Space2Vec-grid.md
+   2D Location Encoders/Space2Vec-theory.md
 
 .. toctree::
    :maxdepth: 2
-   :caption: 3D Location Encoder:
+   :caption: 3D Location Encoders:
 
-   3D Location Encoder/xyz
-   3D Location Encoder/NeRF
-   3D Location Encoder/Sphere2Vec-dfs
-   3D Location Encoder/Sphere2Vec-sphereC
-   3D Location Encoder/Sphere2Vec-sphereC+
-   3D Location Encoder/Sphere2Vec-sphereM
-   3D Location Encoder/Sphere2Vec-sphereM+
-   3D Location Encoder/Spherical-Harmonics
+   3D Location Encoders/xyz
+   3D Location Encoders/NeRF
+   3D Location Encoders/Sphere2Vec-dfs
+   3D Location Encoders/Sphere2Vec-sphereC
+   3D Location Encoders/Sphere2Vec-sphereC+
+   3D Location Encoders/Sphere2Vec-sphereM
+   3D Location Encoders/Sphere2Vec-sphereM+
+   3D Location Encoders/Spherical-Harmonics
    
 
 
