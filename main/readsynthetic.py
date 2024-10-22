@@ -3,7 +3,6 @@ import pickle as pk
 import numpy as np
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import pickle as pk
 
 ###change name constant or vary
