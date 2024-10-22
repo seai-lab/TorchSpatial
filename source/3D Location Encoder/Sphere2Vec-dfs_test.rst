@@ -86,6 +86,7 @@ Methods
     - Computed angle for the transformation.
 
 .. method:: cal_coord_embed(coords_tuple)
+
     - **Description**: Encodes a set of coordinates into their frequency domain representations.
     - **Parameters**:
         - ``coords_tuple``: A tuple of spatial differences.
@@ -93,6 +94,7 @@ Methods
         - High-dimensional vector representing the frequency domain embeddings.
 
 .. method:: make_output_embeds(coords) :no-index:
+
     - **Description**: Converts input spatial data into a comprehensive set of frequency domain features.
     - **Parameters**:
         - ``coords``: Spatial coordinates to encode.
