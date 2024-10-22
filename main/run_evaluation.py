@@ -3,8 +3,6 @@ Script to evaluate different spatio-temporal priors.
 """
 
 import numpy as np
-import json
-from scipy import sparse
 import torch
 import os
 from sklearn.neighbors import BallTree, DistanceMetric
