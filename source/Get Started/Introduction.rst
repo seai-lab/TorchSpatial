@@ -4,7 +4,7 @@ Introduction
 TorchSpatial is a PyTorch package for Spatial Representation Learning. Currently, it provides 15 commonly recognized location encoders, including location encoders built on projected 2D space and 3D space.
 It is flexible enough to support the development of any location encoders. In the future, we plan also to support other spatial data types such as polylines, polygons, spatial networks, etc. 
 
-2D Location Encoders
+2D Location Encoder
 =====================
 
 For location encoders applicable in a projected 2D space, TorchSpatial implements the following 7 models:
@@ -22,7 +22,7 @@ For location encoders applicable in a projected 2D space, TorchSpatial implement
 * *Space2Vec-grid* and *Space2Vec-theory* are two multi-scale location encoder on 2D Euclidean space. Both of them implement the position encoder :math:`\mathit{PE}(x)` as a deterministic Fourier mapping layer which is further fed into the :math:`\mathbf{NN}^{\mathit{ffn}}()`. Both models' position encoders can be treated as performing a Fourier transformation on a 2D Euclidean space. See details in :doc:`/2D Location Encoders/Space2Vec-grid` and :doc:`/2D Location Encoders/Space2Vec-theory`.
 
 
-3D Location Encoders
+3D Location Encoder
 =====================
 
 We also encompass 8 location encoders that learn location embeddings from 3D space as follows:
