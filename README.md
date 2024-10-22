@@ -17,7 +17,7 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 
 
 
-## Data Download Instructions
+## Environment Settings
 
 
 ## Data Download Instructions
