@@ -71,11 +71,16 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
     - Convert latitude `lat` and longitude `lon` coordinates into radians.
     - Calculate `x, y, z` coordinates using the following equations:
 
-            :math:`x = \cos(lat) \times \cos(lon)`
-            :math:`y = \cos(lat) \times \sin(lon)`  
-            :math:`z = \sin(lat)`
+    .. math::
+        
+        `x = \cos(lat) \times \cos(lon)`
 
-        Where:
+    .. math::
+        `y = \cos(lat) \times \sin(lon)`  
+    .. math::
+        `z = \sin(lat)`
+
+    Where:
         - *lat* is the latitude coordinate in radians.
         - *lon* is the longitude coordinate in radians.
         - *x*, *y*, *z* are the resulting Cartesian coordinates.

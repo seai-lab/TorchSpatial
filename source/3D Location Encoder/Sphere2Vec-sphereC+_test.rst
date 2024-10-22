@@ -59,6 +59,11 @@ Features
     :align: center
     :alt: sphereC-plus-transformation
 
+.. image:: ../images/NeRF.png
+    :width: 80%
+    :align: center
+    :alt: NeRF-transformation
+
 Configuration Parameters
 ------------------------
 
