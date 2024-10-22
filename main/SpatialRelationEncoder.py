@@ -9,7 +9,7 @@ import math
 from module import *
 from data_utils import *
 
-from spherical_harmonics_ylm_numpy import get_positional_encoding
+# from spherical_harmonics_ylm_numpy import get_positional_encoding
 
 """
 A Set of position encoder
@@ -89,15 +89,18 @@ class GridCellSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -145,8 +148,10 @@ class GridCellSpatialRelationPositionEncoder(PositionEncoder):
         # make sinuniod function
         # sin for 2i, cos for 2i+1
         # spr_embeds: (batch_size, num_context_pt, 2*frequency_num*2=pos_enc_output_dim)
-        spr_embeds[:, :, :, :, 0::2] = np.sin(spr_embeds[:, :, :, :, 0::2])  # dim 2i
-        spr_embeds[:, :, :, :, 1::2] = np.cos(spr_embeds[:, :, :, :, 1::2])  # dim 2i+1
+        spr_embeds[:, :, :, :, 0::2] = np.sin(
+            spr_embeds[:, :, :, :, 0::2])  # dim 2i
+        spr_embeds[:, :, :, :, 1::2] = np.cos(
+            spr_embeds[:, :, :, :, 1::2])  # dim 2i+1
 
         # (batch_size, num_context_pt, 2*frequency_num*2)
         spr_embeds = np.reshape(spr_embeds, (batch_size, num_context_pt, -1))
@@ -274,15 +279,18 @@ class GridCellNormSpatialRelationEncoder(nn.Module):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -344,8 +352,10 @@ class GridCellNormSpatialRelationEncoder(nn.Module):
         # make sinuniod function
         # sin for 2i, cos for 2i+1
         # spr_embeds: (batch_size, num_context_pt, 2*frequency_num*2=pos_enc_output_dim)
-        spr_embeds[:, :, :, :, 0::2] = np.sin(spr_embeds[:, :, :, :, 0::2])  # dim 2i
-        spr_embeds[:, :, :, :, 1::2] = np.cos(spr_embeds[:, :, :, :, 1::2])  # dim 2i+1
+        spr_embeds[:, :, :, :, 0::2] = np.sin(
+            spr_embeds[:, :, :, :, 0::2])  # dim 2i
+        spr_embeds[:, :, :, :, 1::2] = np.cos(
+            spr_embeds[:, :, :, :, 1::2])  # dim 2i+1
 
         # (batch_size, num_context_pt, 2*frequency_num*2)
         spr_embeds = np.reshape(spr_embeds, (batch_size, num_context_pt, -1))
@@ -417,7 +427,8 @@ class HexagonGridCellSpatialRelationEncoder(nn.Module):
 
         self.pos_enc_output_dim = self.cal_input_dim()
 
-        self.post_linear = nn.Linear(self.pos_enc_output_dim, self.spa_embed_dim)
+        self.post_linear = nn.Linear(
+            self.pos_enc_output_dim, self.spa_embed_dim)
         nn.init.xavier_uniform(self.post_linear.weight)
         self.dropout = nn.Dropout(p=dropout)
 
@@ -440,22 +451,26 @@ class HexagonGridCellSpatialRelationEncoder(nn.Module):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
                 embed.append(
                     math.sin(
-                        self.cal_elementwise_angle(coord, cur_freq) + math.pi * 2.0 / 3
+                        self.cal_elementwise_angle(
+                            coord, cur_freq) + math.pi * 2.0 / 3
                     )
                 )
                 embed.append(
                     math.sin(
-                        self.cal_elementwise_angle(coord, cur_freq) + math.pi * 4.0 / 3
+                        self.cal_elementwise_angle(
+                            coord, cur_freq) + math.pi * 4.0 / 3
                     )
                 )
         # embed: shape (pos_enc_output_dim)
@@ -544,8 +559,10 @@ class TheoryGridCellSpatialRelationPositionEncoder(
 
         # there unit vectors which is 120 degree apart from each other
         self.unit_vec1 = np.asarray([1.0, 0.0])  # 0
-        self.unit_vec2 = np.asarray([-1.0 / 2.0, math.sqrt(3) / 2.0])  # 120 degree
-        self.unit_vec3 = np.asarray([-1.0 / 2.0, -math.sqrt(3) / 2.0])  # 240 degree
+        self.unit_vec2 = np.asarray(
+            [-1.0 / 2.0, math.sqrt(3) / 2.0])  # 120 degree
+        self.unit_vec3 = np.asarray(
+            [-1.0 / 2.0, -math.sqrt(3) / 2.0])  # 240 degree
 
         self.pos_enc_output_dim = self.cal_pos_enc_output_dim()
 
@@ -577,15 +594,19 @@ class TheoryGridCellSpatialRelationPositionEncoder(
 
         # compute the dot product between [deltaX, deltaY] and each unit_vec
         # (batch_size, num_context_pt, 1)
-        angle_mat1 = np.expand_dims(np.matmul(coords_mat, self.unit_vec1), axis=-1)
+        angle_mat1 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec1), axis=-1)
         # (batch_size, num_context_pt, 1)
-        angle_mat2 = np.expand_dims(np.matmul(coords_mat, self.unit_vec2), axis=-1)
+        angle_mat2 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec2), axis=-1)
         # (batch_size, num_context_pt, 1)
-        angle_mat3 = np.expand_dims(np.matmul(coords_mat, self.unit_vec3), axis=-1)
+        angle_mat3 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec3), axis=-1)
 
         # (batch_size, num_context_pt, 6)
         angle_mat = np.concatenate(
-            [angle_mat1, angle_mat1, angle_mat2, angle_mat2, angle_mat3, angle_mat3],
+            [angle_mat1, angle_mat1, angle_mat2,
+                angle_mat2, angle_mat3, angle_mat3],
             axis=-1,
         )
         # (batch_size, num_context_pt, 1, 6)
@@ -729,8 +750,10 @@ class TheoryDiagGridCellSpatialRelationEncoder(nn.Module):
 
         # there unit vectors which is 120 degree apart from each other
         self.unit_vec1 = np.asarray([1.0, 0.0])  # 0
-        self.unit_vec2 = np.asarray([-1.0 / 2.0, math.sqrt(3) / 2.0])  # 120 degree
-        self.unit_vec3 = np.asarray([-1.0 / 2.0, -math.sqrt(3) / 2.0])  # 240 degree
+        self.unit_vec2 = np.asarray(
+            [-1.0 / 2.0, math.sqrt(3) / 2.0])  # 120 degree
+        self.unit_vec3 = np.asarray(
+            [-1.0 / 2.0, -math.sqrt(3) / 2.0])  # 240 degree
 
         self.pos_enc_output_dim = self.cal_input_dim()
 
@@ -750,7 +773,8 @@ class TheoryDiagGridCellSpatialRelationEncoder(nn.Module):
 
         self.use_post_mat = use_post_mat
         if self.use_post_mat:
-            self.post_linear = nn.Linear(self.spa_embed_dim, self.spa_embed_dim)
+            self.post_linear = nn.Linear(
+                self.spa_embed_dim, self.spa_embed_dim)
             self.dropout_ = nn.Dropout(p=dropout)
 
         self.f_act = get_activation_function(
@@ -801,15 +825,19 @@ class TheoryDiagGridCellSpatialRelationEncoder(nn.Module):
 
         # compute the dot product between [deltaX, deltaY] and each unit_vec
         # (batch_size, num_context_pt, 1)
-        angle_mat1 = np.expand_dims(np.matmul(coords_mat, self.unit_vec1), axis=-1)
+        angle_mat1 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec1), axis=-1)
         # (batch_size, num_context_pt, 1)
-        angle_mat2 = np.expand_dims(np.matmul(coords_mat, self.unit_vec2), axis=-1)
+        angle_mat2 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec2), axis=-1)
         # (batch_size, num_context_pt, 1)
-        angle_mat3 = np.expand_dims(np.matmul(coords_mat, self.unit_vec3), axis=-1)
+        angle_mat3 = np.expand_dims(
+            np.matmul(coords_mat, self.unit_vec3), axis=-1)
 
         # (batch_size, num_context_pt, 6)
         angle_mat = np.concatenate(
-            [angle_mat1, angle_mat1, angle_mat2, angle_mat2, angle_mat3, angle_mat3],
+            [angle_mat1, angle_mat1, angle_mat2,
+                angle_mat2, angle_mat3, angle_mat3],
             axis=-1,
         )
         # (batch_size, num_context_pt, 1, 6)
@@ -823,7 +851,8 @@ class TheoryDiagGridCellSpatialRelationEncoder(nn.Module):
         # sin for 2i, cos for 2i+1
         # spr_embeds: (batch_size, num_context_pt, frequency_num, 6)
         spr_embeds[:, :, :, 0::2] = np.sin(spr_embeds[:, :, :, 0::2])  # dim 2i
-        spr_embeds[:, :, :, 1::2] = np.cos(spr_embeds[:, :, :, 1::2])  # dim 2i+1
+        spr_embeds[:, :, :, 1::2] = np.cos(
+            spr_embeds[:, :, :, 1::2])  # dim 2i+1
         return spr_embeds
 
     def forward(self, coords):
@@ -1064,7 +1093,8 @@ class NERFSpatialRelationPositionEncoder(PositionEncoder):
         2^{0}*pi, ..., 2^{L-1}*pi
         """
         # freq_list: shape (frequency_num)
-        self.freq_list = _cal_freq_list(self.freq_init, self.frequency_num, None, None)
+        self.freq_list = _cal_freq_list(
+            self.freq_init, self.frequency_num, None, None)
 
     def cal_freq_mat(self):
         # freq_mat shape: (1, frequency_num)
@@ -1108,7 +1138,8 @@ class NERFSpatialRelationPositionEncoder(PositionEncoder):
         coords_mat = coords_mat * self.freq_mat
 
         # coords_mat: (batch_size, num_context_pt, 6, frequency_num)
-        spr_embeds = np.concatenate([np.sin(coords_mat), np.cos(coords_mat)], axis=2)
+        spr_embeds = np.concatenate(
+            [np.sin(coords_mat), np.cos(coords_mat)], axis=2)
 
         # spr_embeds: (batch_size, num_context_pt, 6*frequency_num)
         spr_embeds = np.reshape(spr_embeds, (batch_size, num_context_pt, -1))
@@ -1269,10 +1300,12 @@ class RBFSpatialRelationPositionEncoder(PositionEncoder):
             )
             y_list[0] = 0.0
             # self.rbf_coords: (num_rbf_anchor_pts, 2)
-            self.rbf_coords_mat = np.transpose(np.stack([x_list, y_list], axis=0))
+            self.rbf_coords_mat = np.transpose(
+                np.stack([x_list, y_list], axis=0))
 
             if self.rbf_kernel_size_ratio > 0:
-                dist_mat = np.sqrt(np.sum(np.power(self.rbf_coords_mat, 2), axis=-1))
+                dist_mat = np.sqrt(
+                    np.sum(np.power(self.rbf_coords_mat, 2), axis=-1))
                 # rbf_kernel_size_mat: (num_rbf_anchor_pts)
                 self.rbf_kernel_size_mat = (
                     dist_mat * self.rbf_kernel_size_ratio + self.rbf_kernel_size
@@ -1293,7 +1326,8 @@ class RBFSpatialRelationPositionEncoder(PositionEncoder):
         elif type(coords) == list:
             assert self.coord_dim == len(coords[0][0])
         else:
-            raise Exception("Unknown coords data type for RBFSpatialRelationEncoder")
+            raise Exception(
+                "Unknown coords data type for RBFSpatialRelationEncoder")
 
         # coords_mat: shape (batch_size, num_context_pt, 2)
         coords_mat = np.asarray(coords).astype(float)
@@ -1443,15 +1477,18 @@ class SphereSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -1657,15 +1694,18 @@ class SphereGirdSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -1729,7 +1769,8 @@ class SphereGirdSpatialRelationPositionEncoder(PositionEncoder):
 
         # spr_embeds_: shape (batch_size, num_context_pt, 1, frequency_num, 6)
         spr_embeds_ = np.concatenate(
-            [lat_sin, lat_cos, lon_sin, lon_cos, lat_cos * lon_cos, lat_cos * lon_sin],
+            [lat_sin, lat_cos, lon_sin, lon_cos,
+                lat_cos * lon_cos, lat_cos * lon_sin],
             axis=-1,
         )
 
@@ -1857,15 +1898,18 @@ class SphereMixScaleSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -2085,15 +2129,18 @@ class SphereGridMixScaleSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -2114,7 +2161,8 @@ class SphereGridMixScaleSpatialRelationPositionEncoder(PositionEncoder):
             self.freq_list = []
             for cur_freq in range(self.frequency_num):
                 base = 1.0 / (
-                    np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+                    np.power(self.max_radius, cur_freq *
+                             1.0 / (self.frequency_num - 1))
                 )
                 self.freq_list.append(base)
 
@@ -2319,15 +2367,18 @@ class DFTSpatialRelationPositionEncoder(PositionEncoder):
             cur_freq: the frequency
         """
         return coord / (
-            np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+            np.power(self.max_radius, cur_freq *
+                     1.0 / (self.frequency_num - 1))
         )
 
     def cal_coord_embed(self, coords_tuple):
         embed = []
         for coord in coords_tuple:
             for cur_freq in range(self.frequency_num):
-                embed.append(math.sin(self.cal_elementwise_angle(coord, cur_freq)))
-                embed.append(math.cos(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.sin(self.cal_elementwise_angle(coord, cur_freq)))
+                embed.append(
+                    math.cos(self.cal_elementwise_angle(coord, cur_freq)))
         # embed: shape (pos_enc_output_dim)
         return embed
 
@@ -2348,7 +2399,8 @@ class DFTSpatialRelationPositionEncoder(PositionEncoder):
             self.freq_list = []
             for cur_freq in range(self.frequency_num):
                 base = 1.0 / (
-                    np.power(self.max_radius, cur_freq * 1.0 / (self.frequency_num - 1))
+                    np.power(self.max_radius, cur_freq *
+                             1.0 / (self.frequency_num - 1))
                 )
                 self.freq_list.append(base)
 
@@ -2574,14 +2626,17 @@ class RFFSpatialRelationPositionEncoder(PositionEncoder):
         self.cov = np.diag(np.ones(self.coord_dim) * self.rbf_kernel_size)
         # dirvec: shape (coord_dim, frequency_num), omega in the paper
         dirvec = np.transpose(
-            np.random.multivariate_normal(self.mean, self.cov, self.frequency_num)
+            np.random.multivariate_normal(
+                self.mean, self.cov, self.frequency_num)
         )
-        self.dirvec = torch.nn.Parameter(torch.FloatTensor(dirvec), requires_grad=False)
+        self.dirvec = torch.nn.Parameter(
+            torch.FloatTensor(dirvec), requires_grad=False)
         self.register_parameter("dirvec", self.dirvec)
 
         # shift: shape (frequency_num), b in the paper
         shift = np.random.uniform(0, 2 * np.pi, self.frequency_num)
-        self.shift = torch.nn.Parameter(torch.FloatTensor(shift), requires_grad=False)
+        self.shift = torch.nn.Parameter(
+            torch.FloatTensor(shift), requires_grad=False)
         self.register_parameter("shift", self.shift)
 
     def make_output_embeds(self, coords):
@@ -2715,7 +2770,7 @@ class GridLookupSpatialRelationPositionEncoder(PositionEncoder):
         self.spa_embed_dim = spa_embed_dim
         self.interval = interval
         self.model_type = model_type
-        self.max_radius = max_radius   
+        self.max_radius = max_radius
         assert extent[0] < extent[1]
         assert extent[2] < extent[3]
 
@@ -2759,7 +2814,8 @@ class GridLookupSpatialRelationPositionEncoder(PositionEncoder):
         elif type(coords) == list:
             assert self.coord_dim == len(coords[0][0])
         else:
-            raise Exception("Unknown coords data type for RBFSpatialRelationEncoder")
+            raise Exception(
+                "Unknown coords data type for RBFSpatialRelationEncoder")
 
         # coords_mat: shape (batch_size, num_context_pt, 2)
         coords_mat = np.asarray(coords).astype(float)
@@ -2780,7 +2836,7 @@ class GridLookupSpatialRelationPositionEncoder(PositionEncoder):
         # index_mat: shape (batch_size, num_context_pt)
         index_mat = (row * self.num_col + col).astype(int)
         # index_mat: shape (batch_size, num_context_pt)
-        index_mat = torch.LongTensor(index_mat).to(self.device)  
+        index_mat = torch.LongTensor(index_mat).to(self.device)
 
         spr_embeds = self.embedding(torch.autograd.Variable(index_mat))
         # spr_embeds: shape (batch_size, num_context_pt, spa_embed_dim)
@@ -2907,7 +2963,8 @@ class AodhaFFTSpatialRelationPositionEncoder(PositionEncoder):
         elif type(coords) == list:
             assert self.coord_dim == len(coords[0][0])
         else:
-            raise Exception("Unknown coords data type for AodhaSpatialRelationEncoder")
+            raise Exception(
+                "Unknown coords data type for AodhaSpatialRelationEncoder")
 
         assert coords.shape[-1] == 2
         # coords: shape (batch_size, num_context_pt, 2)
@@ -3002,6 +3059,7 @@ class AodhaFFNSpatialRelationLocationEncoder(LocationEncoder):
 
         return sprenc
 
+
 class SphericalHarmonicsSpatialRelationPositionEncoder(PositionEncoder):
     """
     Given a list of (lon,lat), convert them to (x,y,z), and then encode them using the MLP
@@ -3065,6 +3123,7 @@ class SphericalHarmonicsSpatialRelationPositionEncoder(PositionEncoder):
         spr_embeds = torch.FloatTensor(spr_embeds).to(self.device)
 
         return spr_embeds
+
 
 class SphericalHarmonicsSpatialRelationLocationEncoder(LocationEncoder):
     def __init__(
