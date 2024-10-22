@@ -13,9 +13,10 @@ import datasets as dt
 import baselines as bl
 import models
 
+
 def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_classes=None,
-                train_feats=None, prior_type='no_prior', prior=None, hyper_params=None, batch_size = 1024, 
-                logger = None):
+                      train_feats=None, prior_type='no_prior', prior=None, hyper_params=None, batch_size=1024,
+                      logger=None):
     '''
     Computes accuracy on held out set with a specified prior. Not very efficient
     as it loops though each example one at a time.
@@ -34,7 +35,7 @@ def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_c
     pred_list = []
     val_classes_list = []
     inds_list = []
-    
+
     for start_ind in range(0, len(val_classes), batch_size):
         end_ind = min(start_ind + batch_size, len(val_classes))
         inds = np.asarray(list(range(start_ind, end_ind)))
@@ -52,27 +53,27 @@ def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_c
             geo_prior = []
             for ind in range(start_ind, end_ind):
                 geo_prior.append(bl.compute_neighbor_prior(train_classes, val_preds.shape[1],
-                                val_feats[ind, :], prior, hyper_params, ptype='distance'))
+                                                           val_feats[ind, :], prior, hyper_params, ptype='distance'))
             # geo_prior: (batch_size, num_classes)
-            geo_prior = np.concatenate(geo_prior, axis = 0)
+            geo_prior = np.concatenate(geo_prior, axis=0)
             pred = cnn_pred*geo_prior
 
         elif prior_type == 'nn_knn':
             geo_prior = []
             for ind in range(start_ind, end_ind):
                 geo_prior.append(bl.compute_neighbor_prior(train_classes, val_preds.shape[1],
-                               val_feats[ind, :], prior, hyper_params, ptype='knn'))
+                                                           val_feats[ind, :], prior, hyper_params, ptype='knn'))
             # geo_prior: (batch_size, num_classes)
-            geo_prior = np.concatenate(geo_prior, axis = 0)
+            geo_prior = np.concatenate(geo_prior, axis=0)
             pred = cnn_pred*geo_prior
 
         elif prior_type == 'kde':
             geo_prior = []
             for ind in range(start_ind, end_ind):
                 geo_prior.append(bl.kde_prior(train_classes, train_feats, val_preds.shape[1],
-                               val_locs[ind, :], prior, hyper_params))
+                                              val_locs[ind, :], prior, hyper_params))
             # geo_prior: (batch_size, num_classes)
-            geo_prior = np.concatenate(geo_prior, axis = 0)
+            geo_prior = np.concatenate(geo_prior, axis=0)
             pred = cnn_pred*geo_prior
 
         elif prior_type == 'grid':
@@ -85,7 +86,8 @@ def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_c
             # cnn_pred = val_preds[inds, :]
             with torch.no_grad():
                 # if all image have location infor
-                loc_isnan = torch.isnan(val_feats[inds, 0]).cpu().data.numpy().astype(int)
+                loc_isnan = torch.isnan(
+                    val_feats[inds, 0]).cpu().data.numpy().astype(int)
                 inds = inds[np.where(loc_isnan == 0)]
                 # if torch.sum(torch.isnan(val_feats[inds, 0])).item() == 0:
                 #     print("Hi!")
@@ -94,50 +96,48 @@ def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_c
                 net_prior = net_prior.cpu().data.numpy().astype(np.float64)
 
                 cnn_pred = val_preds[inds, :]
-                #net_prior /= net_prior.sum()  # does not matter for argmax
+                # net_prior /= net_prior.sum()  # does not matter for argmax
                 pred = cnn_pred*net_prior
 
                 val_classes_list.append(val_classes[inds])
 
                 inds_list.append(inds)
- 
 
         elif prior_type == 'tang_et_al':
             # if there is no location info won't use prior
             # pred = val_preds[ind, :]
             with torch.no_grad():
-                loc_isnan = torch.isnan(val_feats[inds, 0]).data.numpy().astype(int)
+                loc_isnan = torch.isnan(
+                    val_feats[inds, 0]).data.numpy().astype(int)
                 inds = inds[np.where(loc_isnan == 0)]
                 # if torch.sum(torch.isnan(val_feats[inds, 0])).item() == 0:
                 # takes location and network features as input
                 pred = prior(val_feats['val_locs'][inds, :],
-                                  val_feats['val_feats'][inds, :])
+                             val_feats['val_feats'][inds, :])
                 pred = pred.cpu().data.numpy().astype(np.float64)
 
         # pred_list: (num_batch, batch_size, num_classes)
         pred_list.append(pred)
 
-
     # preds: (num_sample, num_classes)
-    preds = np.concatenate(pred_list, axis = 0)
+    preds = np.concatenate(pred_list, axis=0)
     # logger.info(preds.shape)
-    
 
     if prior_type in ['geo_net'] + ut.get_spa_enc_list():
-        val_classes_ = np.concatenate(val_classes_list, axis = 0)
+        val_classes_ = np.concatenate(val_classes_list, axis=0)
         logger.info(val_classes_.shape)
         # ranks: np.array(), [batch_size], the rank of the correct class label for each sample, start from 1
-        ranks = get_label_rank(loc_pred = preds, loc_class = val_classes_)
-        inds_list = np.concatenate(inds_list, axis = 0)
+        ranks = get_label_rank(loc_pred=preds, loc_class=val_classes_)
+        inds_list = np.concatenate(inds_list, axis=0)
     else:
         logger.info(val_classes.shape)
         # ranks: np.array(), [batch_size], the rank of the correct class label for each sample, start from 1
-        ranks = get_label_rank(loc_pred = preds, loc_class = val_classes)
+        ranks = get_label_rank(loc_pred=preds, loc_class=val_classes)
         inds_list = None
 
     top_k_acc = {}
     for kk in [1, 3, 5, 10]:
-        top_k_acc[kk] = (ranks<=kk).astype(int)
+        top_k_acc[kk] = (ranks <= kk).astype(int)
 
     # print final accuracy
     # some datasets have mutiple splits. These are represented by integers for each example in val_split
@@ -145,15 +145,17 @@ def compute_acc_batch(val_preds, val_classes, val_split, val_feats=None, train_c
         logger.info(' Split ID: {}'.format(ii))
         inds1 = np.where(val_split == split)[0]
         if inds_list is not None:
-            inds2 = sorted(list(set(list(inds1)).intersection( set(list(inds_list)) )))
+            inds2 = sorted(
+                list(set(list(inds1)).intersection(set(list(inds_list)))))
             idx_map = dict(zip(list(inds_list), list(range(len(inds_list)))))
             inds = [idx_map[idx] for idx in inds2]
         else:
             inds = inds1
         for kk in np.sort(list(top_k_acc.keys())):
-            logger.info(' Top {}\tacc (%):   {}'.format(kk, round(top_k_acc[kk][inds].sum()*100/len(inds1), 2)))
+            logger.info(' Top {}\tacc (%):   {}'.format(
+                kk, round(top_k_acc[kk][inds].sum()*100/len(inds1), 2)))
 
-    pred_classes = list(np.argmax(preds, axis = -1))
+    pred_classes = list(np.argmax(preds, axis=-1))
     return pred_classes
 
 
@@ -165,10 +167,10 @@ def get_label_rank(loc_pred, loc_class):
     '''
     loc_pred_ = loc_pred
     # loc_pred_idx: [batch_size, num_classes], the reverse rank (large->small) of all classes based on the probability
-    loc_pred_idx = np.argsort(loc_pred_, axis = -1)[:, ::-1]
+    loc_pred_idx = np.argsort(loc_pred_, axis=-1)[:, ::-1]
 
     # the rank for each class in each sample
-    ranks_ = np.argsort(loc_pred_idx, axis = -1) + 1
+    ranks_ = np.argsort(loc_pred_idx, axis=-1) + 1
 
     loc_class_ = loc_class
 
@@ -180,7 +182,7 @@ def get_label_rank(loc_pred, loc_class):
     # num_classes = loc_pred_.shape[1]
 
     # loc_class_ = loc_class.cpu().data.numpy()
-    
+
     # # loc_class_: [batch_size, num_classes], the correct class label for each sample
     # loc_class_ = np.repeat(np.expand_dims(loc_class_, axis = 1), num_classes, axis = 1)
 
@@ -190,8 +192,8 @@ def get_label_rank(loc_pred, loc_class):
 
 
 def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes=None,
-                train_feats=None, prior_type='no_prior', prior=None, hyper_params=None, 
-                logger = None):
+                train_feats=None, prior_type='no_prior', prior=None, hyper_params=None,
+                logger=None):
     '''
     Computes accuracy on held out set with a specified prior. Not very efficient
     as it loops though each example one at a time.
@@ -207,13 +209,12 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
     Return:
         pred_classes: (batch_size), the list of joint predicted image category
     '''
-    
 
     top_k_acc = {}
     for kk in [1, 3, 5, 10]:
         top_k_acc[kk] = np.zeros(len(val_classes))
     max_class = np.max(list(top_k_acc.keys()))
-    pred_classes = [] # the list of joint predicted image category
+    pred_classes = []  # the list of joint predicted image category
 
     for ind in range(len(val_classes)):
 
@@ -226,17 +227,17 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
 
         elif prior_type == 'nn_dist':
             geo_prior = bl.compute_neighbor_prior(train_classes, val_preds.shape[1],
-                        val_feats[ind, :], prior, hyper_params, ptype='distance')
+                                                  val_feats[ind, :], prior, hyper_params, ptype='distance')
             pred = val_preds[ind, :]*geo_prior
 
         elif prior_type == 'nn_knn':
             geo_prior = bl.compute_neighbor_prior(train_classes, val_preds.shape[1],
-                           val_feats[ind, :], prior, hyper_params, ptype='knn')
+                                                  val_feats[ind, :], prior, hyper_params, ptype='knn')
             pred = val_preds[ind, :]*geo_prior
 
         elif prior_type == 'kde':
             geo_prior = bl.kde_prior(train_classes, train_feats, val_preds.shape[1],
-                           val_locs[ind, :], prior, hyper_params)
+                                     val_locs[ind, :], prior, hyper_params)
             pred = val_preds[ind, :]*geo_prior
 
         elif prior_type == 'grid':
@@ -252,8 +253,9 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
                 if torch.isnan(val_feats[ind, 0]).item() == 0:
                     # net_prior: (1, num_classes), the spa_enc model image class prediction distribution
                     net_prior = prior(val_feats[ind, :].unsqueeze(0))
-                    net_prior = net_prior.cpu().data.numpy()[0, :].astype(np.float64)
-                    #net_prior /= net_prior.sum()  # does not matter for argmax
+                    net_prior = net_prior.cpu().data.numpy()[
+                        0, :].astype(np.float64)
+                    # net_prior /= net_prior.sum()  # does not matter for argmax
                     pred = pred*net_prior
 
         elif prior_type == 'tang_et_al':
@@ -263,9 +265,8 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
                 if torch.isnan(val_feats['val_locs'][ind, 0]).item() == 0:
                     # takes location and network features as input
                     pred = prior(val_feats['val_locs'][ind, :].unsqueeze(0),
-                                      val_feats['val_feats'][ind, :].unsqueeze(0))
+                                 val_feats['val_feats'][ind, :].unsqueeze(0))
                     pred = pred.cpu().data.numpy()[0, :].astype(np.float64)
-
 
         # store accuracy of prediction
         pred_classes.append(np.argmax(pred))
@@ -280,7 +281,8 @@ def compute_acc(val_preds, val_classes, val_split, val_feats=None, train_classes
         logger.info(' Split ID: {}'.format(ii))
         inds = np.where(val_split == split)[0]
         for kk in np.sort(list(top_k_acc.keys())):
-            logger.info(' Top {}\tacc (%):   {}'.format(kk, round(top_k_acc[kk][inds].mean()*100, 2)))
+            logger.info(' Top {}\tacc (%):   {}'.format(
+                kk, round(top_k_acc[kk][inds].mean()*100, 2)))
 
     return pred_classes
 
@@ -291,7 +293,8 @@ def get_cross_val_hyper_params(eval_params):
     if eval_params['dataset'] == 'inat_2018':
         hyper_params['num_neighbors'] = 1500
         hyper_params['dist_type'] = 'euclidean'  # euclidean, haversine
-        hyper_params['dist_thresh'] = 2.0  # kms if haversine - divide by radius earth
+        # kms if haversine - divide by radius earth
+        hyper_params['dist_thresh'] = 2.0
         hyper_params['gp_size'] = [180, 60]
         hyper_params['pseudo_count'] = 2
         hyper_params['kde_dist_type'] = 'euclidean'  # for KDE
@@ -353,9 +356,12 @@ def get_cross_val_hyper_params(eval_params):
 
 if __name__ == "__main__":
     parser = ArgumentParser()
-    parser.add_argument("--dataset", type=str, default="inat_2018") # inat_2018, inat_2017, birdsnap, nabirds, yfcc
-    parser.add_argument("--meta_type", type=str, default="ebird_meta") # orig_meta, ebird_meta
-    parser.add_argument("--eval_split", type=str, default="val") # train, val, test
+    # inat_2018, inat_2017, birdsnap, nabirds, yfcc
+    parser.add_argument("--dataset", type=str, default="inat_2018")
+    parser.add_argument("--meta_type", type=str,
+                        default="ebird_meta")  # orig_meta, ebird_meta
+    parser.add_argument("--eval_split", type=str,
+                        default="val")  # train, val, test
     parser.add_argument("--device", type=str, default="cuda:0")
 
     parser.add_argument("--model_dir", type=str, default="../models/")
@@ -363,27 +369,26 @@ if __name__ == "__main__":
 
     parser.add_argument("--spa_enc_type", type=str, default="sphere")
     parser.add_argument("--lr", type=float, default=0.001,
-        help='learning rate')
+                        help='learning rate')
     parser.add_argument("--frequency_num", type=int, default=32,
-        help='The number of frequency used in the space encoder')
+                        help='The number of frequency used in the space encoder')
     parser.add_argument("--max_radius", type=float, default=1.0,
-        help='The maximum frequency in the space encoder')
+                        help='The maximum frequency in the space encoder')
     parser.add_argument("--min_radius", type=float, default=0.000001,
-        help='The minimum frequency in the space encoder')
+                        help='The minimum frequency in the space encoder')
     parser.add_argument("--num_hidden_layer", type=int, default=1,
-        help='The number of hidden layer in the space encoder')
+                        help='The number of hidden layer in the space encoder')
     parser.add_argument("--hidden_dim", type=int, default=512,
-        help='The hidden dimention in feedforward NN in the (global) space encoder')
+                        help='The hidden dimention in feedforward NN in the (global) space encoder')
 
     parser.add_argument("--num_rbf_anchor_pts", type=int, default=200,
-        help='The number of RBF anchor points used in in the space encoder')
+                        help='The number of RBF anchor points used in in the space encoder')
     parser.add_argument("--rbf_kernel_size", type=float, default=1.0,
-        help='The RBF kernel size in the "rbf" space encoder')
+                        help='The RBF kernel size in the "rbf" space encoder')
 #     parser.add_argument("--rand_sample_weight", type=float, default=1.0,
 #         help='The weight of rand sample loss')
 
     args = parser.parse_args()
-
 
     params = {}
     eval_params = {}
@@ -412,19 +417,21 @@ if __name__ == "__main__":
     params["num_epochs"] = args.num_epochs
     params["max_radius"] = args.max_radius
 
-    
-    eval_params['dataset'] = args.dataset  # inat_2018, inat_2017, birdsnap, nabirds, yfcc
+    # inat_2018, inat_2017, birdsnap, nabirds, yfcc
+    eval_params['dataset'] = args.dataset
     eval_params['eval_split'] = args.eval_split  # train, val, test
-    eval_params['inat2018_resolution'] = 'standard' # 'standard' or 'high_res' - only valid for inat_2018
-    eval_params['meta_type'] = args.meta_type  # orig_meta, ebird_meta - only for nabirds, birdsnap
-    eval_params['model_type'] = '' # '_full_final', '_no_date_final', '_no_photographer_final', '_no_encode_final'
-    eval_params['trained_models_root'] = args.model_dir  # location where trained models are stored
+    # 'standard' or 'high_res' - only valid for inat_2018
+    eval_params['inat2018_resolution'] = 'standard'
+    # orig_meta, ebird_meta - only for nabirds, birdsnap
+    eval_params['meta_type'] = args.meta_type
+    # '_full_final', '_no_date_final', '_no_photographer_final', '_no_encode_final'
+    eval_params['model_type'] = ''
+    # location where trained models are stored
+    eval_params['trained_models_root'] = args.model_dir
     eval_params['save_op'] = False
 
-    
-
     # specify which algorithms to evaluate. Ours is 'geo_net'.
-    #eval_params['algs'] = ['no_prior', 'train_freq', 'geo_net', 'tang_et_al', 'grid', 'nn_knn', 'nn_dist', 'kde']
+    # eval_params['algs'] = ['no_prior', 'train_freq', 'geo_net', 'tang_et_al', 'grid', 'nn_knn', 'nn_dist', 'kde']
     eval_params['algs'] = ['no_prior', eval_params['spa_enc']]
 
     # if torch.cuda.is_available():
@@ -438,8 +445,6 @@ if __name__ == "__main__":
     meta_str = ''
     if eval_params['dataset'] in ['birdsnap', 'nabirds']:
         meta_str = '_' + eval_params['meta_type']
-
-    
 
     # param_args = "{lr:.4f}_{freq:d}_{min_radius:.7f}_{num_hidden_layer:d}_{hidden_dim:d}".format(
     #     lr = params['lr'],
@@ -457,22 +462,24 @@ if __name__ == "__main__":
     #         num_rbf_anchor_pts = params['num_rbf_anchor_pts'],
     #         rbf_kernel_size = params['rbf_kernel_size']
     #         )
-    param_args = ut.make_model_file_param_args(params, spa_enc_type = args.spa_enc_type)
+    param_args = ut.make_model_file_param_args(
+        params, spa_enc_type=args.spa_enc_type)
 
     nn_model_path = "{}/model_{}{}_{}_{}.pth.tar".format(
         eval_params['trained_models_root'],
         eval_params['dataset'],
         meta_str,
         eval_params['spa_enc'],
-        param_args) 
+        param_args)
     nn_model_path_tang = "{}/bl_tang_{}{}_gps.pth.tar".format(
         eval_params['trained_models_root'],
         eval_params['dataset'],
         meta_str
-        )
+    )
 
     eval_params['log_file_name'] = nn_model_path.replace(".pth.tar", ".log")
-    logger = ut.setup_logging(eval_params['log_file_name'], console = True, filemode='a')
+    logger = ut.setup_logging(
+        eval_params['log_file_name'], console=True, filemode='a')
     # eval_params['logger'] = logger
 
     # if eval_params['spa_enc'] == "rbf":
@@ -496,9 +503,11 @@ if __name__ == "__main__":
 
     # load data and features
     if 'tang_et_al' in eval_params['algs']:
-        op = dt.load_dataset(eval_params, eval_params['eval_split'], True, False, True, True, False)
+        op = dt.load_dataset(
+            eval_params, eval_params['eval_split'], True, False, True, True, False)
     else:
-        op = dt.load_dataset(eval_params, eval_params['eval_split'], True, False, True, False, False)
+        op = dt.load_dataset(
+            eval_params, eval_params['eval_split'], True, False, True, False, False)
 
     train_locs = op['train_locs']
     train_classes = op['train_classes']
@@ -517,16 +526,14 @@ if __name__ == "__main__":
     # these hyper parameters have been cross validated for the baseline methods
     hyper_params = get_cross_val_hyper_params(eval_params)
 
-
     #
     # no prior
     #
     if 'no_prior' in eval_params['algs']:
         logger.info('\nNo prior')
         # pred_no_prior = compute_acc(val_preds, val_classes, val_split, prior_type='no_prior')
-        pred_no_prior = compute_acc_batch(val_preds, val_classes, val_split, prior_type='no_prior', 
-                                        batch_size = 1024, logger = logger)
-
+        pred_no_prior = compute_acc_batch(val_preds, val_classes, val_split, prior_type='no_prior',
+                                          batch_size=1024, logger=logger)
 
     #
     # overall training frequency prior
@@ -538,9 +545,8 @@ if __name__ == "__main__":
         train_prior = np.ones(num_classes)
         train_prior[cls_id] += cls_cnt
         train_prior /= train_prior.sum()
-        compute_acc(val_preds, val_classes, val_split, prior_type='train_freq', prior=train_prior, 
-                    logger = logger)
-
+        compute_acc(val_preds, val_classes, val_split, prior_type='train_freq', prior=train_prior,
+                    logger=logger)
 
     #
     # neural network spatio-temporal prior
@@ -568,7 +574,7 @@ if __name__ == "__main__":
     spa_enc_algs = set(eval_params['algs']).intersection(spa_enc_algs)
     if len(spa_enc_algs) == 1:
         spa_enc_type = list(spa_enc_algs)[0]
-        
+
         logger.info('\n{}'.format(spa_enc_type))
         logger.info(' Model :\t' + os.path.basename(nn_model_path))
 
@@ -578,26 +584,26 @@ if __name__ == "__main__":
         # construct features
         # val_feats_net: shape [batch_size, 2], torch.tensor
         val_feats_net = ut.generate_model_input_feats(
-                spa_enc_type = params['spa_enc_type'], 
-                locs = val_locs, 
-                dates = val_dates, 
-                params = params,
-                device = eval_params['device'])
+            spa_enc_type=params['spa_enc_type'],
+            locs=val_locs,
+            dates=val_dates,
+            params=params,
+            device=eval_params['device'])
 
         model = ut.get_loc_model(
-            train_locs = train_locs,
-            params = params, 
-            spa_enc_type = params['spa_enc_type'], 
-            num_inputs = params['num_feats'], 
-            num_classes = params['num_classes'], 
-            num_filts = params['num_filts'], 
-            num_users = params['num_users'], 
-            device = eval_params['device'])
+            train_locs=train_locs,
+            params=params,
+            spa_enc_type=params['spa_enc_type'],
+            num_inputs=params['num_feats'],
+            num_classes=params['num_classes'],
+            num_filts=params['num_filts'],
+            num_users=params['num_users'],
+            device=eval_params['device'])
 
         model.load_state_dict(net_params['state_dict'])
         model.eval()
-        pred_geo_net = compute_acc(val_preds, val_classes, val_split, val_feats=val_feats_net, prior_type=spa_enc_type, 
-                                prior=model, logger = logger)
+        pred_geo_net = compute_acc(val_preds, val_classes, val_split, val_feats=val_feats_net, prior_type=spa_enc_type,
+                                   prior=model, logger=logger)
         # pred_geo_net = compute_acc_batch(val_preds, val_classes, val_split, val_feats=val_feats_net, prior_type=spa_enc_type, prior=model, batch_size = params['batch_size'])
     #
     # Tang et al ICCV 2015, Improving Image Classification with Location Context
@@ -610,7 +616,7 @@ if __name__ == "__main__":
 
         # construct features
         val_feats_tang = {}
-        val_feats_tang['val_locs']  = ut.convert_loc_to_tensor(val_locs)
+        val_feats_tang['val_locs'] = ut.convert_loc_to_tensor(val_locs)
         val_feats_tang['val_feats'] = torch.from_numpy(op['val_feats'])
         assert params['loc_encoding'] == 'gps'
 
@@ -618,8 +624,8 @@ if __name__ == "__main__":
                                params['embedding_dim'], params['num_classes'], params['use_loc'])
         model.load_state_dict(net_params['state_dict'])
         model.eval()
-        compute_acc(val_preds, val_classes, val_split, val_feats=val_feats_tang, prior_type='tang_et_al', 
-                    prior=model, logger = logger)
+        compute_acc(val_preds, val_classes, val_split, val_feats=val_feats_tang, prior_type='tang_et_al',
+                    prior=model, logger=logger)
         del val_feats_tang  # save memory
 
     #
@@ -629,20 +635,19 @@ if __name__ == "__main__":
         logger.info('\nDiscrete grid prior')
         gp = bl.GridPrior(train_locs, train_classes, num_classes, hyper_params)
         compute_acc(val_preds, val_classes, val_split, val_feats=val_locs, prior_type='grid', prior=gp,
-                    hyper_params=hyper_params, logger = logger)
-
+                    hyper_params=hyper_params, logger=logger)
 
     #
     # setup look up tree for NN lookup based methods
     #
     if ('nn_knn' in eval_params['algs']) or ('nn_dist' in eval_params['algs']):
         if hyper_params['dist_type'] == 'haversine':
-            nn_tree = BallTree(np.deg2rad(train_locs)[:,::-1], metric='haversine')
+            nn_tree = BallTree(np.deg2rad(train_locs)[
+                               :, ::-1], metric='haversine')
             val_locs_n = np.deg2rad(val_locs)
         else:
-            nn_tree = BallTree(train_locs[:,::-1], metric='euclidean')
+            nn_tree = BallTree(train_locs[:, ::-1], metric='euclidean')
             val_locs_n = val_locs
-
 
     #
     # nearest neighbor prior - based on KNN
@@ -650,8 +655,7 @@ if __name__ == "__main__":
     if 'nn_knn' in eval_params['algs']:
         logger.info('\nNearest neighbor KNN prior')
         compute_acc(val_preds, val_classes, val_split, val_feats=val_locs_n, train_classes=train_classes,
-                    prior_type='nn_knn', prior=nn_tree, hyper_params=hyper_params, logger = logger)
-
+                    prior_type='nn_knn', prior=nn_tree, hyper_params=hyper_params, logger=logger)
 
     #
     # nearest neighbor prior - based on distance
@@ -659,8 +663,7 @@ if __name__ == "__main__":
     if 'nn_dist' in eval_params['algs']:
         logger.info('\nNearest neighbor distance prior')
         compute_acc(val_preds, val_classes, val_split, val_feats=val_locs_n, train_classes=train_classes,
-                    prior_type='nn_dist', prior=nn_tree, hyper_params=hyper_params, logger = logger)
-
+                    prior_type='nn_dist', prior=nn_tree, hyper_params=hyper_params, logger=logger)
 
     #
     # kernel density estimate e.g. BirdSnap CVPR 2014
@@ -668,21 +671,23 @@ if __name__ == "__main__":
     if 'kde' in eval_params['algs']:
         logger.info('\nKernel density estimate prior')
         kde_params = {}
-        train_classes_kde, train_locs_kde, kde_params['counts'] = bl.create_kde_grid(train_classes, train_locs, hyper_params)
+        train_classes_kde, train_locs_kde, kde_params['counts'] = bl.create_kde_grid(
+            train_classes, train_locs, hyper_params)
         if hyper_params['kde_dist_type'] == 'haversine':
             train_locs_kde = np.deg2rad(train_locs_kde)
             val_locs_kde = np.deg2rad(val_locs)
-            kde_params['nn_tree_kde'] = BallTree(train_locs_kde[:, ::-1], metric='haversine')
+            kde_params['nn_tree_kde'] = BallTree(
+                train_locs_kde[:, ::-1], metric='haversine')
         else:
             val_locs_kde = val_locs
-            kde_params['nn_tree_kde'] = BallTree(train_locs_kde[:, ::-1], metric='euclidean')
+            kde_params['nn_tree_kde'] = BallTree(
+                train_locs_kde[:, ::-1], metric='euclidean')
 
         compute_acc(val_preds, val_classes, val_split, val_feats=val_locs_kde, train_classes=train_classes_kde,
-                    train_feats=train_locs_kde, prior_type='kde', prior=kde_params, hyper_params=hyper_params, 
-                    logger = logger)
-
+                    train_feats=train_locs_kde, prior_type='kde', prior=kde_params, hyper_params=hyper_params,
+                    logger=logger)
 
     if eval_params['save_op']:
         np.savez('model_preds', val_classes=val_classes, pred_geo_net=pred_geo_net,
-            pred_no_prior=pred_no_prior, dataset=eval_params['dataset'],
-            split=eval_params['eval_split'], model_type=eval_params['model_type'])
+                 pred_no_prior=pred_no_prior, dataset=eval_params['dataset'],
+                 split=eval_params['eval_split'], model_type=eval_params['model_type'])
