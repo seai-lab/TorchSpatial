@@ -28,7 +28,7 @@ To set up the environment for the TorchSpatial project, follow these steps:
    Open your terminal (or Anaconda Prompt on Windows) and navigate to the directory containing the `environment.yml` file. Use the following command to create the environment:
    ```bash
    conda env create -f TorchSpatial/main/environment.yml
-
+  ```bash
 
 ## Data Download Instructions
 The data can be downloaded from the following DOI link:
