@@ -53,8 +53,8 @@ Features
 Configuration Parameters
 ------------------------
 
-- **coord_dim:** Dimensionality of the space being encoded (e.g., 2D, 3D).
-- **device:** Specifies the computational device, e.g., 'cuda' for GPU acceleration.
+- ``coord_dim``: Dimensionality of the space being encoded (e.g., 2D, 3D).
+- ``device``: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
 
 Methods
 --------
@@ -73,12 +73,15 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
 
     .. math::
         
-        `x = \cos(lat) \times \cos(lon)`
+        x = \cos(lat) \times \cos(lon)
 
     .. math::
-        `y = \cos(lat) \times \sin(lon)`  
+    
+        y = \cos(lat) \times \sin(lon)  
+    
     .. math::
-        `z = \sin(lat)`
+    
+        z = \sin(lat)
 
     Where:
         - *lat* is the latitude coordinate in radians.

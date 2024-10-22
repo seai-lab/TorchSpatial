@@ -51,7 +51,7 @@ Methods
 Overview
 --------
 
-:image: ../images/Sphere2Vec-sphereC.png
+.. image:: ../images/Sphere2Vec-sphereC.png
     :width: 80%
     :align: center
     :alt: Sphere2Vec-sphereC-transformation
@@ -71,12 +71,12 @@ Sinusoidal Encoding
 Configuration Parameters
 ------------------------
 
-- **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
-- **frequency_num**: Number of different sinusoidal frequencies used to encode spatial differences.
-- **max_radius**: Maximum spatial context radius, defining the upper scale of encoding.
-- **min_radius**: Minimum spatial context radius, defining the lower scale of encoding.
-- **freq_init**: Method to initialize the frequency list, can be 'random', 'geometric', or 'nerf'.
-- **device**: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
+- ``coord_dim``: Dimensionality of the space being encoded (e.g., 2D, 3D).
+- ``frequency_num``: Number of different sinusoidal frequencies used to encode spatial differences.
+- ``max_radius``: Maximum spatial context radius, defining the upper scale of encoding.
+- ``min_radius``: Minimum spatial context radius, defining the lower scale of encoding.
+- ``freq_init``: Method to initialize the frequency list, can be 'random', 'geometric', or 'nerf'.
+- ``device``: Specifies the computational device, e.g., 'cuda' for GPU acceleration.
 
 Methods
 --------

@@ -59,17 +59,12 @@ Features
     :align: center
     :alt: sphereC-plus-transformation
 
-.. image:: ../images/NeRF.png
-    :width: 80%
-    :align: center
-    :alt: NeRF-transformation
-
 Configuration Parameters
 ------------------------
 
-- **coord_dim**: Dimensionality of the space being encoded (e.g., 2D, 3D).
-- **frequency_num**: Number of frequencies used in sinusoidal encoding.
-- **device**: Specifies the computational device.
+- ``coord_dim``: Dimensionality of the space being encoded (e.g., 2D, 3D).
+- ``frequency_num``: Number of frequencies used in sinusoidal encoding.
+- ``device``: Specifies the computational device.
 
 Methods
 --------
