@@ -79,7 +79,7 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
         - *lat* is the latitude coordinate in radians.
         - *lon* is the longitude coordinate in radians.
         - *x*, *y*, *z* are the resulting Cartesian coordinates.
-      - Concatenate `x, y, z` coordinates to form the high-dimensional vector representation.
+    - Concatenate `x, y, z` coordinates to form the high-dimensional vector representation.
 
 - **Returns:**
     - Batch of spatial relation embeddings in high-dimensional space.
