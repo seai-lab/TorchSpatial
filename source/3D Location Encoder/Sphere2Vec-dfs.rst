@@ -104,7 +104,7 @@ Methods
     - High-dimensional embeddings that represent the input data in the frequency domain.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 

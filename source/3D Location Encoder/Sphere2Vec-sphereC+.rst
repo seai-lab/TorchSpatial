@@ -88,7 +88,7 @@ Methods
     - Tensor of spatial relation embeddings.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 

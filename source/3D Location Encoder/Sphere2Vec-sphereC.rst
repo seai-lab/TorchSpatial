@@ -140,7 +140,7 @@ Processes a batch of coordinates and converts them into spatial relation embeddi
     - Batch of spatial relation embeddings in high-dimensional space.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 

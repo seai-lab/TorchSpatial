@@ -92,7 +92,7 @@ Implementation Details
 - Outputs high-dimensional embeddings based on these sinusoidally encoded coordinates.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 
