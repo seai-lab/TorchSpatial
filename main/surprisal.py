@@ -1,6 +1,19 @@
 import numpy as np
 from scipy.stats import norm
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 class Surprisal:
     def __init__(self):
         pass
