@@ -18,7 +18,6 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 
 
 ## Environment Settings
-## Environment Settings
 
 To set up the environment for the TorchSpatial project, follow these steps:
 
