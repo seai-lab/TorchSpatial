@@ -10,7 +10,6 @@ import os
 from sklearn.neighbors import BallTree, DistanceMetric
 from argparse import ArgumentParser
 
-from paths import get_paths
 import utils as ut
 import datasets as dt
 import baselines as bl
