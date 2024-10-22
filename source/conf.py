@@ -14,13 +14,12 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
 #import sphinx_pdj_theme
-import sphinx.ext
 
 # -- Project information -----------------------------------------------------
 
 project = 'TorchSpatial'
-copyright = '2024, SEAI'
-author = 'SEAI'
+copyright = '2024, SEAI Lab'
+author = 'SEAI Lab'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
@@ -36,7 +35,6 @@ extensions = [
     "myst_parser",
     'sphinx.ext.imgconverter',
     'sphinx.ext.mathjax',
-    'sphinx.ext.imgmath',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

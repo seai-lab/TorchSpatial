@@ -36,7 +36,7 @@ We also encompass 8 location encoders that learn location embeddings from 3D spa
 * *Siren(SH)* is also a spherical location encoder proposed recently. It uses spherical harmonic basis functions as the position encoder :math:`\mathit{PE}^{\mathit{Spherical-Harmonics}}(x)` and a sinusoidal representation network (SirenNets) as the :math:`\mathbf{NN}()`. See details in :doc:`/3D Location Encoder/Spherical-Harmonics`.
 
 
-      $$x = \cos(lat) \times \cos(lon)$$
+      :math:`x = \cos(lat) \times \cos(lon)`
 
       $$y = \cos(lat) \times \sin(lon)$$  
       
