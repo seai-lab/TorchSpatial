@@ -1,5 +1,5 @@
 *NeRF*
-======
+++++++++++++
 
 :class:`NERFSpatialRelationLocationEncoder`
 ============================================
@@ -49,6 +49,9 @@ Features
 --------
 
 .. image:: ../images/NeRF.png
+    :width: 80%
+    :align: center
+    :alt: NeRF-transformation
 
 Configuration Parameters
 ------------------------

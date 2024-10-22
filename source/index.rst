@@ -47,9 +47,9 @@ Here is the **v0.1.0**
    :caption: 3D Location Encoder:
 
    3D Location Encoder/xyz.md
-   3D Location Encoder/NeRF.md
-   3D Location Encoder/NeRF_test
+   3D Location Encoder/NeRF
    3D Location Encoder/Sphere2Vec-dfs.md
+   3D Location Encoder/Sphere2Vec-dfs_test
    3D Location Encoder/Sphere2Vec-sphereC.md
    3D Location Encoder/Sphere2Vec-sphereC+.md
    3D Location Encoder/Sphere2Vec-sphereM.md
