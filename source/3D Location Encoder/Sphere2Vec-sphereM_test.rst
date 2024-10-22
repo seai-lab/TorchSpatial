@@ -40,8 +40,10 @@ Methods
     :no-index:
 
 Processes input coordinates through the location encoder to generate final spatial embeddings.
+
 - **Parameters**:
     - `coords` (List or np.ndarray): Coordinates to process, formatted as `(batch_size, num_context_pt, coord_dim)`.
+
 - **Returns**:
     - `sprenc` (Tensor): Spatial relation embeddings with a shape of `(batch_size, num_context_pt, spa_embed_dim)`.
 
@@ -109,23 +111,24 @@ The output dimensionality, considering the enhanced encoding, becomes:
 Where :math:`4L` comes from the original sinusoidal terms for :math:`x` and :math:`y`, and :math:`2L` from the mixed terms added for cross-dimensional interactions.
 
 Features
-~~~~~~~~
+--------
 
 - **Geometric Frequency Scaling**: Employs a geometric progression of frequencies for sinusoidal encoding, capturing a broad range of spatial details.
 - **Configurable Parameters**: Supports adjustments in encoding dimensions, frequency range, and computational resources.
 
 Configuration Parameters
-~~~~~~~~~~~~~~~~~~~~~~~~
+------------------------
 
 - ``coord_dim``: The dimensionality of the space being encoded.
 - ``frequency_num``: The number of frequencies used for encoding.
 - ``device``: Specifies the computational device.
 
 Methods
-~~~~~~~
+-------
 
 .. method:: cal_elementwise_angle(coord, cur_freq)
     :no-index:
+
 - **Parameters**:
     - `coord`: The deltaX or deltaY.
     - `cur_freq`: The frequency index.
@@ -136,13 +139,14 @@ Methods
     :no-index:
 
 Converts a batch of coordinates into sinusoidally-encoded vectors.
+
 - **Parameters**:
     - `coords_tuple`: Tuple of spatial differences.
 - **Returns**:
     - High-dimensional vector representing the encoded spatial relationships.
 
 Usage Example
--------------
+=============
 
 .. code-block:: python
 
