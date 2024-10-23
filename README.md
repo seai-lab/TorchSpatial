@@ -17,8 +17,6 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 
 
 
-d
-
 ## Data Download Instructions
 The data can be downloaded from the following DOI link:
 [Download Data](https://doi.org/10.6084/m9.figshare.26026798)
