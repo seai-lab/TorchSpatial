@@ -51,8 +51,6 @@ The worldwide species recognition dataset used in the iNaturalist 2018 challenge
 ### YFCC
 YFCC100M-GEO100 dataset, an image dataset derived from Yahoo Flickr Creative Commons 100M dataset and was annotated by (Tang et al., 2015), containing 88986 images over 100 everyday object categories with location annotations. Here, we denote this dataset as YFCC. YFCC is a comprehensive public dataset with images across the United States. Despite the relatively limited geographic coverage, we employ this dataset to measure location encoder's capacity for multifaceted image classification in addition to domain-specific image classification.
 
-**Download**: [YFCC Dataset](https://github.com/visipedia/fg_geo)
-
 ### fMoW
 Functional Map of the World dataset (denoted as fMoW) (Christie et al., 2018) is a remote sensing (RS) image classification dataset, containing RS images with diverse land use types collected all over the world. It is composed of about 363K training and 53K validation remote sensing images which are classified into 62 different land use types. We use the fMoWrgb version of the fMoW dataset which are JPEG compressed version of these RS images with only the RGB bands.
 
