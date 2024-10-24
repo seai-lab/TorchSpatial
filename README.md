@@ -23,8 +23,8 @@ Example bash scripts for running the code are available in the [main/run_bash](h
 
 
 ## Data Download Instructions  
-You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
-Additionally, please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
+1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
+2. Please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
 
 ## Image Datasets
 
