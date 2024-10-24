@@ -2,7 +2,7 @@
 🚧 Constructing...
 
 ## Overview
-TorchSpatial offers a comprehensive framework and benchmark suite designed to advance spatial representation learning (SRL). It supports the development and evaluation of location encoders using extensive benchmarks and innovative evaluation metrics.
+TorchSpatial offers a comprehensive framework and benchmark suite designed to advance spatial representation learning (SRL). It supports the development and evaluation of location encoders using extensive benchmarks and innovative evaluation metrics. The documentation is [here](https://torchspatial.readthedocs.io/en/latest/).
 
 ## Features
 - **Unified Framework**: Integrates 15 recognized location encoders to enhance scalability and reproducibility.
