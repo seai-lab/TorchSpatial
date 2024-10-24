@@ -19,11 +19,8 @@ Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics o
 Please ensure that the package versions used in your environment match those specified in [requirements.txt](https://github.com/seai-lab/TorchSpatial/blob/main/main/requirements.txt).
 
 ## Data Download Instructions  
-You can download the dataset from the following DOI link:  
-[Download Data](https://doi.org/10.6084/m9.figshare.26026798).  
-As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
-
-Additionally, please update the paths in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
+You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
+Additionally, please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
 
 ## Code Execution
 The example bash files for running the codes can be found in main/run_bash folder
