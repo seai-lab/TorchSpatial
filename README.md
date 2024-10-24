@@ -38,26 +38,17 @@ An enriched BirdSnap dataset constructed by (Aodha et al., 2019) by simulating l
 Another image dataset about North American bird species constructed by (Aodha et al., 2019) 
 based on the NABirds dataset (Van Horn et al., 2015), the location metadata were also simulated from the eBrid dataset (Sullivan et al., 2009). It contains 23699 images of 555 bird species categories. 
 
-**Download**: [NABirds Dataset](https://dl.allaboutbirds.org/nabirds)
-
 ### iNat2017
 The worldwide species recognition dataset used in the iNaturalist 2017 challenges (Van Horn et al., 2018) with 675170 images and 5089 unique categories. We add the location information retroactively provided by iNaturalist 2021. Although its spatial distribution focuses on North America and Europe, it still covers the entire globe, which makes it one of the most spatially extensive and species-rich image dataset known to us.
 
-**Validation Split**: [iNat2017 Validation Split](https://github.com/visipedia/inat_comp/blob/master/2017/README.md)
-
 ### iNat2018
 The worldwide species recognition dataset used in the iNaturalist 2018 challenges (Van Horn et al., 2018) with 461939 images and 8142 unique categories. Although the original competition didn't provide coordinates, we add them to our benchmark as additional information from the same data source of iNaturalist 2021. It has a similar spatial distribution with iNat2017, covering all continents. We choose these two datasets to evaluate location encoder's capacity to improve fine-grained species classification performance at the global level.
-
-**Validation Split**: [iNat2018 Validation Split](https://github.com/visipedia/inat_comp/tree/master/2018)
 
 ### YFCC
 YFCC100M-GEO100 dataset, an image dataset derived from Yahoo Flickr Creative Commons 100M dataset and was annotated by (Tang et al., 2015), containing 88986 images over 100 everyday object categories with location annotations. Here, we denote this dataset as YFCC. YFCC is a comprehensive public dataset with images across the United States. Despite the relatively limited geographic coverage, we employ this dataset to measure location encoder's capacity for multifaceted image classification in addition to domain-specific image classification.
 
 ### fMoW
 Functional Map of the World dataset (denoted as fMoW) (Christie et al., 2018) is a remote sensing (RS) image classification dataset, containing RS images with diverse land use types collected all over the world. It is composed of about 363K training and 53K validation remote sensing images which are classified into 62 different land use types. We use the fMoWrgb version of the fMoW dataset which are JPEG compressed version of these RS images with only the RGB bands.
-
-**Download**: [fMoW Dataset](https://github.com/fMoW/dataset)
-
 
 ## Results
 Table 1: The Top1 classification accuracy of different models on 7 geo-aware image classification datasets in LocBench benchmark. GPT-4V is tested with zero-shot settings, and * indicates that we resample 100 images from each dataset's test/validation set except BirdSnap and Birdsnap† whose whose test sets are used for evaluation. "Avg" column indicates the average performance of each model on all five species recognition datasets. **Bold** indicates the best models in Group B and C.
