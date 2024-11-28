@@ -1,5 +1,6 @@
 # TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning
 
+[![Paper](http://img.shields.io/badge/paper-arxiv.2406.15658-B31B1B.svg)](https://arxiv.org/abs/2406.15658)
 [![Conference](https://img.shields.io/badge/NeurIPS-2024-blue)]()
 
 🚧 Constructing...
