@@ -27,10 +27,16 @@ Example bash scripts for running the code are available in the [main/run_bash](h
 
 
 ## Dataset Download Instructions  
-1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
+1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798
+        
+        
+        
+        ). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
 2. Please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
 
-
+## Geo-Bias Score 
+We have another repository specifically designed for geo-bias calculations: [PyGBS](https://github.com/seai-lab/PyGBS/tree/main). In this repository, the base geo-bias and relative geo-bias discussed in current TorchSpatial paper are referred to as the Presence vs. Non-Presence SSI Score (PNP SSI) and Relative Performance SSI Score (RP SSI).
+ 
 ## Results
 Table 1: The Top1 classification accuracy of different models on 7 geo-aware image classification datasets in LocBench benchmark. GPT-4V is tested with zero-shot settings, and * indicates that we resample 100 images from each dataset's test/validation set except BirdSnap and Birdsnap† whose whose test sets are used for evaluation. "Avg" column indicates the average performance of each model on all five species recognition datasets. **Bold** indicates the best models in Group B and C.
 ![Top1 classification accuracy](figs/img_cls_eval.png)
@@ -50,7 +56,11 @@ If you find our work useful in your research please consider citing our TorchSpa
 @article{wu2024torchspatial,
   title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
   author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and Ermon, Stefano and Ganu, Tanuja and Nambi, Akshay and Lao, Ni and Mai, Gengchen},
-  journal={arXiv preprint arXiv:2406.15658},
+  journal={arXiv preprint arXiv:2406.15658
+        
+        
+        
+        },
   year={2024}
 }
 
@@ -64,7 +74,9 @@ If you find our work useful in your research please consider citing our TorchSpa
   publisher={Elsevier}
 }
 ```
-If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602):
+If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602
+        
+        ):
 ```
 @inproceedings{mai2020space2vec,
   title={Multi-Scale Representation Learning for Spatial Feature Distributions using Grid Cells},
