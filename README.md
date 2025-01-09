@@ -29,13 +29,11 @@ Example bash scripts for running the code are available in the [main/run_bash](h
 ## Dataset Download Instructions  
 1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798
         
-        
-        
         ). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
 2. Please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
 
 ## Geo-Bias Score 
-We have another repository specifically designed for geo-bias calculations: [PyGBS](https://github.com/seai-lab/PyGBS/tree/main). In this repository, we support more geo-bias scores than described in the TorchSpatial paper. Notice that the **base geo-bias score** and **relative geo-bias score** discussed in the current TorchSpatial paper are renamed as the _Presence vs. Non-Presence SSI Score (PNP SSI)_ and _Relative Performance SSI Score (RP SSI)_ respectively, in order to provide more information on how these different geo-bias scores are defined and computed differently.
+We have another repository specifically designed for geo-bias calculations: [PyGBS](https://github.com/seai-lab/PyGBS/tree/main). In this repository, we support more geo-bias scores than described in the TorchSpatial paper. Notice that the **base geo-bias score** and **relative geo-bias score** discussed in the current TorchSpatial paper are renamed as the _Unmarked SSI_ and _Marked SSI_ respectively, in order to provide more information on how these different geo-bias scores are defined and computed differently.
  
 ## Results
 Table 1: The Top1 classification accuracy of different models on 7 geo-aware image classification datasets in LocBench benchmark. GPT-4V is tested with zero-shot settings, and * indicates that we resample 100 images from each dataset's test/validation set except BirdSnap and Birdsnap† whose whose test sets are used for evaluation. "Avg" column indicates the average performance of each model on all five species recognition datasets. **Bold** indicates the best models in Group B and C.
@@ -60,6 +58,8 @@ If you find our work useful in your research please consider citing our TorchSpa
         
         
         
+        
+        
         },
   year={2024}
 }
@@ -75,6 +75,8 @@ If you find our work useful in your research please consider citing our TorchSpa
 }
 ```
 If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602
+        
+        
         
         ):
 ```
