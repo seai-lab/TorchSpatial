@@ -3,7 +3,6 @@
 [![Paper](http://img.shields.io/badge/paper-arxiv.2406.15658-B31B1B.svg)](https://arxiv.org/abs/2406.15658)
 [![Conference](https://img.shields.io/badge/NeurIPS-2024-blue)](https://openreview.net/forum?id=DERtzUdhkk#discussion)
 
-🚧 Constructing...
 
 ## Overview
 TorchSpatial offers a comprehensive framework and benchmark suite designed to advance spatial representation learning (SRL). It supports the development and evaluation of location encoders using extensive benchmarks and innovative evaluation metrics. The documentation is [here](https://torchspatial.readthedocs.io/en/latest/).
@@ -11,7 +10,7 @@ TorchSpatial offers a comprehensive framework and benchmark suite designed to ad
 ## Features
 - **Unified Framework**: Integrates 15 recognized location encoders to enhance scalability and reproducibility.
 - **LocBench Benchmark**: Includes 17 datasets for geo-aware image classification and regression, enabling thorough performance assessments across various geographic distributions.
-- **Geo-Bias Score**: A novel metric to evaluate model performance and geographic bias, promoting spatial fairness in GeoAI applications.
+- **Geo-Bias Score**: A set of novel metrics to evaluate model performance and geographic bias, promoting spatial fairness in GeoAI applications.
 
 ## Availability
 Access the TorchSpatial framework, LocBench benchmarks, and evaluation metrics on GitHub: [TorchSpatial GitHub Repository](https://github.com/seai-lab/TorchSpatial).
@@ -27,9 +26,7 @@ Example bash scripts for running the code are available in the [main/run_bash](h
 
 
 ## Dataset Download Instructions  
-1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798
-        
-        ). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
+1. You can **download the dataset** from the following DOI link: [Download Data](https://doi.org/10.6084/m9.figshare.26026798). As we have performed data cleaning and preprocessing, please use the provided dataset to ensure the code functions correctly.
 2. Please **update the paths** in [paths.py](https://github.com/seai-lab/TorchSpatial/blob/main/main/paths.py) to reflect the locations of the datasets on your system accurately.
 
 ## Geo-Bias Score 
@@ -42,6 +39,8 @@ Table 1: The Top1 classification accuracy of different models on 7 geo-aware ima
 Table2: The R square of different models on 4 geo-aware image regression datasets in LocBench benchmark. Same format as above.
 ![R square](figs/img_reg_eval.png)
 
+Please refer to our [TorchSpatial paper](https://openreview.net/pdf?id=DERtzUdhkk) for more results.
+
 The average runtime for BirdSnap, BirdSnap†, NABirds†, and YFCC is within 5 minutes, and 10 to 20 minutes for iNat2017, iNat2018, and fMow.
 The number of training for each model on each dataset is one. Same as evaluation.
 All our experiments were conducted on a Ubuntu workstation equipped with 4 NVIDIA RTX A5500 GPUs each of which has 24 GB memory. 
@@ -49,21 +48,19 @@ All our experiments were conducted on a Ubuntu workstation equipped with 4 NVIDI
 
 
 ### Reference
-If you find our work useful in your research please consider citing our TorchSpatial paper and [ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions).  
+If you find our work useful in your research please consider citing our [TorchSpatial paper](https://openreview.net/pdf?id=DERtzUdhkk): 
 ```
-@article{wu2024torchspatial,
+@inproceedings{wu2024torchspatial,
   title={TorchSpatial: A Location Encoding Framework and Benchmark for Spatial Representation Learning},
-  author={Wu, Nemin and Cao, Qian and Wang, Zhangyu and Liu, Zeping and Qi, Yanlin and Zhang, Jielu and Ni, Joshua and Yao, Xiaobai and Ma, Hongxu and Mu, Lan and Ermon, Stefano and Ganu, Tanuja and Nambi, Akshay and Lao, Ni and Mai, Gengchen},
-  journal={arXiv preprint arXiv:2406.15658
-        
-        
-        
-        
-        
-        },
-  year={2024}
+  author={Nemin Wu and Qian Cao and Zhangyu Wang and Zeping Liu and Yanlin Qi and Jielu Zhang and Joshua Ni and X. Angela Yao and Hongxu Ma and Lan Mu and Stefano Ermon and Tanuja Ganu and Akshay Nambi and Ni Lao and Gengchen Mai},
+  booktitle={The Thirty-eight Conference on Neural Information Processing Systems Datasets and Benchmarks Track},
+  year={2024},
+  url={https://openreview.net/forum?id=DERtzUdhkk}
 }
+```
 
+If you use Sphere2Vec location encoder, please cite [our ISPRS PHOTO 2023 paper](https://www.researchgate.net/publication/371964548_Sphere2Vec_A_General-Purpose_Location_Representation_Learning_over_a_Spherical_Surface_for_Large-Scale_Geospatial_Predictions):
+```
 @article{mai2023sphere2vec,
   title={Sphere2Vec: A General-Purpose Location Representation Learning over a Spherical Surface for Large-Scale Geospatial Predictions},
   author={Mai, Gengchen and Xuan, Yao and Zuo, Wenyun and He, Yutong and Song, Jiaming and Ermon, Stefano and Janowicz, Krzysztof and Lao, Ni},
@@ -74,11 +71,8 @@ If you find our work useful in your research please consider citing our TorchSpa
   publisher={Elsevier}
 }
 ```
-If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602
-        
-        
-        
-        ):
+
+If you use grid location encoder, please also cite [our ICLR 2020 paper](https://openreview.net/forum?id=rJljdh4KDH) and [our IJGIS 2022 paper](https://www.tandfonline.com/doi/full/10.1080/13658816.2021.2004602):
 ```
 @inproceedings{mai2020space2vec,
   title={Multi-Scale Representation Learning for Spatial Feature Distributions using Grid Cells},
