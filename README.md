@@ -34,12 +34,24 @@ We have another repository specifically designed for geo-bias calculations: [PyG
  
 ## Results
 Table 1: The Top1 classification accuracy of different models on 7 geo-aware image classification datasets in LocBench benchmark. GPT-4V is tested with zero-shot settings, and * indicates that we resample 100 images from each dataset's test/validation set except BirdSnap and Birdsnap† whose whose test sets are used for evaluation. "Avg" column indicates the average performance of each model on all five species recognition datasets. **Bold** indicates the best models in Group B and C.
-![Top1 classification accuracy](figs/img_cls_eval.png)
+<div align="center">
+  <img src="figs/cls_eval_acc.png" alt="Top1 classification accuracy" width="70%">
+</div>
 
-Table2: The R square of different models on 4 geo-aware image regression datasets in LocBench benchmark. Same format as above.
-![R square](figs/img_reg_eval.png)
+Table 2: The Geo-bias scores of all location encoders across 7 geo-aware image classification datasets. "unmarked" represents the unmarked SSI geo-bias score, and "marked" represents the marked SSI geo-bias score. Both geo-bias scores are computed at the scale of 100km and using a 4-nearest-neighbor weight matrix. **Bold** numbers indicate that the scores that are significantly larger (>30\%) than the "No Prior" model (i.e., the location-unaware model); * indicates the scores that are the largest among all models for this dataset. For GPT-4V, we do not report the geo-bias scores for larger datasets because our evaluation is limited to small subsets from these data (e.g., iNaturalist), due to budget constraints. Consequently, these geo-bias scores are not directly comparable to those of other studies.
+![Geo-Bias Scores of classification tasks](figs/cls_eval_gbs.png)
 
-Please refer to our [TorchSpatial paper](https://openreview.net/pdf?id=DERtzUdhkk) for more results.
+Table 3: The R square of different models on 10 geo-aware image regression datasets in LocBench benchmark. Same format as Table 1.
+<div align="center">
+  <img src="figs/reg_eval_r2.png" alt="R square" width="80%">
+</div>
+
+Table 4: The Geo-bias scores of all location encoders across 4 geo-aware image regression datasets. Same format as Table 2.
+<div align="center">
+  <img src="figs/reg_eval_gbs.png" alt="Geo-Bias Scores of regression tasks" width="70%">
+</div>
+
+Please refer to the appendix of our [TorchSpatial paper](https://openreview.net/pdf?id=DERtzUdhkk) for more results.
 
 The average runtime for BirdSnap, BirdSnap†, NABirds†, and YFCC is within 5 minutes, and 10 to 20 minutes for iNat2017, iNat2018, and fMow.
 The number of training for each model on each dataset is one. Same as evaluation.
