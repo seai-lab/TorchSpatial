@@ -41,6 +41,7 @@ Here is the **v0.1.0**
    2D Location Encoders/rff.md
    2D Location Encoders/Space2Vec-grid.md
    2D Location Encoders/Space2Vec-theory.md
+   2D Location Encoders/ReSiren.md
 
 .. toctree::
    :maxdepth: 2
