@@ -203,7 +203,7 @@ def make_args_parser():
         "--spa_enc_type",
         type=str,
         default="wrap",
-        help="""this is the type of location encoder, e.g., Space2Vec-grid, Space2Vec-theory, xyz, NeRF,Sphere2Vec-sphereC, Sphere2Vec-sphereC+, Sphere2Vec-sphereM, Sphere2Vec-sphereM+, Sphere2Vec-dfs, rbf, rff, wrap, wrap_ffn, tile""",
+        help="""this is the type of location encoder, e.g., Space2Vec-grid, Space2Vec-theory, xyz, NeRF, ReSiren, Sphere2Vec-sphereC, Sphere2Vec-sphereC+, Sphere2Vec-sphereM, Sphere2Vec-sphereM+, Sphere2Vec-dfs, rbf, rff, wrap, wrap_ffn, tile""",
     )
     parser.add_argument(
         "--frequency_num",

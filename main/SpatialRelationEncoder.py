@@ -1214,6 +1214,101 @@ class NERFSpatialRelationLocationEncoder(LocationEncoder):
         return sprenc
 
 
+class ReSirenSpatialRelationPositionEncoder(PositionEncoder):
+    """
+    Given a list of (lon, lat) in degrees, linearly scale them to [-1, 1] (the input range
+    expected by SIREN) and return them as a tensor. This mirrors the ``Direct`` encoding used
+    in Climplicit.
+    """
+
+    def __init__(self, coord_dim=2, extent=(-180, 180, -90, 90), device="cuda"):
+        """
+        Args:
+            coord_dim: the dimension of the coordinate space (2 for lon/lat).
+            extent: (lon_min, lon_max, lat_min, lat_max) used to rescale to [-1, 1].
+            device: computation device.
+        """
+        super().__init__(coord_dim=coord_dim, device=device)
+        self.lon_min, self.lon_max, self.lat_min, self.lat_max = extent
+        # The scaling preserves dimensionality, so the SIREN input dim equals coord_dim.
+        self.pos_enc_output_dim = coord_dim
+
+    def forward(self, coords):
+        """
+        Args:
+            coords: a python list / np.ndarray with shape (batch_size, num_context_pt, coord_dim)
+                    holding (lon, lat) in degrees.
+        Return:
+            spr_embeds: Tensor of shape (batch_size, num_context_pt, coord_dim) scaled to [-1, 1].
+        """
+        # (batch_size, num_context_pt, coord_dim)
+        coords_mat = np.asarray(coords).astype(float)
+
+        # lon / lat: (batch_size, num_context_pt, 1)
+        lon = coords_mat[:, :, :1]
+        lat = coords_mat[:, :, 1:2]
+
+        lon = 2 * (lon - self.lon_min) / (self.lon_max - self.lon_min) - 1
+        lat = 2 * (lat - self.lat_min) / (self.lat_max - self.lat_min) - 1
+
+        # spr_embeds: (batch_size, num_context_pt, coord_dim)
+        spr_embeds = np.concatenate([lon, lat], axis=-1)
+
+        return torch.FloatTensor(spr_embeds).to(self.device)
+
+
+class ReSirenSpatialRelationLocationEncoder(LocationEncoder):
+    """Location encoder that maps scaled (lon, lat) through a residual SIREN (ReSiren).
+
+    The coordinates are rescaled to [-1, 1] by ``ReSirenSpatialRelationPositionEncoder`` and
+    then encoded by a ``SirenNet`` with residual connections, which enables scaling the network
+    to more layers than a plain SIREN.
+    """
+
+    def __init__(
+        self,
+        spa_embed_dim,
+        coord_dim=2,
+        device="cuda",
+        extent=(-180, 180, -90, 90),
+        siren_num_layers=16,
+        siren_dim_hidden=512,
+        siren_w0=1.0,
+        siren_w0_initial=30.0,
+        h_siren=True,
+        residual_connections=True,
+        ffn_context_str="ReSirenSpatialRelationEncoder",
+    ):
+        super().__init__(spa_embed_dim, coord_dim, device)
+
+        self.position_encoder = ReSirenSpatialRelationPositionEncoder(
+            coord_dim=coord_dim, extent=extent, device=device
+        )
+        self.siren = SirenNet(
+            dim_in=self.position_encoder.pos_enc_output_dim,
+            dim_hidden=siren_dim_hidden,
+            dim_out=spa_embed_dim,
+            num_layers=siren_num_layers,
+            w0=siren_w0,
+            w0_initial=siren_w0_initial,
+            h_siren=h_siren,
+            residual_connections=residual_connections,
+        )
+
+    def forward(self, coords):
+        """
+        Args:
+            coords: list / np.ndarray of shape (batch_size, num_context_pt, coord_dim) holding
+                    (lon, lat) in degrees.
+        Return:
+            sprenc: Tensor of shape (batch_size, num_context_pt, spa_embed_dim).
+        """
+        spr_embeds = self.position_encoder(coords)
+        sprenc = self.siren(spr_embeds)
+
+        return sprenc
+
+
 class RBFSpatialRelationPositionEncoder(PositionEncoder):
     """
     Given a list of (X,Y), compute the distance from each pt to each RBF anchor points

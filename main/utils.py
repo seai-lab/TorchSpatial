@@ -516,6 +516,7 @@ def get_spa_enc_list():
         "wrap_ffn",
         "xyz",
         "NeRF",
+        "ReSiren",
         "tile_ffn",
         "spherical_harmonics"
     ]
@@ -896,6 +897,17 @@ def get_spa_encoder(
             ffn_use_layernormalize=params["use_layn"],
             ffn_skip_connection=params["skip_connection"],
             ffn_context_str="NERFSpatialRelationEncoder",
+        )
+    elif spa_enc_type == "ReSiren":
+        spa_enc = ReSirenSpatialRelationLocationEncoder(
+            spa_embed_dim=spa_embed_dim,
+            coord_dim=coord_dim,
+            device=device,
+            siren_num_layers=params["num_hidden_layer"],
+            siren_dim_hidden=params["hidden_dim"],
+            h_siren=True,
+            residual_connections=True,
+            ffn_context_str="ReSirenSpatialRelationEncoder",
         )
     elif spa_enc_type == "wrap_ffn":
         spa_enc = AodhaFFNSpatialRelationLocationEncoder(
